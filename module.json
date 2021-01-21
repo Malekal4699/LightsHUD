@@ -1,0 +1,27 @@
+{
+	"name": "torchlight",
+	"title": "TorchLight",
+	"description": "TorchLight HUD Controls",
+	"version": "0.1.1",
+	"author": "PhilippeK",
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "./lang/en.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "./lang/fr.json"
+		}
+	],
+	"esmodules": ["./torchlight.js"],
+	"socket": true,
+	"styles": [],
+	"packs": [],
+	"manifest": "https://raw.githubusercontent.com/PhilippeKr/TorchLight/master/module.json",
+	"download": "https://raw.githubusercontent.com/PhilippeKr/TorchLight/master/torchlight.zip",
+	"minimumCoreVersion": "0.5.4",
+	"compatibleCoreVersion": "0.7.5"
+}
