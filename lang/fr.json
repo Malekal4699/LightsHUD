@@ -4,7 +4,7 @@
 
 	"torchlight.playerTorches.name": "Autorisation des joueurs",
 	"torchlight.playerTorches.hint": "Autoriser les joueurs à allumer leurs propres torches et lumières.",
-	"torchlight.checkAvailability.name": "Vérification de la Disponibilité des Torches et Lumières",
+	"torchlight.checkAvailability.name": "Vérification de la Disponibilité",
 	"torchlight.checkAvailability.hint": "Vérifier que les joueurs ont des torches dans leur inventaire ou la capacité de lancer des sorts de lumière.",
 	"torchlight.brightRadius.hint": "Détermine l'étendue (en unité de grille) de la lumière vive émise.",
 	"torchlight.dimRadius.hint": "Détermine l'étendue (en unité de grille) de la lumière faible émise.",

@@ -3,7 +3,7 @@
 
 	"torchlight.playerTorches.name": "Player Torches and Lights",
 	"torchlight.playerTorches.hint": "Allow players to toggle their own torches and lights.",
-	"torchlight.checkAvailability.name": "Check Availability of Torches and Lights",
+	"torchlight.checkAvailability.name": "Check Availability",
 	"torchlight.checkAvailability.hint": "Perform a check to see if the character has torches in his inventory or can cast light spells.",
 	"torchlight.brightRadius.hint": "How many grid units of bright light to emit.",
 	"torchlight.dimRadius.hint": "How many grid units of dim light to emit.",
