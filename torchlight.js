@@ -104,6 +104,51 @@ class Torch {
 			return torches;
 		}
 
+		/*
+		 * Performs inventory tracking for torch uses.  Deducts one
+		 * torch from inventory if all of the following are true:
+		 * 1) The system is dnd5e.
+		 * 2) The player doesn't know the Light spell.
+		 * 3) The player has at least one torch.
+		 * 4) The user is not the GM or the gmUsesInventory setting is enabled.
+		 */
+		async function useTorch() {
+			let torch = -1;
+
+			if (data.isGM && !game.settings.get("torch", "gmUsesInventory"))
+				return;
+			if (game.system.id !== 'dnd5e')
+				return;
+			let actor = game.actors.get(data.actorId);
+			if (actor === undefined)
+				return;
+
+			// First, check for the light cantrip...
+			actor.data.items.forEach((item, offset) => {
+				if (item.type === 'spell') {
+					if (item.name === 'Light') {
+						torch = -2;
+						return;
+					}
+					if (item.name === 'Dancing Lights') {
+						torch = -3;
+						return;
+					}
+				}
+				else {
+					var itemToCheck = game.settings.get("torch", "gmInventoryItemName");
+					if (torch === -1 && item.name.toLowerCase() === itemToCheck.toLowerCase() && item.data.quantity > 0) {
+						torch = offset;
+					}
+				}
+			});
+			if (torch < 0)
+				return;
+
+			// Now, remove a torch from inventory...
+			await actor.updateOwnedItem({"_id": actor.data.items[torch]._id, "data.quantity": actor.data.items[torch].data.quantity - 1});
+		}
+
 		// Don't let Dancing Lights have/use torches. :D
 		if (data.name === 'Dancing Light' &&
 		    data.dimLight === 20 &&
@@ -177,6 +222,7 @@ class Torch {
 							await app.object.setFlag("torchlight", "newValue", data.brightLight + '/' + data.dimLight);
 						}
 						btn.addClass("active");
+						useTorch();
 					}
 					else { // Turning light off...
 						if (newTorch === 'Dancing Lights') {
