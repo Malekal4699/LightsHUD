@@ -12,8 +12,8 @@
  * ----------------------------------------------------------------------------
  */
 
-class TorchLight {
-	static async addTorchLightButton(app, html, data) {
+class Torch {
+	static async addTorchButton(app, html, data) {
 		async function createDancingLights() {
 			let tkn = canvas.tokens.get(app.object.id);
 			let voff = tkn.h;
@@ -51,7 +51,7 @@ class TorchLight {
 				game.socket.emit("module.torch", req);
 			}
 			else {
-				TorchLight.handleSocketRequest(req);
+				Torch.handleSocketRequest(req);
 			}
 		}
 
@@ -62,7 +62,7 @@ class TorchLight {
 		 * 3) If a dnd5e player knows the Light spell.
 		 * 4) if a dnd5e player has at least one torch in inventory
 		 */
-		function hasTorchLight() {
+		function hasTorch() {
 			let torches = null;
 
 			if (game.system.id !== 'dnd5e') {
@@ -112,7 +112,7 @@ class TorchLight {
 		 * 3) The player has at least one torch.
 		 * 4) The user is not the GM or the gmUsesInventory setting is enabled.
 		 */
-		async function useTorchLight() {
+		async function useTorch() {
 			let torch = -1;
 
 			if (data.isGM && !game.settings.get("torch", "gmUsesInventory"))
@@ -161,7 +161,7 @@ class TorchLight {
 			let brightRadius = game.settings.get("torchlight", "brightRadius");
 			let tbutton = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
 			let allowEvent = true;
-			let ht = hasTorchLight();
+			let ht = hasTorch();
 			let oldTorch = app.object.getFlag("torchlight", "oldValue");
 			let newTorch = app.object.getFlag("torchlight", "newValue");
 
@@ -222,7 +222,7 @@ class TorchLight {
 							await app.object.setFlag("torchlight", "newValue", data.brightLight + '/' + data.dimLight);
 						}
 						btn.addClass("active");
-						useTorchLight();
+						useTorch();
 					}
 					else { // Turning light off...
 						if (newTorch === 'Dancing Lights') {
@@ -268,16 +268,16 @@ class TorchLight {
 }
 
 Hooks.on('ready', () => {
-	Hooks.on('renderTokenHUD', (app, html, data) => { TorchLight.addTorchLightButton(app, html, data) });
+	Hooks.on('renderTokenHUD', (app, html, data) => { Torch.addTorchButton(app, html, data) });
 	Hooks.on('renderControlsReference', (app, html, data) => {
-		html.find('div').first().append('<h3>TorchLight</h3><ol class="hotkey-list"><li><h4>'+
+		html.find('div').first().append('<h3>Torch</h3><ol class="hotkey-list"><li><h4>'+
 			game.i18n.localize("torch.turnOffAllLights")+
 			'</h4><div class="keys">'+
 			game.i18n.localize("torch.holdCtrlOnClick")+
 			'</div></li></ol>');
 	});
 	game.socket.on("module.torch", request => {
-		TorchLight.handleSocketRequest(request);
+		Torch.handleSocketRequest(request);
 	});
 });
 Hooks.once("init", () => {
