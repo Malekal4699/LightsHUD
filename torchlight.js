@@ -271,9 +271,9 @@ Hooks.on('ready', () => {
 	Hooks.on('renderTokenHUD', (app, html, data) => { TorchLight.addTorchLightButton(app, html, data) });
 	Hooks.on('renderControlsReference', (app, html, data) => {
 		html.find('div').first().append('<h3>TorchLight</h3><ol class="hotkey-list"><li><h4>'+
-			game.i18n.localize("torch.turnOffAllLights")+
+			game.i18n.localize("torchlight.turnOffAllLights")+
 			'</h4><div class="keys">'+
-			game.i18n.localize("torch.holdCtrlOnClick")+
+			game.i18n.localize("torchlight.holdCtrlOnClick")+
 			'</div></li></ol>');
 	});
 	game.socket.on("module.torch", request => {
@@ -282,8 +282,16 @@ Hooks.on('ready', () => {
 });
 Hooks.once("init", () => {
 	game.settings.register("torchlight", "playerTorches", {
-		name: game.i18n.localize("torch.playerTorches.name"),
-		hint: game.i18n.localize("torch.playerTorches.hint"),
+		name: game.i18n.localize("torchlight.playerTorches.name"),
+		hint: game.i18n.localize("torchlight.playerTorches.hint"),
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean
+	});
+	game.settings.register("torchlight", "checkAvailability", {
+		name: game.i18n.localize("torchlight.checkAvailability.name"),
+		hint: game.i18n.localize("torchlight.checkAvailability.hint"),
 		scope: "world",
 		config: true,
 		default: true,
@@ -291,16 +299,16 @@ Hooks.once("init", () => {
 	});
 	if (game.system.id === 'dnd5e') {
 		game.settings.register("torchlight", "gmUsesInventory", {
-			name: game.i18n.localize("torch.gmUsesInventory.name"),
-			hint: game.i18n.localize("torch.gmUsesInventory.hint"),
+			name: game.i18n.localize("torchlight.gmUsesInventory.name"),
+			hint: game.i18n.localize("torchlight.gmUsesInventory.hint"),
 			scope: "world",
 			config: true,
 			default: false,
 			type: Boolean
 		});
 		game.settings.register("torchlight", "gmInventoryItemName", {
-			name: game.i18n.localize("torch.gmInventoryItemName.name"),
-			hint: game.i18n.localize("torch.gmInventoryItemName.hint"),
+			name: game.i18n.localize("torchlight.gmInventoryItemName.name"),
+			hint: game.i18n.localize("torchlight.gmInventoryItemName.hint"),
 			scope: "world",
 			config: true,
 			default: "torch",
@@ -309,7 +317,7 @@ Hooks.once("init", () => {
 	}
 	game.settings.register("torchlight", "brightRadius", {
 		name: game.i18n.localize("LIGHT.LightBright"),
-		hint: game.i18n.localize("torch.brightRadius.hint"),
+		hint: game.i18n.localize("torchlight.brightRadius.hint"),
 		scope: "world",
 		config: true,
 		default: 20,
@@ -317,31 +325,31 @@ Hooks.once("init", () => {
 	});
 	game.settings.register("torchlight", "dimRadius", {
 		name: game.i18n.localize("LIGHT.LightDim"),
-		hint: game.i18n.localize("torch.dimRadius.hint"),
+		hint: game.i18n.localize("torchlight.dimRadius.hint"),
 		scope: "world",
 		config: true,
 		default: 40,
 		type: Number
 	});
 	game.settings.register("torchlight", "offBrightRadius", {
-		name: game.i18n.localize("torch.offBrightRadius.name"),
-		hint: game.i18n.localize("torch.offBrightRadius.hint"),
+		name: game.i18n.localize("torchlight.offBrightRadius.name"),
+		hint: game.i18n.localize("torchlight.offBrightRadius.hint"),
 		scope: "world",
 		config: true,
 		default: 0,
 		type: Number
 	});
 	game.settings.register("torchlight", "offDimRadius", {
-		name: game.i18n.localize("torch.offDimRadius.name"),
-		hint: game.i18n.localize("torch.offDimRadius.hint"),
+		name: game.i18n.localize("torchlight.offDimRadius.name"),
+		hint: game.i18n.localize("torchlight.offDimRadius.hint"),
 		scope: "world",
 		config: true,
 		default: 0,
 		type: Number
 	});
 	game.settings.register("torchlight", "dancingLightVision", {
-		name: game.i18n.localize("torch.dancingLightVision.name"),
-		hint: game.i18n.localize("torch.dancingLightVision.hint"),
+		name: game.i18n.localize("torchlight.dancingLightVision.name"),
+		hint: game.i18n.localize("torchlight.dancingLightVision.hint"),
 		scope: "world",
 		config: true,
 		default: false,
