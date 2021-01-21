@@ -10,9 +10,6 @@
  * think this stuff is worth it, you can buy me a beer in return.     
  *                                                               Philippe Krait
  * ----------------------------------------------------------------------------
- * https://github.com/PhilippeKr/TorchLight/master/module.json
- * https://raw.githubusercontent.com/PhilippeKr/TorchLight/main/module.json
- * ----------------------------------------------------------------------------
  */
 
 class Torch {
@@ -58,6 +55,55 @@ class Torch {
 			}
 		}
 
+		/*
+		 * Returns true if a torch can be used... ie:
+		 * 1) If the user is the GM.
+		 * 2) If the system is not dnd5e, and the playerTorches setting is enabled.
+		 * 3) If a dnd5e player knows the Light spell.
+		 * 4) if a dnd5e player has at least one torch in inventory
+		 */
+		function hasTorch() {
+			let torches = null;
+
+			if (game.system.id !== 'dnd5e') {
+				if (game.settings.get("torch", "playerTorches"))
+					torches = 'Player';
+				if (data.isGM)
+					torches = 'GM';
+			}
+			else {
+				let actor = game.actors.get(data.actorId);
+				if (actor === undefined)
+					return false;
+				actor.data.items.forEach(item => {
+					if (item.type === 'spell') {
+						if (item.name === 'Light') {
+							torches = 'Light';
+							return;
+						}
+						if (item.name === 'Dancing Lights') {
+							torches = 'Dancing Lights';
+							return;
+						}
+					}
+					else {
+						if (torches === null) {
+							var itemToCheck = game.settings.get("torch", "gmInventoryItemName");
+							if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
+								if (item.data.quantity > 0) {
+									torches = itemToCheck;
+									return;
+								}
+							}
+						}
+					}
+				});
+				if (torches === null && data.isGM)
+					torches = 'GM';
+			}
+			return torches;
+		}
+
 		// Don't let Dancing Lights have/use torches. :D
 		if (data.name === 'Dancing Light' &&
 		    data.dimLight === 20 &&
@@ -70,6 +116,7 @@ class Torch {
 			let brightRadius = game.settings.get("torch", "brightRadius");
 			let tbutton = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
 			let allowEvent = true;
+			let ht = hasTorch();
 			let oldTorch = app.object.getFlag("torch", "oldValue");
 			let newTorch = app.object.getFlag("torch", "newValue");
 
@@ -118,11 +165,17 @@ class Torch {
 					}
 					else if (oldTorch === null || oldTorch === undefined) {	// Turning light on...
 						await app.object.setFlag("torch", "oldValue", data.brightLight + '/' + data.dimLight);
-						if (brightRadius > data.brightLight)
-							data.brightLight = brightRadius;
-						if (dimRadius > data.dimLight)
-							data.dimLight = dimRadius;
-						await app.object.setFlag("torch", "newValue", data.brightLight + '/' + data.dimLight);
+						if (ht === 'Dancing Lights') {
+							await createDancingLights();
+							await app.object.setFlag("torch", "newValue", 'Dancing Lights');
+						}
+						else {
+							if (brightRadius > data.brightLight)
+								data.brightLight = brightRadius;
+							if (dimRadius > data.dimLight)
+								data.dimLight = dimRadius;
+							await app.object.setFlag("torch", "newValue", data.brightLight + '/' + data.dimLight);
+						}
 						btn.addClass("active");
 					}
 					else { // Turning light off...
