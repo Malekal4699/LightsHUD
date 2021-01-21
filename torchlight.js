@@ -19,7 +19,7 @@ class Torch {
 			let voff = tkn.h;
 			let hoff = tkn.w;
 			let c = tkn.center;
-			let v = game.settings.get("torch", "dancingLightVision")
+			let v = game.settings.get("torchlight", "dancingLightVision")
 
 			await canvas.scene.createEmbeddedEntity("Token", [
 				{"actorData":{}, "actorId":tkn.actor._id, "actorLink":false, "bar1":{"attribute":""}, "bar2":{"attribute":""}, "brightLight":0, "brightSight":0, "dimLight":10, "dimSight":0, "displayBars":CONST.TOKEN_DISPLAY_MODES.NONE, "displayName":CONST.TOKEN_DISPLAY_MODES.HOVER, "disposition":CONST.TOKEN_DISPOSITIONS.FRIENDLY, "flags":{}, "height":1, "hidden":false, "img":"systems/dnd5e/icons/spells/light-air-fire-1.jpg", "lightAlpha":1, "lightAngle":360, "lockRotation":false, "mirrorX":false, "name":"Dancing Light", "randomimg":false, "rotation":0, "scale":0.25, "sightAngle":360, "vision":v, "width":1, "x":c.x - hoff, "y":c.y - voff},
@@ -66,7 +66,7 @@ class Torch {
 			let torches = null;
 
 			if (game.system.id !== 'dnd5e') {
-				if (game.settings.get("torch", "playerTorches"))
+				if (game.settings.get("torchlight", "playerTorches"))
 					torches = 'Player';
 				if (data.isGM)
 					torches = 'GM';
@@ -88,7 +88,7 @@ class Torch {
 					}
 					else {
 						if (torches === null) {
-							var itemToCheck = game.settings.get("torch", "gmInventoryItemName");
+							var itemToCheck = game.settings.get("torchlight", "gmInventoryItemName");
 							if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
 								if (item.data.quantity > 0) {
 									torches = itemToCheck;
@@ -111,19 +111,19 @@ class Torch {
 			return;
 		}
 
-		if (data.isGM === true || game.settings.get("torch", "playerTorches") === true) {
-			let dimRadius = game.settings.get("torch", "dimRadius");
-			let brightRadius = game.settings.get("torch", "brightRadius");
+		if (data.isGM === true || game.settings.get("torchlight", "playerTorches") === true) {
+			let dimRadius = game.settings.get("torchlight", "dimRadius");
+			let brightRadius = game.settings.get("torchlight", "brightRadius");
 			let tbutton = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
 			let allowEvent = true;
 			let ht = hasTorch();
-			let oldTorch = app.object.getFlag("torch", "oldValue");
-			let newTorch = app.object.getFlag("torch", "newValue");
+			let oldTorch = app.object.getFlag("torchlight", "oldValue");
+			let newTorch = app.object.getFlag("torchlight", "newValue");
 
 			// Clear torch flags if light has been changed somehow.
 			if (newTorch !== undefined && newTorch !== null && newTorch !== 'Dancing Lights' && (newTorch !== data.brightLight + '/' + data.dimLight)) {
-				await app.object.setFlag("torch", "oldValue", null);
-				await app.object.setFlag("torch", "newValue", null);
+				await app.object.setFlag("torchlight", "oldValue", null);
+				await app.object.setFlag("torchlight", "newValue", null);
 				oldTorch = null;
 				newTorch = null;
 			}
@@ -148,33 +148,33 @@ class Torch {
 			if (allowEvent) {
 				tbutton.find('i').click(async (ev) => {
 					let btn = $(ev.currentTarget.parentElement);
-					let dimRadius = game.settings.get("torch", "dimRadius");
-					let brightRadius = game.settings.get("torch", "brightRadius");
-					let oldTorch = app.object.getFlag("torch", "oldValue");
-					let newTorch = app.object.getFlag("torch", "newValue");
+					let dimRadius = game.settings.get("torchlight", "dimRadius");
+					let brightRadius = game.settings.get("torchlight", "brightRadius");
+					let oldTorch = app.object.getFlag("torchlight", "oldValue");
+					let newTorch = app.object.getFlag("torchlight", "newValue");
 
 					ev.preventDefault();
 					ev.stopPropagation();
 					if (ev.ctrlKey) {	// Forcing light off...
-						data.brightLight = game.settings.get("torch", "offBrightRadius");
-						data.dimLight = game.settings.get("torch", "offDimRadius");
-						await app.object.setFlag("torch", "oldValue", null);
-						await app.object.setFlag("torch", "newValue", null);
+						data.brightLight = game.settings.get("torchlight", "offBrightRadius");
+						data.dimLight = game.settings.get("torchlight", "offDimRadius");
+						await app.object.setFlag("torchlight", "oldValue", null);
+						await app.object.setFlag("torchlight", "newValue", null);
 						await sendRequest({"requestType": "removeDancingLights"});
 						btn.removeClass("active");
 					}
 					else if (oldTorch === null || oldTorch === undefined) {	// Turning light on...
-						await app.object.setFlag("torch", "oldValue", data.brightLight + '/' + data.dimLight);
+						await app.object.setFlag("torchlight", "oldValue", data.brightLight + '/' + data.dimLight);
 						if (ht === 'Dancing Lights') {
 							await createDancingLights();
-							await app.object.setFlag("torch", "newValue", 'Dancing Lights');
+							await app.object.setFlag("torchlight", "newValue", 'Dancing Lights');
 						}
 						else {
 							if (brightRadius > data.brightLight)
 								data.brightLight = brightRadius;
 							if (dimRadius > data.dimLight)
 								data.dimLight = dimRadius;
-							await app.object.setFlag("torch", "newValue", data.brightLight + '/' + data.dimLight);
+							await app.object.setFlag("torchlight", "newValue", data.brightLight + '/' + data.dimLight);
 						}
 						btn.addClass("active");
 					}
@@ -187,8 +187,8 @@ class Torch {
 							data.brightLight = parseFloat(thereBeLight[0]);
 							data.dimLight = parseFloat(thereBeLight[1]);
 						}
-						await app.object.setFlag("torch", "newValue", null);
-						await app.object.setFlag("torch", "oldValue", null);
+						await app.object.setFlag("torchlight", "newValue", null);
+						await app.object.setFlag("torchlight", "oldValue", null);
 						btn.removeClass("active");
 					}
 					await app.object.update({brightLight: data.brightLight, dimLight: data.dimLight});
@@ -235,7 +235,7 @@ Hooks.on('ready', () => {
 	});
 });
 Hooks.once("init", () => {
-	game.settings.register("torch", "playerTorches", {
+	game.settings.register("torchlight", "playerTorches", {
 		name: game.i18n.localize("torch.playerTorches.name"),
 		hint: game.i18n.localize("torch.playerTorches.hint"),
 		scope: "world",
@@ -244,7 +244,7 @@ Hooks.once("init", () => {
 		type: Boolean
 	});
 	if (game.system.id === 'dnd5e') {
-		game.settings.register("torch", "gmUsesInventory", {
+		game.settings.register("torchlight", "gmUsesInventory", {
 			name: game.i18n.localize("torch.gmUsesInventory.name"),
 			hint: game.i18n.localize("torch.gmUsesInventory.hint"),
 			scope: "world",
@@ -252,7 +252,7 @@ Hooks.once("init", () => {
 			default: false,
 			type: Boolean
 		});
-		game.settings.register("torch", "gmInventoryItemName", {
+		game.settings.register("torchlight", "gmInventoryItemName", {
 			name: game.i18n.localize("torch.gmInventoryItemName.name"),
 			hint: game.i18n.localize("torch.gmInventoryItemName.hint"),
 			scope: "world",
@@ -261,7 +261,7 @@ Hooks.once("init", () => {
 			type: String
 		});
 	}
-	game.settings.register("torch", "brightRadius", {
+	game.settings.register("torchlight", "brightRadius", {
 		name: game.i18n.localize("LIGHT.LightBright"),
 		hint: game.i18n.localize("torch.brightRadius.hint"),
 		scope: "world",
@@ -269,7 +269,7 @@ Hooks.once("init", () => {
 		default: 20,
 		type: Number
 	});
-	game.settings.register("torch", "dimRadius", {
+	game.settings.register("torchlight", "dimRadius", {
 		name: game.i18n.localize("LIGHT.LightDim"),
 		hint: game.i18n.localize("torch.dimRadius.hint"),
 		scope: "world",
@@ -277,7 +277,7 @@ Hooks.once("init", () => {
 		default: 40,
 		type: Number
 	});
-	game.settings.register("torch", "offBrightRadius", {
+	game.settings.register("torchlight", "offBrightRadius", {
 		name: game.i18n.localize("torch.offBrightRadius.name"),
 		hint: game.i18n.localize("torch.offBrightRadius.hint"),
 		scope: "world",
@@ -285,7 +285,7 @@ Hooks.once("init", () => {
 		default: 0,
 		type: Number
 	});
-	game.settings.register("torch", "offDimRadius", {
+	game.settings.register("torchlight", "offDimRadius", {
 		name: game.i18n.localize("torch.offDimRadius.name"),
 		hint: game.i18n.localize("torch.offDimRadius.hint"),
 		scope: "world",
@@ -293,7 +293,7 @@ Hooks.once("init", () => {
 		default: 0,
 		type: Number
 	});
-	game.settings.register("torch", "dancingLightVision", {
+	game.settings.register("torchlight", "dancingLightVision", {
 		name: game.i18n.localize("torch.dancingLightVision.name"),
 		hint: game.i18n.localize("torch.dancingLightVision.hint"),
 		scope: "world",
