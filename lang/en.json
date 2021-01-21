@@ -1,5 +1,5 @@
 {
-	"I18N.MAINTAINERS": ["Deuce"],
+	"I18N.MAINTAINERS": ["PhilippeKr"],
 
 	"torch.playerTorches.name": "Player Torches",
 	"torch.playerTorches.hint": "Allow players to toggle their own torches.",
