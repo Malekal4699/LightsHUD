@@ -17,47 +17,17 @@ class TorchLight {
 
 		//if (data.isGM) {
 
-			// Creates the three buttons
-//			let tbuttonLight = $(`<div class="control-icon torchlight tl-light"><i class="fas fa-fire"></i></div>`);
-//			let tbuttonLantern = $(`<div class="control-icon torchlight tl-lantern"><i class="fas fa-fire"></i></div>`);
-//			let tbuttonTorch = $(`<div class="control-icon torchlight tl-torch"><i class="fas fa-fire"></i></div>`);
-
-//			allButtons = `${tbuttonLight}${tbuttonLantern}${tbuttonTorch}`;
-//			let buttons = $(`<div class="col torchlight-column-${position}">${allButtons}</div>`);
-
-
 			let tbuttonLight   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
 			let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
 			let tbuttonTorch   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
 
 			tbuttonLight.addClass("active");
 
-
-			let defaultButtons = '';
-
-            const investigation = 10;
-            const insight = 20;
-            const stealth = 30;
-
-            const passiveInvestigationButton = `<div class="control-icon token-info-icon" title="Passive Investigation: ${investigation}"><i class="fas fa-search"></i> ${investigation}</div>`;
-            const passiveInsightButton = `<div class="control-icon token-info-icon" title="Passive Insight: ${insight}"><i class="fas fa-lightbulb"></i> ${insight}</div>`;
-            const passiveStealthButton = `<div class="control-icon token-info-icon" title="Passive Stealth: ${stealth}"><i class="fas fa-eye-slash"></i> ${stealth}</div>`;
-            passiveSensesButtons = `${passiveInvestigationButton}${passiveInsightButton}${passiveStealthButton}`;
-
-
 			let position = game.settings.get('torchlight', 'position');
 			let newdiv = '<div class="torchlight-container"></div>';
 
-			//let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}</div>`);
-			//let buttons = '`<div class="col torchlight-column-'position'">'tbuttonLight'</div>');
-			//let buttons = `<div class="col torchlight-column-${position}">${tbuttonLight}</div>`;
-
-			//let buttons = $(`<div class="col torchlight-column-${position}">${defaultButtons}${passiveSensesButtons}</div>`);
-
-			let buttons = '<div class="col torchlight-column-' + position + '">' + tbuttonLight + '</div>');
-
 			html.find('.col.left').wrap(newdiv);
-			html.find('.col.left').before(buttons);
+			html.find('.col.left').before(tbuttonLight);
 		//}
 
 
