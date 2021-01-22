@@ -25,8 +25,8 @@ class TorchLight {
 
 			let position = game.settings.get('torchlight', 'position');
 
-			let buttonsdiv =  $(`<div class="col torchlight-column-${position}"></div>`);
-			buttonsdiv.appendChild(tbuttonLight);
+			let buttonsdiv =  $(`<div class="col torchlight-column-${position}">Essai</div>`);
+			//buttonsdiv.appendChild(tbuttonLight);
 
 			let newdiv = '<div class="torchlight-container"></div>';
 			html.find('.col.left').wrap(newdiv);
