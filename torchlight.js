@@ -52,7 +52,10 @@ class TorchLight {
 			//let buttons = '`<div class="col torchlight-column-'position'">'tbuttonLight'</div>');
 			//let buttons = `<div class="col torchlight-column-${position}">${tbuttonLight}</div>`;
 
-			let buttons = $(`<div class="col torchlight-column-${position}">${defaultButtons}${passiveSensesButtons}</div>`);
+			//let buttons = $(`<div class="col torchlight-column-${position}">${defaultButtons}${passiveSensesButtons}</div>`);
+
+			let buttons = '`<div class="col torchlight-column-' + position + '">' + tbuttonLight + '</div>');
+
 
 			html.find('.col.left').wrap(newdiv);
 			html.find('.col.left').before(buttons);
