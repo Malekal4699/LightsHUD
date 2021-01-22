@@ -26,7 +26,9 @@ class TorchLight {
 //			let buttons = $(`<div class="col torchlight-column-${position}">${allButtons}</div>`);
 
 
-			let tbuttonLight = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
+			let tbuttonLight   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
+			let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
+			let tbuttonTorch   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
 
 			tbuttonLight.addClass("active");
 
@@ -35,7 +37,9 @@ class TorchLight {
 			let position = game.settings.get('torchlight', 'position');
 			let newdiv = '<div class="torchlight-container"></div>';
 
-			let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}</div>`);
+			//let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}</div>`);
+			//let buttons = '`<div class="col torchlight-column-'position'">'tbuttonLight'</div>');
+			let buttons = `<div class="col torchlight-column-${position}">${tbuttonLight}</div>`;
 
 			html.find('.col.left').wrap(newdiv);
 			html.find('.col.left').before(buttons);
