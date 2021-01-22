@@ -44,13 +44,15 @@ class TorchLight {
 		let statusLantern = game.settings.get("torchlight", "statusLantern");
 		let statusTorch   = game.settings.get("torchlight", "statusTorch");
 
+		debugInChat("Status Read");
+
 		debugInChat("statusLight:" + statusLight);
 		debugInChat("statusLantern:" + statusLantern);
 		debugInChat("statusTorch:" + statusTorch);
 
 
 		function debugInChat(txt) {
-			let messageContent = `<hr><div style="color: black; font-size: 1.75em; font-weight: bold;">${txt}</div><hr>`
+			let messageContent = `<hr><div style="color: black;">${txt}</div><hr>`
 			ChatMessage.create({content: messageContent});
 		}
 
@@ -414,6 +416,24 @@ Hooks.once("init", () => {
 		hint: game.i18n.localize("torchlight.dancingLightVision.hint"),
 		scope: "world",
 		config: true,
+		default: false,
+		type: Boolean
+	});
+	game.settings.register("torchlight", "statusLight", {
+		scope: "world",
+		config: false,
+		default: false,
+		type: Boolean
+	});
+	game.settings.register("torchlight", "statusLantern", {
+		scope: "world",
+		config: false,
+		default: false,
+		type: Boolean
+	});
+	game.settings.register("torchlight", "statusTorch", {
+		scope: "world",
+		config: false,
 		default: false,
 		type: Boolean
 	});
