@@ -8,12 +8,12 @@
 }
 
 .col.torchlight-column-left {
-	left: -160px;
-	width: 120px;
+	left: -140px;
+	width: 80px;
 	padding-top: 13px;
 }
 .col.torchlight-column-right {
-	right: -180px;
-	width: 120px;
+	right: -160px;
+	width: 80px;
 	padding-top: 13px;
 }

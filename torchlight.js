@@ -10,6 +10,7 @@
  * think this stuff is worth it, you can buy me a beer in return.     
  *                                                               Philippe Krait
  * ----------------------------------------------------------------------------
+ * https://www.fontawesomecheatsheet.com/font-awesome-cheatsheet-5x/
  */
 
 class TorchLight {
@@ -17,8 +18,8 @@ class TorchLight {
 
 		//if (data.isGM) {
 
-			let tbuttonLight   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
-			let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
+			let tbuttonLight   = $(`<div class="control-icon torchlight"><i class="fas fa-sun"></i></div>`);
+			let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-lightbulb"></i></div>`);
 			let tbuttonTorch   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
 
 			tbuttonLight.addClass("active");
@@ -32,6 +33,8 @@ class TorchLight {
 			html.find('.col.left').wrap(newdiv);
 			html.find('.col.left').before(buttonsdiv);
 			html.find('.col.torchlight-column-'+position).prepend(tbuttonLight);
+			html.find('.col.torchlight-column-'+position).prepend(tbuttonLantern);
+			html.find('.col.torchlight-column-'+position).prepend(tbuttonTorch);
 		//}
 
 
