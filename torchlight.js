@@ -16,18 +16,18 @@ class TorchLight {
 	static async addTorchLightButtons(app, html, data) {
 
 
-		let tbuttonLight = $(`<div class="control-icon light"><i class="fas fa-fire"></i></div>`);
-		let tbuttonLantern = $(`<div class="control-icon lantern"><i class="fas fa-fire"></i></div>`);
-		let tbuttonTorch = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
+//		let tbuttonLight = $(`<div class="control-icon light"><i class="fas fa-fire"></i></div>`);
+//		let tbuttonLantern = $(`<div class="control-icon lantern"><i class="fas fa-fire"></i></div>`);
+//		let tbuttonTorch = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
 
-		let position = game.settings.get('torchlight', 'position');
+//		let position = game.settings.get('torchlight', 'position');
 
-		let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}${tbuttonLantern}${tbuttonTorch}</div>`);
+//		let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}${tbuttonLantern}${tbuttonTorch}</div>`);
 
-		let newdiv = '<div class="torchlight-container">';
+//		let newdiv = '<div class="torchlight-container">';
 
-		html.find('.col.left').wrap(newdiv);
-		html.find('.col.left').before(buttons);
+//		html.find('.col.left').wrap(newdiv);
+//		html.find('.col.left').before(buttons);
 
 
 		async function createDancingLights() {
