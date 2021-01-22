@@ -1,0 +1,19 @@
+.torchligh-container {
+	display: flex; 
+	flex-direction: row; 
+	justify-content: flex-end; 
+	align-items:center; 
+	margin-right: 75px;
+	flex: 0 !important;
+}
+
+.col.torchligh-column-left {
+	left: -160px;
+	width: 120px;
+	padding-top: 13px;
+}
+.col.torchligh-column-right {
+	right: -180px;
+	width: 120px;
+	padding-top: 13px;
+}
