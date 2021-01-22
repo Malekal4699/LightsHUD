@@ -285,7 +285,7 @@ class TorchLight {
 }
 
 Hooks.on('ready', () => {
-	Hooks.on('renderTokenHUD', (app, html, data) => { TorchLight.addTorchLightButton(app, html, data) });
+//	Hooks.on('renderTokenHUD', (app, html, data) => { TorchLight.addTorchLightButton(app, html, data) });
 	Hooks.on('renderTokenHUD', (app, html, data) => { TorchLight.addTorchLightButtons(app, html, data) });
 	Hooks.on('renderControlsReference', (app, html, data) => {
 		html.find('div').first().append('<h3>TorchLight</h3><ol class="hotkey-list"><li><h4>'+
