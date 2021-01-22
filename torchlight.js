@@ -18,18 +18,25 @@ class TorchLight {
 		//if (data.isGM) {
 
 			// Creates the three buttons
-			let tbuttonLight = $(`<div class="control-icon torchlight tl-light"><i class="fas fa-fire"></i></div>`);
-			let tbuttonLantern = $(`<div class="control-icon torchlight tl-lantern"><i class="fas fa-fire"></i></div>`);
-			let tbuttonTorch = $(`<div class="control-icon torchlight tl-torch"><i class="fas fa-fire"></i></div>`);
+//			let tbuttonLight = $(`<div class="control-icon torchlight tl-light"><i class="fas fa-fire"></i></div>`);
+//			let tbuttonLantern = $(`<div class="control-icon torchlight tl-lantern"><i class="fas fa-fire"></i></div>`);
+//			let tbuttonTorch = $(`<div class="control-icon torchlight tl-torch"><i class="fas fa-fire"></i></div>`);
 
-			allButtons = `${tbuttonLight}${tbuttonLantern}${tbuttonTorch}`;
-			let buttons = $(`<div class="col torchlight-column-${position}">${allButtons}</div>`);
+//			allButtons = `${tbuttonLight}${tbuttonLantern}${tbuttonTorch}`;
+//			let buttons = $(`<div class="col torchlight-column-${position}">${allButtons}</div>`);
+
+
+			let tbuttonLight = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
+
+			tbuttonLight.addClass("active");
+
+
 
 			let position = game.settings.get('torchlight', 'position');
 			let newdiv = '<div class="torchlight-container"></div>';
 
 			html.find('.col.left').wrap(newdiv);
-			html.find('.col.left').before(buttons);
+			html.find('.col.left').before(tbuttonLight);
 		//}
 
 
