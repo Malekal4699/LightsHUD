@@ -33,6 +33,8 @@ class TorchLight {
 			tbuttonLight.addClass("active");
 
 
+			let defaultButtons = '';
+
             const investigation = 10;
             const insight = 20;
             const stealth = 30;
@@ -50,7 +52,7 @@ class TorchLight {
 			//let buttons = '`<div class="col torchlight-column-'position'">'tbuttonLight'</div>');
 			//let buttons = `<div class="col torchlight-column-${position}">${tbuttonLight}</div>`;
 
-			let buttons = $(`<div class="col torchlight-column-${position}">${passiveSensesButtons}</div>`);
+			let buttons = $(`<div class="col torchlight-column-${position}">${defaultButtons}${passiveSensesButtons}</div>`);
 
 			html.find('.col.left').wrap(newdiv);
 			html.find('.col.left').before(buttons);
