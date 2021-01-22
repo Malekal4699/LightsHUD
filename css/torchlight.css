@@ -1,4 +1,4 @@
-.torchligh-container {
+.torchlight-container {
 	display: flex; 
 	flex-direction: row; 
 	justify-content: flex-end; 
@@ -7,12 +7,12 @@
 	flex: 0 !important;
 }
 
-.col.torchligh-column-left {
+.col.torchlight-column-left {
 	left: -160px;
 	width: 120px;
 	padding-top: 13px;
 }
-.col.torchligh-column-right {
+.col.torchlight-column-right {
 	right: -180px;
 	width: 120px;
 	padding-top: 13px;
