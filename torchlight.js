@@ -13,7 +13,23 @@
  */
 
 class TorchLight {
-	static async addTorchLightButton(app, html, data) {
+	static async addTorchLightButtons(app, html, data) {
+
+
+		let tbuttonLight = $(`<div class="control-icon light"><i class="fas fa-fire"></i></div>`);
+		let tbuttonLantern = $(`<div class="control-icon lantern"><i class="fas fa-fire"></i></div>`);
+		let tbuttonTorch = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
+
+		let position = game.settings.get('torchlight', 'position');
+
+		let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}${tbuttonLantern}${tbuttonTorch}</div>`);
+
+		let newdiv = '<div class="torchlight-container">';
+
+		html.find('.col.left').wrap(newdiv);
+		html.find('.col.left').before(buttons);
+
+
 		async function createDancingLights() {
 			let tkn = canvas.tokens.get(app.object.id);
 			let voff = tkn.h;
@@ -269,23 +285,7 @@ class TorchLight {
 	}
 }
 
-	static async addTorchLightButton(app, html, data) {
-		let tbuttonLight = $(`<div class="control-icon light"><i class="fas fa-fire"></i></div>`);
-		let tbuttonLantern = $(`<div class="control-icon lantern"><i class="fas fa-fire"></i></div>`);
-		let tbuttonTorch = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
-
-		let position = game.settings.get('torchlight', 'position');
-
-		let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}${tbuttonLantern}${tbuttonTorch}</div>`);
-
-		let newdiv = '<div class="torchlight-container">';
-
-		html.find('.col.left').wrap(newdiv);
-		html.find('.col.left').before(buttons);
-}
-
 Hooks.on('ready', () => {
-//	Hooks.on('renderTokenHUD', (app, html, data) => { TorchLight.addTorchLightButton(app, html, data) });
 	Hooks.on('renderTokenHUD', (app, html, data) => { TorchLight.addTorchLightButtons(app, html, data) });
 	Hooks.on('renderControlsReference', (app, html, data) => {
 		html.find('div').first().append('<h3>TorchLight</h3><ol class="hotkey-list"><li><h4>'+
