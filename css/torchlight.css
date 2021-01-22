@@ -9,11 +9,11 @@
 
 .col.torchlight-column-left {
 	left: -140px;
-	width: 80px;
-	padding-top: 13px;
+	width: 70px;
+	padding-top: 16px;
 }
 .col.torchlight-column-right {
-	right: -160px;
-	width: 80px;
-	padding-top: 13px;
+	right: -140px;
+	width: 70px;
+	padding-top: 16px;
 }

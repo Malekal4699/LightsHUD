@@ -16,26 +16,26 @@
 class TorchLight {
 	static async addTorchLightButtons(app, html, data) {
 
-		//if (data.isGM) {
+		// Define all three buttons
+		let tbuttonLight   = $(`<div class="control-icon torchlight"><i class="fas fa-sun"></i></div>`);
+		let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-lightbulb"></i></div>`);
+		let tbuttonTorch   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
 
-			let tbuttonLight   = $(`<div class="control-icon torchlight"><i class="fas fa-sun"></i></div>`);
-			let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-lightbulb"></i></div>`);
-			let tbuttonTorch   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
+		tbuttonLight.addClass("active");
 
-			tbuttonLight.addClass("active");
+		// Get the position of the column
+		let position = game.settings.get('torchlight', 'position');
 
-			let position = game.settings.get('torchlight', 'position');
+		// Create the column
+		let buttonsdiv =  $(`<div class="col torchlight-column-${position}"></div>`);
+		//buttonsdiv.appendChild(tbuttonLight);
 
-			let buttonsdiv =  $(`<div class="col torchlight-column-${position}"></div>`);
-			//buttonsdiv.appendChild(tbuttonLight);
+		// Wrap the previous icons
+		let newdiv = '<div class="torchlight-container"></div>';
+		html.find('.col.left').wrap(newdiv);
 
-			let newdiv = '<div class="torchlight-container"></div>';
-			html.find('.col.left').wrap(newdiv);
-			html.find('.col.left').before(buttonsdiv);
-			html.find('.col.torchlight-column-'+position).prepend(tbuttonLight);
-			html.find('.col.torchlight-column-'+position).prepend(tbuttonLantern);
-			html.find('.col.torchlight-column-'+position).prepend(tbuttonTorch);
-		//}
+		// Add the column
+		html.find('.col.left').before(buttonsdiv);
 
 
 		async function createDancingLights() {
@@ -267,6 +267,12 @@ class TorchLight {
 				});
 			}
 		}
+
+		// Finally insert the buttons in the column
+		html.find('.col.torchlight-column-'+position).prepend(tbuttonTorch);
+		html.find('.col.torchlight-column-'+position).prepend(tbuttonLantern);
+		html.find('.col.torchlight-column-'+position).prepend(tbuttonLight);
+
 	}
 
 	static async handleSocketRequest(req) {
