@@ -15,7 +15,7 @@
 class TorchLight {
 	static async addTorchLightButtons(app, html, data) {
 
-		if (data.isGM) {
+		//if (data.isGM) {
 
 			// Creates the three buttons
 			let tbuttonLight = $(`<div class="control-icon torchlight tl-light"><i class="fas fa-fire"></i></div>`);
@@ -30,7 +30,7 @@ class TorchLight {
 
 			html.find('.col.left').wrap(newdiv);
 			html.find('.col.left').before(buttons);
-		}
+		//}
 
 
 		async function createDancingLights() {
