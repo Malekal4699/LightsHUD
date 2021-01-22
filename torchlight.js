@@ -33,13 +33,14 @@ class TorchLight {
 			tbuttonLight.addClass("active");
 
 
-
+            const investigation = 10;
+            const insight = 20;
+            const stealth = 30;
 
             const passiveInvestigationButton = `<div class="control-icon token-info-icon" title="Passive Investigation: ${investigation}"><i class="fas fa-search"></i> ${investigation}</div>`;
             const passiveInsightButton = `<div class="control-icon token-info-icon" title="Passive Insight: ${insight}"><i class="fas fa-lightbulb"></i> ${insight}</div>`;
             const passiveStealthButton = `<div class="control-icon token-info-icon" title="Passive Stealth: ${stealth}"><i class="fas fa-eye-slash"></i> ${stealth}</div>`;
             passiveSensesButtons = `${passiveInvestigationButton}${passiveInsightButton}${passiveStealthButton}`;
-
 
 
 			let position = game.settings.get('torchlight', 'position');
