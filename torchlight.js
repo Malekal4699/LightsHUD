@@ -34,12 +34,22 @@ class TorchLight {
 
 
 
+
+            const passiveInvestigationButton = `<div class="control-icon token-info-icon" title="Passive Investigation: ${investigation}"><i class="fas fa-search"></i> ${investigation}</div>`;
+            const passiveInsightButton = `<div class="control-icon token-info-icon" title="Passive Insight: ${insight}"><i class="fas fa-lightbulb"></i> ${insight}</div>`;
+            const passiveStealthButton = `<div class="control-icon token-info-icon" title="Passive Stealth: ${stealth}"><i class="fas fa-eye-slash"></i> ${stealth}</div>`;
+            passiveSensesButtons = `${passiveInvestigationButton}${passiveInsightButton}${passiveStealthButton}`;
+
+
+
 			let position = game.settings.get('torchlight', 'position');
 			let newdiv = '<div class="torchlight-container"></div>';
 
 			//let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}</div>`);
 			//let buttons = '`<div class="col torchlight-column-'position'">'tbuttonLight'</div>');
-			let buttons = `<div class="col torchlight-column-${position}">${tbuttonLight}</div>`;
+			//let buttons = `<div class="col torchlight-column-${position}">${tbuttonLight}</div>`;
+
+			let buttons = $(`<div class="col torchlight-column-${position}">${passiveSensesButtons}</div>`);
 
 			html.find('.col.left').wrap(newdiv);
 			html.find('.col.left').before(buttons);
