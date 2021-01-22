@@ -2,6 +2,11 @@
 	"I18N.LANGUAGE": "Français",
 	"I18N.MAINTAINERS": ["PhilippeK"],
 
+	"torchlight.position.name": "Position par rapport au token",
+	"torchlight.position.hint": "Dequel côté du token doivent apparaître les icones?",
+	"torchlight.position.left": "gauche",
+	"torchlight.position.right": "droit",
+
 	"torchlight.playerTorches.name": "Autorisation des joueurs",
 	"torchlight.playerTorches.hint": "Autoriser les joueurs à allumer leurs propres torches et lumières.",
 	"torchlight.checkAvailability.name": "Vérification de la Disponibilité",

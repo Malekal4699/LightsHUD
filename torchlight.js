@@ -16,18 +16,18 @@ class TorchLight {
 	static async addTorchLightButtons(app, html, data) {
 
 
-//		let tbuttonLight = $(`<div class="control-icon light"><i class="fas fa-fire"></i></div>`);
-//		let tbuttonLantern = $(`<div class="control-icon lantern"><i class="fas fa-fire"></i></div>`);
-//		let tbuttonTorch = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
+		let tbuttonLight = $(`<div class="control-icon light"><i class="fas fa-fire"></i></div>`);
+		let tbuttonLantern = $(`<div class="control-icon lantern"><i class="fas fa-fire"></i></div>`);
+		let tbuttonTorch = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
 
-//		let position = game.settings.get('torchlight', 'position');
+		let position = game.settings.get('torchlight', 'position');
 
-//		let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}${tbuttonLantern}${tbuttonTorch}</div>`);
+		let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}${tbuttonLantern}${tbuttonTorch}</div>`);
 
-//		let newdiv = '<div class="torchlight-container">';
+		let newdiv = '<div class="torchlight-container">';
 
 //		html.find('.col.left').wrap(newdiv);
-//		html.find('.col.left').before(buttons);
+		html.find('.col.left').before(buttons);
 
 
 		async function createDancingLights() {
@@ -300,15 +300,15 @@ Hooks.on('ready', () => {
 });
 Hooks.once("init", () => {
 	game.settings.register('torchlight', 'position', {
-		name: "Token Position",
-		hint: "Which side of the token should the info appear on?",
+		name: game.i18n.localize("torchlight.position.name"),
+		hint: game.i18n.localize("torchlight.position.hint"),
 		scope: "world",
 		config: true,
 		type: String,
 		default: "left",
 		choices: {
-			"left": "left",
-			"right": "right",
+			"left": game.i18n.localize("torchlight.position.left"),
+			"right": game.i18n.localize("torchlight.position.right"),
 		}
 	});
 	game.settings.register("torchlight", "playerTorches", {
