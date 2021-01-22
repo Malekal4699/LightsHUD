@@ -35,8 +35,10 @@ class TorchLight {
 			let position = game.settings.get('torchlight', 'position');
 			let newdiv = '<div class="torchlight-container"></div>';
 
+			let buttons = $(`<div class="col torchlight-column-${position}">${tbuttonLight}</div>`);
+
 			html.find('.col.left').wrap(newdiv);
-			html.find('.col.left').before(tbuttonLight);
+			html.find('.col.left').before(buttons);
 		//}
 
 
