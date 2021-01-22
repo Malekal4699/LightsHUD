@@ -22,7 +22,7 @@
 		"/css/torchlight.css"
 	],
 	"packs": [],
-	"manifest": "https://raw.githubusercontent.com/PhilippeKr/TorchLight/master/module.json",
+	"manifest": "https://raw.githubusercontent.com/PhilippeKr/TorchLight/main/module.json",
 	"download": "https://github.com/PhilippeKr/TorchLight/raw/main/torchlight.zip",
 	"minimumCoreVersion": "0.5.4",
 	"compatibleCoreVersion": "0.7.5"
