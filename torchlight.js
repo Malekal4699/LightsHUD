@@ -37,6 +37,24 @@ class TorchLight {
 		// Add the column
 		html.find('.col.left').before(buttonsdiv);
 
+		debugInChat("Initialisation");
+
+		// Get the status of the three types of lights
+		let statusLight   = game.settings.get("torchlight", "statusLight");
+		let statusLantern = game.settings.get("torchlight", "statusLantern");
+		let statusTorch   = game.settings.get("torchlight", "statusTorch");
+
+		debugInChat("statusLight:" + statusLight);
+		debugInChat("statusLantern:" + statusLantern);
+		debugInChat("statusTorch:" + statusTorch);
+
+
+		function debugInChat(txt) {
+			let messageContent = `<hr><div style="color: black; font-size: 1.75em; font-weight: bold;">${txt}</div><hr>`
+			ChatMessage.create({content: messageContent});
+		}
+
+
 
 		async function createDancingLights() {
 			let tkn = canvas.tokens.get(app.object.id);
