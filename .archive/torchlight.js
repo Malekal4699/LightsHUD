@@ -185,7 +185,7 @@ class TorchLight {
 		if (data.isGM === true || game.settings.get("torchlight", "playerTorches") === true) {
 			let dimRadius = game.settings.get("torchlight", "dimRadius");
 			let brightRadius = game.settings.get("torchlight", "brightRadius");
-			//let tbutton = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
+			let tbutton = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
 			let allowEvent = true;
 			let ht = hasTorchLight();
 			let oldTorch = app.object.getFlag("torchlight", "oldValue");
@@ -201,7 +201,7 @@ class TorchLight {
 
 			if (newTorch !== undefined && newTorch !== null) {
 				// If newTorch is still set, light hasn't changed.
-				tbuttonTorch.addClass("active");
+				tbutton.addClass("active");
 			}
 			else if ((data.brightLight >= brightRadius && data.dimLight >= dimRadius && ht !== 'Dancing Lights') || ht === null) {
 				/*
@@ -209,15 +209,15 @@ class TorchLight {
 				 * disallow the torch button
 				 */
 				let disabledIcon = $(`<i class="fas fa-slash" style="position: absolute; color: tomato"></i>`);
-				tbuttonTorch.addClass("fa-stack");
-				tbuttonTorch.find('i').addClass('fa-stack-1x');
+				tbutton.addClass("fa-stack");
+				tbutton.find('i').addClass('fa-stack-1x');
 				disabledIcon.addClass('fa-stack-1x');
-				tbuttonTorch.append(disabledIcon);
+				tbutton.append(disabledIcon);
 				allowEvent = false;
 			}
-			//html.find('.col.left').prepend(tbutton);
+			html.find('.col.left').prepend(tbutton);
 			if (allowEvent) {
-				tbuttonTorch.find('i').click(async (ev) => {
+				tbutton.find('i').click(async (ev) => {
 					let btn = $(ev.currentTarget.parentElement);
 					let dimRadius = game.settings.get("torchlight", "dimRadius");
 					let brightRadius = game.settings.get("torchlight", "brightRadius");
