@@ -73,14 +73,33 @@ class TorchLight {
 			await app.object.setFlag("torchlight", "InitialEmitsLight", app.object.emitsLight);
 			await app.object.setFlag("torchlight", "InitialBrightRadius", app.object.brightRadius);
 			await app.object.setFlag("torchlight", "InitialDimRadius", app.object.dimRadius);
-			await app.object.setFlag("torchlight", "InitialLight", app.object.light);
+			//await app.object.setFlag("torchlight", "InitialLight", app.object.light);
 			console.log("Stored emitsLight:" + app.object.getFlag("torchlight", "InitialEmitsLight"));
 			console.log("Stored brightRadius:" + app.object.getFlag("torchlight", "InitialBrightRadius"));
 			console.log("Stored dimRadius:" + app.object.getFlag("torchlight", "InitialDimRadius"));
-			console.log("Stored light:" + app.object.getFlag("torchlight", "InitialLight"));
+			//console.log("Stored light:" + app.object.getFlag("torchlight", "InitialLight"));
 		}
 
+		// if the token has the light spell on
+		if (statusLight) {
+			// The token has the light spell on
+			// If the light spell button is clicked
+			tbuttonLight.find('i').click(async (ev) => {
+				console.log("Clicked on the Light Button when the Light is On.");
 
+
+			});
+
+		} else {
+			// The token does not have the light spell on
+			// If the light spell button is clicked
+			tbuttonLight.find('i').click(async (ev) => {
+				console.log("Clicked on the Light Button when the Light is Off.");
+
+
+			});
+
+		}
 
 		async function createDancingLights() {
 			let tkn = canvas.tokens.get(app.object.id);
