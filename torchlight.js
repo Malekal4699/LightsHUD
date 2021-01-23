@@ -44,19 +44,19 @@ class TorchLight {
 
 		// Get the status of the three types of lights
 		let statusLight = app.object.getFlag("torchlight", "statusLight");
-		console.log("Initial statusLight:" + statusLight);
+		//console.log("Initial statusLight:" + statusLight);
 		if (statusLight == undefined || statusLight == null) {
 			statusLight = false;
 			await app.object.setFlag("torchlight", "statusLight", false);
 		}
 		let statusLantern = app.object.getFlag("torchlight", "statusLantern");
-		console.log("Initial statusLantern:" + statusLantern);
+		//console.log("Initial statusLantern:" + statusLantern);
 		if (statusLantern == undefined || statusLantern == null) {
 			statusLantern = false;
 			await app.object.setFlag("torchlight", "statusLantern", false);
 		}
 		let statusTorch = app.object.getFlag("torchlight", "statusTorch");
-		console.log("Initial statusTorch:" + statusTorch);
+		//console.log("Initial statusTorch:" + statusTorch);
 		if (statusTorch == undefined || statusTorch == null) {
 			statusTorch = false;
 			await app.object.setFlag("torchlight", "statusTorch", false);
@@ -78,33 +78,36 @@ class TorchLight {
 			//console.log("Stored light:" + app.object.getFlag("torchlight", "InitialLight"));
 		}
 
-		// if the token has the light spell on
-		if (statusLight) {
-			// The token has the light spell on
-			// If the light spell button is clicked
-			tbuttonLight.find('i').click(async (ev) => {
+		// If the light spell button is clicked
+		tbuttonLight.find('i').click(async (ev) => {
+			console.log("Clicked on the Light Button.");
+			ev.preventDefault();
+			ev.stopPropagation();
+
+			// Check if the token has the light spell on
+			if (statusLight) {
+				// The token has the light spell on
 				console.log("Clicked on the Light Button when the Light is On.");
 				statusLight = false;
 				await app.object.setFlag("torchlight", "statusLight", false);
 				tbuttonLight.removeClass("active");
 
 
-			});
 
-		} else {
-			// The token does not have the light spell on
-			// If the light spell button is clicked
-			tbuttonLight.find('i').click(async (ev) => {
+
+			} else {
+				// The token does not have the light spell on
 				console.log("Clicked on the Light Button when the Light is Off.");
 				statusLight = true;
 				await app.object.setFlag("torchlight", "statusLight", true);
 				tbuttonLight.addClass("active");
 
 
+			}
 
-			});
+		});
 
-		}
+
 
 		async function createDancingLights() {
 			let tkn = canvas.tokens.get(app.object.id);
