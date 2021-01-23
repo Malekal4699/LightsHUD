@@ -17,3 +17,8 @@
 	width: 70px;
 	padding-top: 17px;
 }
+
+.fas.fas-disabled {
+	color: #777;
+	pointer-events: none;
+}

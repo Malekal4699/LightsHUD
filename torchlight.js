@@ -28,10 +28,11 @@ class TorchLight {
 			//tbutton.find('i').addClass('fa-stack-1x');
 			//tbutton.addClass('fa-stack-1x');
 			//tbutton.append(disabledIcon);
-			tbutton.find('i').addClass('fa-slash');
-			tbutton.find('i').removeClass('fa-sun');
-			tbutton.find('i').removeClass('fa-lightbulb');
-			tbutton.find('i').removeClass('fa-fire');
+			//tbutton.find('i').addClass('fa-slash');
+			//tbutton.find('i').removeClass('fa-sun');
+			//tbutton.find('i').removeClass('fa-lightbulb');
+			//tbutton.find('i').removeClass('fa-fire');
+			tbutton.find('i').addClass('fa-disabled');
 		}
 
 		// Define all three buttons
