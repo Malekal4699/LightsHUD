@@ -7,8 +7,8 @@
 	"torchlight.position.left": "gauche",
 	"torchlight.position.right": "droit",
 
-	"torchlight.playerTorches.name": "Autorisation des joueurs",
-	"torchlight.playerTorches.hint": "Autoriser les joueurs à allumer leurs propres torches et lumières.",
+	"torchlight.playerActivation.name": "Autorisation des joueurs",
+	"torchlight.playerActivation.hint": "Autoriser les joueurs à allumer leurs propres torches et lumières.",
 	"torchlight.checkAvailability.name": "Vérification de la Disponibilité",
 	"torchlight.checkAvailability.hint": "Vérifier que les joueurs ont des torches dans leur inventaire ou la capacité de lancer des sorts de lumière.",
 	"torchlight.gmUsesInventory.name": "Utilisation de l'inventaire",

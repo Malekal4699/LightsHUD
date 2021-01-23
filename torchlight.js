@@ -23,11 +23,15 @@ class TorchLight {
 
 		// Visually disable a torchlight button
 		function disableTorchlightButton(tbutton) {
-			let disabledIcon = $(`<i class="fas fa-slash" style="position: absolute; color: tomato"></i>`);
-			tbutton.addClass("fa-stack");
-			tbutton.find('i').addClass('fa-stack-1x');
-			tbutton.addClass('fa-stack-1x');
-			tbutton.append(disabledIcon);
+			//let disabledIcon = $(`<i class="fas fa-slash" style="position: absolute; color: tomato"></i>`);
+			//tbutton.addClass("fa-stack");
+			//tbutton.find('i').addClass('fa-stack-1x');
+			//tbutton.addClass('fa-stack-1x');
+			//tbutton.append(disabledIcon);
+			tbutton.find('i').addClass('fa-slash');
+			tbutton.find('i').removeClass('fa-sun');
+			tbutton.find('i').removeClass('fa-lightbulb');
+			tbutton.find('i').removeClass('fa-fire');
 		}
 
 		// Define all three buttons

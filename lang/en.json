@@ -6,8 +6,8 @@
 	"torchlight.position.left": "left",
 	"torchlight.position.right": "right",
 
-	"torchlight.playerTorches.name": "Player Activation",
-	"torchlight.playerTorches.hint": "Allow players to toggle their own torches and lights.",
+	"torchlight.playerActivation.name": "Player Activation",
+	"torchlight.playerActivation.hint": "Allow players to toggle their own torches and lights.",
 	"torchlight.checkAvailability.name": "Check Availability",
 	"torchlight.checkAvailability.hint": "Perform a check to see if the character has torches in his inventory or can cast light spells.",
 	"torchlight.gmUsesInventory.name": "GM Uses Inventory",
