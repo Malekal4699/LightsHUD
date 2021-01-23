@@ -16,6 +16,11 @@
 class TorchLight {
 	static async addTorchLightButtons(app, html, data) {
 
+		function debugInChat(txt) {
+			let messageContent = `<hr><div style="color: black;">${txt}</div><hr>`
+			ChatMessage.create({content: messageContent});
+		}
+
 		// Define all three buttons
 		let tbuttonLight   = $(`<div class="control-icon torchlight"><i class="fas fa-sun"></i></div>`);
 		let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-lightbulb"></i></div>`);
@@ -40,21 +45,23 @@ class TorchLight {
 		debugInChat("Initialisation");
 
 		// Get the status of the three types of lights
-		let statusLight   = game.settings.get("torchlight", "statusLight");
-		let statusLantern = game.settings.get("torchlight", "statusLantern");
-		let statusTorch   = game.settings.get("torchlight", "statusTorch");
-
-		debugInChat("Status Read");
-
-		debugInChat("statusLight:" + statusLight);
-		debugInChat("statusLantern:" + statusLantern);
-		debugInChat("statusTorch:" + statusTorch);
-
-
-		function debugInChat(txt) {
-			let messageContent = `<hr><div style="color: black;">${txt}</div><hr>`
-			ChatMessage.create({content: messageContent});
+		//let statusLight   = game.settings.get("torchlight", "statusLight");
+		//let statusLantern = game.settings.get("torchlight", "statusLantern");
+		//let statusTorch   = game.settings.get("torchlight", "statusTorch");
+		
+		let statusLight = app.object.getFlag("torchlight", "statusLight");
+		debugInChat("Initial statusLight:" + statusLight);
+		if (statusLight == undefined || statusLight == null) {
+			statusLight = false;
+			await app.object.setFlag("torchlight", "statusLight", false);
 		}
+
+		debugInChat("Initialised statusLight:" + statusLight);
+		debugInChat("Initialised statusLantern:" + statusLantern);
+		debugInChat("Initialised statusTorch:" + statusTorch);
+
+		
+
 
 
 
@@ -419,24 +426,24 @@ Hooks.once("init", () => {
 		default: false,
 		type: Boolean
 	});
-	game.settings.register("torchlight", "statusLight", {
-		scope: "world",
-		config: false,
-		default: false,
-		type: Boolean
-	});
-	game.settings.register("torchlight", "statusLantern", {
-		scope: "world",
-		config: false,
-		default: false,
-		type: Boolean
-	});
-	game.settings.register("torchlight", "statusTorch", {
-		scope: "world",
-		config: false,
-		default: false,
-		type: Boolean
-	});
+//	game.settings.register("torchlight", "statusLight", {
+//		scope: "world",
+//		config: false,
+//		default: false,
+//		type: Boolean
+//	});
+//	game.settings.register("torchlight", "statusLantern", {
+//		scope: "world",
+//		config: false,
+//		default: false,
+//		type: Boolean
+//	});
+//	game.settings.register("torchlight", "statusTorch", {
+//		scope: "world",
+//		config: false,
+//		default: false,
+//		type: Boolean
+//	});
 });
 
 console.log("--- Flame on!");
