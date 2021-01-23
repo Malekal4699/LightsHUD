@@ -42,30 +42,30 @@ class TorchLight {
 		// Add the column
 		html.find('.col.left').before(buttonsdiv);
 
-		debugInChat("Initialisation");
+		console.log("Initialisation");
 
 		// Get the status of the three types of lights
 		let statusLight = app.object.getFlag("torchlight", "statusLight");
-		debugInChat("Initial statusLight:" + statusLight);
+		console.log("Initial statusLight:" + statusLight);
 		if (statusLight == undefined || statusLight == null) {
 			statusLight = false;
 			await app.object.setFlag("torchlight", "statusLight", false);
 		}
 		let statusLantern = app.object.getFlag("torchlight", "statusLantern");
-		debugInChat("Initial statusLantern:" + statusLantern);
+		console.log("Initial statusLantern:" + statusLantern);
 		if (statusLantern == undefined || statusLantern == null) {
 			statusLantern = false;
 			await app.object.setFlag("torchlight", "statusLantern", false);
 		}
 		let statusTorch = app.object.getFlag("torchlight", "statusTorch");
-		debugInChat("Initial statusTorch:" + statusTorch);
+		console.log("Initial statusTorch:" + statusTorch);
 		if (statusTorch == undefined || statusTorch == null) {
 			statusTorch = false;
 			await app.object.setFlag("torchlight", "statusTorch", false);
 		}
-		debugInChat("Initialised statusLight:" + statusLight);
-		debugInChat("Initialised statusLantern:" + statusLantern);
-		debugInChat("Initialised statusTorch:" + statusTorch);
+		console.log("Initialised statusLight:" + statusLight);
+		console.log("Initialised statusLantern:" + statusLantern);
+		console.log("Initialised statusTorch:" + statusTorch);
 
 		// If all light sources are off, store the initial status of illumination
 		// for the token to restore if all light sources are extinguished
@@ -73,11 +73,11 @@ class TorchLight {
 			await app.object.setFlag("torchlight", "InitialEmitsLight", app.object.emitsLight);
 			await app.object.setFlag("torchlight", "InitialBrightRadius", app.object.brightRadius);
 			await app.object.setFlag("torchlight", "InitialDimRadius", app.object.dimRadius);
-			await app.object.setFlag("torchlight", "InitialLight", app.object.light);
-			debugInChat("Stored emitsLight:" + app.object.getFlag("torchlight", "InitialEmitsLight");
-			debugInChat("Stored brightRadius:" + app.object.getFlag("torchlight", "InitialBrightRadius");
-			debugInChat("Stored dimRadius:" + app.object.getFlag("torchlight", "InitialDimRadius");
-			debugInChat("Stored light:" + app.object.getFlag("torchlight", "InitialLight");
+			//await app.object.setFlag("torchlight", "InitialLight", app.object.light);
+			console.log("Stored emitsLight:" + app.object.getFlag("torchlight", "InitialEmitsLight");
+			console.log("Stored brightRadius:" + app.object.getFlag("torchlight", "InitialBrightRadius");
+			console.log("Stored dimRadius:" + app.object.getFlag("torchlight", "InitialDimRadius");
+			//console.log("Stored light:" + app.object.getFlag("torchlight", "InitialLight");
 		}
 
 
