@@ -26,8 +26,6 @@ class TorchLight {
 		let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-lightbulb"></i></div>`);
 		let tbuttonTorch   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
 
-		tbuttonLight.addClass("active");
-
 		// Get the position of the column
 		let position = game.settings.get('torchlight', 'position');
 
@@ -86,6 +84,9 @@ class TorchLight {
 			// If the light spell button is clicked
 			tbuttonLight.find('i').click(async (ev) => {
 				console.log("Clicked on the Light Button when the Light is On.");
+				statusLight = false;
+				await app.object.setFlag("torchlight", "statusLight", false);
+				tbuttonLight.removeClass("active");
 
 
 			});
@@ -95,6 +96,10 @@ class TorchLight {
 			// If the light spell button is clicked
 			tbuttonLight.find('i').click(async (ev) => {
 				console.log("Clicked on the Light Button when the Light is Off.");
+				statusLight = true;
+				await app.object.setFlag("torchlight", "statusLight", true);
+				tbuttonLight.addClass("active");
+
 
 
 			});
