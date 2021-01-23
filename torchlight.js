@@ -78,6 +78,12 @@ class TorchLight {
 			//console.log("Stored light:" + app.object.getFlag("torchlight", "InitialLight"));
 		}
 
+		// Initial button state when the HUD comes up
+		if (statusLight) {
+			tbuttonLight.addClass("active");
+		}
+
+
 		// If the light spell button is clicked
 		tbuttonLight.find('i').click(async (ev) => {
 			console.log("Clicked on the Light Button.");
@@ -91,6 +97,8 @@ class TorchLight {
 				statusLight = false;
 				await app.object.setFlag("torchlight", "statusLight", false);
 				tbuttonLight.removeClass("active");
+				await app.object.update({brightLight: 0,
+										 dimLight: 0});
 
 
 
@@ -101,6 +109,8 @@ class TorchLight {
 				statusLight = true;
 				await app.object.setFlag("torchlight", "statusLight", true);
 				tbuttonLight.addClass("active");
+				await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
+										 dimLight: game.settings.get("torchlight", "lightDimRadius")});
 
 
 			}
@@ -153,7 +163,7 @@ class TorchLight {
 		/*
 		 * Returns true if a torch can be used... ie:
 		 * 1) If the user is the GM.
-		 * 2) If the system is not dnd5e, and the playerTorches setting is enabled.
+		 * 2) If the system is not dnd5e, and the playerActivation setting is enabled.
 		 * 3) If a dnd5e player knows the Light spell.
 		 * 4) if a dnd5e player has at least one torch in inventory
 		 */
@@ -161,7 +171,7 @@ class TorchLight {
 			let torches = null;
 
 			if (game.system.id !== 'dnd5e') {
-				if (game.settings.get("torchlight", "playerTorches"))
+				if (game.settings.get("torchlight", "playerActivation"))
 					torches = 'Player';
 				if (data.isGM)
 					torches = 'GM';
@@ -253,7 +263,7 @@ class TorchLight {
 			return;
 		}
 
-		if (data.isGM === true || game.settings.get("torchlight", "playerTorches") === true) {
+		if (data.isGM === true || game.settings.get("torchlight", "playerActivation") === true) {
 			let dimRadius = game.settings.get("torchlight", "dimRadius");
 			let brightRadius = game.settings.get("torchlight", "brightRadius");
 			//let tbutton = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
@@ -396,9 +406,9 @@ Hooks.once("init", () => {
 			"right": game.i18n.localize("torchlight.position.right"),
 		}
 	});
-	game.settings.register("torchlight", "playerTorches", {
-		name: game.i18n.localize("torchlight.playerTorches.name"),
-		hint: game.i18n.localize("torchlight.playerTorches.hint"),
+	game.settings.register("torchlight", "playerActivation", {
+		name: game.i18n.localize("torchlight.playerActivation.name"),
+		hint: game.i18n.localize("torchlight.playerActivation.hint"),
 		scope: "world",
 		config: true,
 		default: true,
@@ -421,6 +431,39 @@ Hooks.once("init", () => {
 			default: false,
 			type: Boolean
 		});
+
+
+	game.settings.register("torchlight", "lightBrightRadius", {
+		name: game.i18n.localize("torchlight.lightBrightRadius.name"),
+		hint: game.i18n.localize("torchlight.lightBrightRadius.hint"),
+		scope: "world",
+		config: true,
+		default: 20,
+		type: Number
+	});
+	game.settings.register("torchlight", "lightDimRadius", {
+		name: game.i18n.localize("torchlight.lightDimRadius.name"),
+		hint: game.i18n.localize("torchlight.lightDimRadius.hint"),
+		scope: "world",
+		config: true,
+		default: 40,
+		type: Number
+	});
+	game.settings.register('torchlight', 'lightType', {
+		name: game.i18n.localize("torchlight.lightType.name"),
+		hint: game.i18n.localize("torchlight.lightType.hint"),
+		scope: "world",
+		config: true,
+		type: String,
+		default: "left",
+		choices: {
+			"Type1": game.i18n.localize("torchlight.lightType.type1"),
+			"Type2": game.i18n.localize("torchlight.lightType.type2"),
+			"Type3": game.i18n.localize("torchlight.lightType.type3"),
+		}
+	});
+
+
 		game.settings.register("torchlight", "gmInventoryItemName", {
 			name: game.i18n.localize("torchlight.gmInventoryItemName.name"),
 			hint: game.i18n.localize("torchlight.gmInventoryItemName.hint"),
