@@ -13,15 +13,15 @@
 	"torchlight.gmUsesInventory.name": "GM Uses Inventory",
 	"torchlight.gmUsesInventory.hint": "If set, when the GM toggles a torch, it will use the actors inventory.",
 
-	"torchlight.lightBrightRadius.hint": "Light Spell: Bright Light Radius",
+	"torchlight.lightBrightRadius.name": "Light Spell: Bright Light Radius",
 	"torchlight.lightBrightRadius.hint": "Light Spell: How many grid units of bright light to emit.",
-	"torchlight.lightDimRadius.hint": "Light Spell: Dim Light Radius",
+	"torchlight.lightDimRadius.name": "Light Spell: Dim Light Radius",
 	"torchlight.lightDimRadius.hint": "Light Spell: How many grid units of dim light to emit.",
 	"torchlight.lightType.name": "Light Spell: Type of Light",
 	"torchlight.lightType.hint": "Choose the apperance of the Light Spell.",
-	"torchlight.position.type1": "Type 1",
-	"torchlight.position.type2": "Type 2",
-	"torchlight.position.type3": "Type 3",
+	"torchlight.lightType.type1": "Type 1",
+	"torchlight.lightType.type2": "Type 2",
+	"torchlight.lightType.type3": "Type 3",
 
 
 
