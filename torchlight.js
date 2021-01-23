@@ -67,6 +67,18 @@ class TorchLight {
 		console.log("Initialised statusLantern:" + statusLantern);
 		console.log("Initialised statusTorch:" + statusTorch);
 
+		// If all light sources are off, store the initial status of illumination
+		// for the token to restore if all light sources are extinguished
+		if (!statusLight && !statusLantern && !statusTorch) {
+			await app.object.setFlag("torchlight", "InitialEmitsLight", app.object.emitsLight);
+			await app.object.setFlag("torchlight", "InitialBrightRadius", app.object.brightRadius);
+			await app.object.setFlag("torchlight", "InitialDimRadius", app.object.dimRadius);
+			await app.object.setFlag("torchlight", "InitialLight", app.object.light);
+			console.log("Stored emitsLight:" + app.object.getFlag("torchlight", "InitialEmitsLight"));
+			console.log("Stored brightRadius:" + app.object.getFlag("torchlight", "InitialBrightRadius"));
+			console.log("Stored dimRadius:" + app.object.getFlag("torchlight", "InitialDimRadius"));
+			console.log("Stored light:" + app.object.getFlag("torchlight", "InitialLight"));
+		}
 
 
 
