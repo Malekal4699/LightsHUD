@@ -45,23 +45,40 @@ class TorchLight {
 		debugInChat("Initialisation");
 
 		// Get the status of the three types of lights
-		//let statusLight   = game.settings.get("torchlight", "statusLight");
-		//let statusLantern = game.settings.get("torchlight", "statusLantern");
-		//let statusTorch   = game.settings.get("torchlight", "statusTorch");
-		
 		let statusLight = app.object.getFlag("torchlight", "statusLight");
 		debugInChat("Initial statusLight:" + statusLight);
 		if (statusLight == undefined || statusLight == null) {
 			statusLight = false;
 			await app.object.setFlag("torchlight", "statusLight", false);
 		}
-
+		let statusLantern = app.object.getFlag("torchlight", "statusLantern");
+		debugInChat("Initial statusLantern:" + statusLantern);
+		if (statusLantern == undefined || statusLantern == null) {
+			statusLantern = false;
+			await app.object.setFlag("torchlight", "statusLantern", false);
+		}
+		let statusTorch = app.object.getFlag("torchlight", "statusTorch");
+		debugInChat("Initial statusTorch:" + statusTorch);
+		if (statusTorch == undefined || statusTorch == null) {
+			statusTorch = false;
+			await app.object.setFlag("torchlight", "statusTorch", false);
+		}
 		debugInChat("Initialised statusLight:" + statusLight);
 		debugInChat("Initialised statusLantern:" + statusLantern);
 		debugInChat("Initialised statusTorch:" + statusTorch);
 
-		
-
+		// If all light sources are off, store the initial status of illumination
+		// for the token to restore if all light sources are extinguished
+		if (!statusLight && !statusLantern && !statusTorch) {
+			await app.object.setFlag("torchlight", "InitialEmitsLight", app.object.emitsLight);
+			await app.object.setFlag("torchlight", "InitialBrightRadius", app.object.brightRadius);
+			await app.object.setFlag("torchlight", "InitialDimRadius", app.object.dimRadius);
+			await app.object.setFlag("torchlight", "InitialLight", app.object.light);
+			debugInChat("Stored emitsLight:" + app.object.getFlag("torchlight", "InitialEmitsLight");
+			debugInChat("Stored brightRadius:" + app.object.getFlag("torchlight", "InitialBrightRadius");
+			debugInChat("Stored dimRadius:" + app.object.getFlag("torchlight", "InitialDimRadius");
+			debugInChat("Stored light:" + app.object.getFlag("torchlight", "InitialLight");
+		}
 
 
 
@@ -426,24 +443,6 @@ Hooks.once("init", () => {
 		default: false,
 		type: Boolean
 	});
-//	game.settings.register("torchlight", "statusLight", {
-//		scope: "world",
-//		config: false,
-//		default: false,
-//		type: Boolean
-//	});
-//	game.settings.register("torchlight", "statusLantern", {
-//		scope: "world",
-//		config: false,
-//		default: false,
-//		type: Boolean
-//	});
-//	game.settings.register("torchlight", "statusTorch", {
-//		scope: "world",
-//		config: false,
-//		default: false,
-//		type: Boolean
-//	});
 });
 
 console.log("--- Flame on!");
