@@ -112,7 +112,8 @@ class TorchLight {
 						disableTorchlightButton(tbuttonLight);
 						disableTorchlightButton(tbuttonLantern);
 						// Enable the Torch Source
-						app.object.light.animation.type = "torch";
+						//app.object.light.animation.type = "torch";
+						await app.object.light.animation.update({type: "ghost"});
 						await app.object.update({brightLight: game.settings.get("torchlight", "torchBrightRadius"),
 												dimLight: game.settings.get("torchlight", "torchDimRadius")});
 					}
