@@ -16,23 +16,52 @@
 class TorchLight {
 	static async addTorchLightButtons(app, html, data) {
 
-		function debugInChat(txt) {
-			let messageContent = `<hr><div style="color: black;">${txt}</div><hr>`
-			ChatMessage.create({content: messageContent});
+		function enableTorchlightButton(tbutton) {
+			// If the light spell button is clicked
+			tbutton.find('i').click(async (ev) => {
+				console.log("Clicked on the Light Button.");
+				ev.preventDefault();
+				ev.stopPropagation();
+
+				// Check if the token has the light spell on
+				if (statusLight) {
+					// The token has the light spell on
+					console.log("Clicked on the Light Button when the Light is On.");
+					statusLight = false;
+					await app.object.setFlag("torchlight", "statusLight", false);
+					tbuttonLight.removeClass("active");
+					tbuttonLantern.find('i').removeClass('fa-disabled');
+					tbuttonTorch.find('i').removeClass('fa-disabled');
+					await app.object.update({brightLight: 0,
+											 dimLight: 0});
+
+
+
+
+				} else {
+					// The token does not have the light spell on
+					console.log("Clicked on the Light Button when the Light is Off.");
+					statusLight = true;
+					await app.object.setFlag("torchlight", "statusLight", true);
+					tbuttonLight.addClass("active");
+					tbuttonLantern.find('i').addClass('fa-disabled');
+					tbuttonTorch.find('i').addClass('fa-disabled');
+					await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
+											 dimLight: game.settings.get("torchlight", "lightDimRadius")});
+
+
+				}
+
+			});
 		}
 
-		// Visually disable a torchlight button
+
+
+
+		// Visually and functionally disable a torchlight button
 		function disableTorchlightButton(tbutton) {
-			//let disabledIcon = $(`<i class="fas fa-slash" style="position: absolute; color: tomato"></i>`);
-			//tbutton.addClass("fa-stack");
-			//tbutton.find('i').addClass('fa-stack-1x');
-			//tbutton.addClass('fa-stack-1x');
-			//tbutton.append(disabledIcon);
-			//tbutton.find('i').addClass('fa-slash');
-			//tbutton.find('i').removeClass('fa-sun');
-			//tbutton.find('i').removeClass('fa-lightbulb');
-			//tbutton.find('i').removeClass('fa-fire');
 			tbutton.find('i').addClass('fa-disabled');
+			tbutton.find('i').off( "click" );
 		}
 
 		// Define all three buttons
@@ -100,44 +129,15 @@ class TorchLight {
 		// Check the permissions to manage the lights
 		if (data.isGM === true || game.settings.get("torchlight", "playerActivation") === true) {
 
-			// If the light spell button is clicked
-			tbuttonLight.find('i').click(async (ev) => {
-				console.log("Clicked on the Light Button.");
-				ev.preventDefault();
-				ev.stopPropagation();
-
-				// Check if the token has the light spell on
-				if (statusLight) {
-					// The token has the light spell on
-					console.log("Clicked on the Light Button when the Light is On.");
-					statusLight = false;
-					await app.object.setFlag("torchlight", "statusLight", false);
-					tbuttonLight.removeClass("active");
-					await app.object.update({brightLight: 0,
-											 dimLight: 0});
+			enableTorchlightButton(tbuttonLight);
 
 
-
-
-				} else {
-					// The token does not have the light spell on
-					console.log("Clicked on the Light Button when the Light is Off.");
-					statusLight = true;
-					await app.object.setFlag("torchlight", "statusLight", true);
-					tbuttonLight.addClass("active");
-					await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
-											 dimLight: game.settings.get("torchlight", "lightDimRadius")});
-
-
-				}
-
-			});
 
 		} else {
 			// If no permission exists, disable all the buttons
-			disableTorchlightButton(tbuttonLight);
-			disableTorchlightButton(tbuttonLantern);
-			disableTorchlightButton(tbuttonTorch);
+			tbuttonLight.find('i').addClass('fa-disabled');
+			tbuttonLantern.find('i').addClass('fa-disabled');
+			tbuttonTorch.find('i').addClass('fa-disabled');
 		}
 
 		async function createDancingLights() {
