@@ -54,6 +54,7 @@ class TorchLight {
 						// Enable the Light Source
 						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
 												dimLight: game.settings.get("torchlight", "lightDimRadius")});
+						app.object.light.animatePulse(5,5,5);
 					}
 				// Or are we dealing with the Lantern Button
 				} else if (tbutton === tbuttonLantern) {
@@ -80,8 +81,9 @@ class TorchLight {
 						disableTorchlightButton(tbuttonLight);
 						disableTorchlightButton(tbuttonTorch);
 						// Enable the Lantern Source
-						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
-												dimLight: game.settings.get("torchlight", "lightDimRadius")});
+						await app.object.update({brightLight: game.settings.get("torchlight", "lanternBrightRadius"),
+												dimLight: game.settings.get("torchlight", "lanternDimRadius")});
+						app.object.light.animateTime(5,5,5);
 					}
 				// Or are we dealing with the Torch Button
 				} else if (tbutton === tbuttonTorch) {
@@ -108,8 +110,9 @@ class TorchLight {
 						disableTorchlightButton(tbuttonLight);
 						disableTorchlightButton(tbuttonLantern);
 						// Enable the Torch Source
-						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
-												dimLight: game.settings.get("torchlight", "lightDimRadius")});
+						await app.object.update({brightLight: game.settings.get("torchlight", "torchBrightRadius"),
+												dimLight: game.settings.get("torchlight", "torchDimRadius")});
+						app.object.light.animateTorch(5,5,5);
 					}
 				}
 
@@ -571,7 +574,7 @@ Hooks.once("init", () => {
 		default: 40,
 		type: Number
 	});
-	game.settings.register('torchlight', 'lightType', {
+	game.settings.register('torchlight', 'lanternType', {
 		name: game.i18n.localize("torchlight.lanternType.name"),
 		hint: game.i18n.localize("torchlight.lanternType.hint"),
 		scope: "world",
@@ -602,7 +605,7 @@ Hooks.once("init", () => {
 		default: 40,
 		type: Number
 	});
-	game.settings.register('torchlight', 'lightType', {
+	game.settings.register('torchlight', 'torchType', {
 		name: game.i18n.localize("torchlight.torchType.name"),
 		hint: game.i18n.localize("torchlight.torchType.hint"),
 		scope: "world",
