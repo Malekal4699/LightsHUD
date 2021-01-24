@@ -54,9 +54,11 @@ class TorchLight {
 						// Enable the Light Source
 						// "torch" / "pulse" / "chroma" / "wave" / "fog" / "sunburst" / "dome"
 						// "emanation" / "hexa" / "ghost" / "energy" / "roiling" / "hole"
-						app.object.light.animation.type = "roiling";
+						//app.object.light.animation.type = "roiling";
 						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
-												dimLight: game.settings.get("torchlight", "lightDimRadius")});
+												dimLight: game.settings.get("torchlight", "lightDimRadius")
+												
+												});
 					}
 				// Or are we dealing with the Lantern Button
 				} else if (tbutton === tbuttonLantern) {
@@ -83,9 +85,11 @@ class TorchLight {
 						disableTorchlightButton(tbuttonLight);
 						disableTorchlightButton(tbuttonTorch);
 						// Enable the Lantern Source
-						app.object.light.animation.type = "pulse";
+						//app.object.light.animation.type = "pulse";
 						await app.object.update({brightLight: game.settings.get("torchlight", "lanternBrightRadius"),
-												dimLight: game.settings.get("torchlight", "lanternDimRadius")});
+												dimLight: game.settings.get("torchlight", "lanternDimRadius")
+												
+												});
 					}
 				// Or are we dealing with the Torch Button
 				} else if (tbutton === tbuttonTorch) {
