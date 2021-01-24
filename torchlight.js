@@ -83,7 +83,6 @@ class TorchLight {
 						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
 												dimLight: game.settings.get("torchlight", "lightDimRadius")});
 					}
-				}
 				// Or are we dealing with the Torch Button
 				} else if (tbutton === tbuttonTorch) {
 					// Check if the token has the torch on
