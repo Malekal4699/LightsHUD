@@ -172,7 +172,7 @@ class TorchLight {
 				disableTorchlightButton(tbuttonLight);
 				disableTorchlightButton(tbuttonLantern);
 				enableTorchlightButton(tbuttonTorch);
-			} else if {
+			} else {
 				enableTorchlightButton(tbuttonLight);
 				enableTorchlightButton(tbuttonLantern);
 				enableTorchlightButton(tbuttonTorch);
