@@ -72,43 +72,14 @@ class TorchLight {
 												dimLight: 0});
 					} else {
 						// The token does not have the lantern on
-						console.log("Clicked on the lantern when the lantern is off.");
+						console.log("Clicked on the lantern when the lantern is Off.");
 						statusLantern = true;
 						await app.object.setFlag("torchlight", "statusLantern", true);
 						tbuttonLantern.addClass("active");
 						// Lantern is active, disable the other light sources
 						disableTorchlightButton(tbuttonLight);
 						disableTorchlightButton(tbuttonTorch);
-						// Enable the Lantern Source
-						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
-												dimLight: game.settings.get("torchlight", "lightDimRadius")});
-					}
-				}
-				// Or are we dealing with the Torch Button
-				} else if (tbutton === tbuttonTorch) {
-					// Check if the token has the torch on
-					if (statusTorch) {
-						// The token has the torch on
-						console.log("Clicked on the torch button when the torch is on.");
-						statusTorch = false;
-						await app.object.setFlag("torchlight", "statusTorch", false);
-						tbuttonTorch.removeClass("active");
-						// Torch is inactive, enable the other light sources
-						enableTorchlightButton(tbuttonLight);
-						enableTorchlightButton(tbuttonLantern);
-						// Extinguish the Light source
-						await app.object.update({brightLight: 0,
-												dimLight: 0});
-					} else {
-						// The token does not have the torch on
-						console.log("Clicked on the torch when the torch is off.");
-						statusTorch = true;
-						await app.object.setFlag("torchlight", "statusTorch", true);
-						tbuttonTorch.addClass("active");
-						// Torch is active, disable the other light sources
-						disableTorchlightButton(tbuttonLight);
-						disableTorchlightButton(tbuttonLantern);
-						// Enable the Torch Source
+						// Enable the Light Source
 						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
 												dimLight: game.settings.get("torchlight", "lightDimRadius")});
 					}
@@ -352,9 +323,14 @@ class TorchLight {
 			await actor.updateOwnedItem({"_id": actor.data.items[torch]._id, "data.quantity": actor.data.items[torch].data.quantity - 1});
 		}
 
+		// Don't let Dancing Lights have/use torches. :D
+		if (data.name === 'Dancing Light' &&
+		    data.dimLight === 20 &&
+		    data.brightLight === 10) {
+			return;
+		}
 
-		if (false) {
-		//if (data.isGM === true || game.settings.get("torchlight", "playerActivation") === true) {
+		if (data.isGM === true || game.settings.get("torchlight", "playerActivation") === true) {
 			let dimRadius = game.settings.get("torchlight", "dimRadius");
 			let brightRadius = game.settings.get("torchlight", "brightRadius");
 			//let tbutton = $(`<div class="control-icon torch"><i class="fas fa-fire"></i></div>`);
@@ -523,7 +499,7 @@ Hooks.once("init", () => {
 			type: Boolean
 		});
 
-	// Light Parameters
+
 	game.settings.register("torchlight", "lightBrightRadius", {
 		name: game.i18n.localize("torchlight.lightBrightRadius.name"),
 		hint: game.i18n.localize("torchlight.lightBrightRadius.hint"),
@@ -555,69 +531,6 @@ Hooks.once("init", () => {
 	});
 
 
-	// Lantern Parameters
-	game.settings.register("torchlight", "lanternBrightRadius", {
-		name: game.i18n.localize("torchlight.lanternBrightRadius.name"),
-		hint: game.i18n.localize("torchlight.lanternBrightRadius.hint"),
-		scope: "world",
-		config: true,
-		default: 20,
-		type: Number
-	});
-	game.settings.register("torchlight", "lanternDimRadius", {
-		name: game.i18n.localize("torchlight.lanternDimRadius.name"),
-		hint: game.i18n.localize("torchlight.lanternDimRadius.hint"),
-		scope: "world",
-		config: true,
-		default: 40,
-		type: Number
-	});
-	game.settings.register('torchlight', 'lightType', {
-		name: game.i18n.localize("torchlight.lanternType.name"),
-		hint: game.i18n.localize("torchlight.lanternType.hint"),
-		scope: "world",
-		config: true,
-		type: String,
-		default: "left",
-		choices: {
-			"Type1": game.i18n.localize("torchlight.lanternType.type1"),
-			"Type2": game.i18n.localize("torchlight.lanternType.type2"),
-			"Type3": game.i18n.localize("torchlight.lanternType.type3"),
-		}
-	});
-
-	// Torch Parameters
-	game.settings.register("torchlight", "torchBrightRadius", {
-		name: game.i18n.localize("torchlight.torchBrightRadius.name"),
-		hint: game.i18n.localize("torchlight.torchBrightRadius.hint"),
-		scope: "world",
-		config: true,
-		default: 20,
-		type: Number
-	});
-	game.settings.register("torchlight", "torchDimRadius", {
-		name: game.i18n.localize("torchlight.torchDimRadius.name"),
-		hint: game.i18n.localize("torchlight.torchDimRadius.hint"),
-		scope: "world",
-		config: true,
-		default: 40,
-		type: Number
-	});
-	game.settings.register('torchlight', 'lightType', {
-		name: game.i18n.localize("torchlight.torchType.name"),
-		hint: game.i18n.localize("torchlight.torchType.hint"),
-		scope: "world",
-		config: true,
-		type: String,
-		default: "left",
-		choices: {
-			"Type1": game.i18n.localize("torchlight.torchType.type1"),
-			"Type2": game.i18n.localize("torchlight.torchType.type2"),
-			"Type3": game.i18n.localize("torchlight.torchType.type3"),
-		}
-	});
-
-// Legacy Parameters
 		game.settings.register("torchlight", "gmInventoryItemName", {
 			name: game.i18n.localize("torchlight.gmInventoryItemName.name"),
 			hint: game.i18n.localize("torchlight.gmInventoryItemName.hint"),

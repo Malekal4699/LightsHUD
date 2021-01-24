@@ -23,6 +23,26 @@
 	"torchlight.lightType.type2": "Type 2",
 	"torchlight.lightType.type3": "Type 3",
 
+	"torchlight.lanternBrightRadius.name": "Lantern: Bright Light Radius",
+	"torchlight.lanternBrightRadius.hint": "Lantern: How many grid units of bright light to emit.",
+	"torchlight.lanternDimRadius.name": "Lantern: Dim Light Radius",
+	"torchlight.lanternDimRadius.hint": "Lantern: How many grid units of dim light to emit.",
+	"torchlight.lanternType.name": "Lantern: Type of Light",
+	"torchlight.lanternType.hint": "Choose the apperance of the Lantern.",
+	"torchlight.lanternType.type1": "Type 1",
+	"torchlight.lanternType.type2": "Type 2",
+	"torchlight.lanternType.type3": "Type 3",
+
+	"torchlight.torchBrightRadius.name": "Torch: Bright Light Radius",
+	"torchlight.torchBrightRadius.hint": "Torch: How many grid units of bright light to emit.",
+	"torchlight.torchDimRadius.name": "Torch: Dim Light Radius",
+	"torchlight.torchDimRadius.hint": "Torch: How many grid units of dim light to emit.",
+	"torchlight.torchType.name": "Torch: Type of Light",
+	"torchlight.torchType.hint": "Choose the apperance of the Torch.",
+	"torchlight.torchType.type1": "Type 1",
+	"torchlight.torchType.type2": "Type 2",
+	"torchlight.torchType.type3": "Type 3",
+
 
 
 	"torchlight.brightRadius.hint": "How many grid units of bright light to emit.",
