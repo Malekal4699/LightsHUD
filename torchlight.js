@@ -52,9 +52,11 @@ class TorchLight {
 						disableTorchlightButton(tbuttonLantern);
 						disableTorchlightButton(tbuttonTorch);
 						// Enable the Light Source
+						// "torch" / "pulse" / "chroma" / "wave" / "fog" / "sunburst" / "dome"
+						// "emanation" / "hexa" / "ghost" / "energy" / "roiling" / "hole"
+						app.object.light.animation.type = "roiling";
 						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
 												dimLight: game.settings.get("torchlight", "lightDimRadius")});
-						app.object.light.animatePulse(5,5,5);
 					}
 				// Or are we dealing with the Lantern Button
 				} else if (tbutton === tbuttonLantern) {
@@ -81,9 +83,9 @@ class TorchLight {
 						disableTorchlightButton(tbuttonLight);
 						disableTorchlightButton(tbuttonTorch);
 						// Enable the Lantern Source
+						app.object.light.animation.type = "pulse";
 						await app.object.update({brightLight: game.settings.get("torchlight", "lanternBrightRadius"),
 												dimLight: game.settings.get("torchlight", "lanternDimRadius")});
-						app.object.light.animateTime(5,5,5);
 					}
 				// Or are we dealing with the Torch Button
 				} else if (tbutton === tbuttonTorch) {
@@ -110,9 +112,9 @@ class TorchLight {
 						disableTorchlightButton(tbuttonLight);
 						disableTorchlightButton(tbuttonLantern);
 						// Enable the Torch Source
+						app.object.light.animation.type = "torch";
 						await app.object.update({brightLight: game.settings.get("torchlight", "torchBrightRadius"),
 												dimLight: game.settings.get("torchlight", "torchDimRadius")});
-						app.object.light.animateTorch(5,5,5);
 					}
 				}
 
@@ -175,11 +177,11 @@ class TorchLight {
 			await app.object.setFlag("torchlight", "InitialEmitsLight", app.object.emitsLight);
 			await app.object.setFlag("torchlight", "InitialBrightRadius", app.object.brightRadius);
 			await app.object.setFlag("torchlight", "InitialDimRadius", app.object.dimRadius);
-			//await app.object.setFlag("torchlight", "InitialLight", app.object.light);
+			await app.object.setFlag("torchlight", "InitialAnimationType", app.object.light.animation.type);
 			console.log("Stored emitsLight:" + app.object.getFlag("torchlight", "InitialEmitsLight"));
 			console.log("Stored brightRadius:" + app.object.getFlag("torchlight", "InitialBrightRadius"));
 			console.log("Stored dimRadius:" + app.object.getFlag("torchlight", "InitialDimRadius"));
-			//console.log("Stored light:" + app.object.getFlag("torchlight", "InitialLight"));
+			console.log("Stored animationType:" + app.object.getFlag("torchlight", "InitialAnimationType"));
 		}
 
 		// Initial button state when the HUD comes up
