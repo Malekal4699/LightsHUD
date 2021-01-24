@@ -16,47 +16,78 @@
 class TorchLight {
 	static async addTorchLightButtons(app, html, data) {
 
+		// Visually and functionally enable a torchlight button
 		function enableTorchlightButton(tbutton) {
-			// If the light spell button is clicked
+			// Make the button active and remove the disabled status, if any
+			tbutton.addClass("active");
+			tbutton.find('i').removeClass('fa-disabled');
+
+			// If a torchlight button is clicked
 			tbutton.find('i').click(async (ev) => {
-				console.log("Clicked on the Light Button.");
+				console.log("Clicked on a Button.");
 				ev.preventDefault();
 				ev.stopPropagation();
 
-				// Check if the token has the light spell on
-				if (statusLight) {
-					// The token has the light spell on
-					console.log("Clicked on the Light Button when the Light is On.");
-					statusLight = false;
-					await app.object.setFlag("torchlight", "statusLight", false);
-					tbuttonLight.removeClass("active");
-					tbuttonLantern.find('i').removeClass('fa-disabled');
-					tbuttonTorch.find('i').removeClass('fa-disabled');
-					await app.object.update({brightLight: 0,
-											 dimLight: 0});
-
-
-
-
-				} else {
-					// The token does not have the light spell on
-					console.log("Clicked on the Light Button when the Light is Off.");
-					statusLight = true;
-					await app.object.setFlag("torchlight", "statusLight", true);
-					tbuttonLight.addClass("active");
-					tbuttonLantern.find('i').addClass('fa-disabled');
-					tbuttonTorch.find('i').addClass('fa-disabled');
-					await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
-											 dimLight: game.settings.get("torchlight", "lightDimRadius")});
-
-
+				// Are we dealing with the Light Button
+				if (tbutton === tbuttonLight) {
+					// Check if the token has the light spell on
+					if (statusLight) {
+						// The token has the light spell on
+						console.log("Clicked on the light button when the light is on.");
+						statusLight = false;
+						await app.object.setFlag("torchlight", "statusLight", false);
+						tbuttonLight.removeClass("active");
+						// Light is inactive, enable the other light sources
+						enableTorchlightButton(tbuttonLantern);
+						enableTorchlightButton(tbuttonTorch);
+						// Extinguish the Light source
+						await app.object.update({brightLight: 0,
+												dimLight: 0});
+					} else {
+						// The token does not have the light spell on
+						console.log("Clicked on the light button when the light is off.");
+						statusLight = true;
+						await app.object.setFlag("torchlight", "statusLight", true);
+						tbuttonLight.addClass("active");
+						// Light is active, disable the other light sources
+						disableTorchlightButton(tbuttonLantern);
+						disableTorchlightButton(tbuttonTorch);
+						// Enable the Light Source
+						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
+												dimLight: game.settings.get("torchlight", "lightDimRadius")});
+					}
+				// Or are we dealing with the Lantern Button
+				} else if (tbutton === tbuttonLantern) {
+					// Check if the token has the lantern on
+					if (statusLantern) {
+						// The token has the light spell on
+						console.log("Clicked on the lantern button when the lantern is on.");
+						statusLantern = false;
+						await app.object.setFlag("torchlight", "statusLantern", false);
+						tbuttonLantern.removeClass("active");
+						// Lantern is inactive, enable the other light sources
+						enableTorchlightButton(tbuttonLight);
+						enableTorchlightButton(tbuttonTorch);
+						// Extinguish the Light source
+						await app.object.update({brightLight: 0,
+												dimLight: 0});
+					} else {
+						// The token does not have the lantern on
+						console.log("Clicked on the lantern when the lantern is Off.");
+						statusLantern = true;
+						await app.object.setFlag("torchlight", "statusLantern", true);
+						tbuttonLantern.addClass("active");
+						// Lantern is active, disable the other light sources
+						disableTorchlightButton(tbuttonLight);
+						disableTorchlightButton(tbuttonTorch);
+						// Enable the Light Source
+						await app.object.update({brightLight: game.settings.get("torchlight", "lightBrightRadius"),
+												dimLight: game.settings.get("torchlight", "lightDimRadius")});
+					}
 				}
 
 			});
 		}
-
-
-
 
 		// Visually and functionally disable a torchlight button
 		function disableTorchlightButton(tbutton) {
@@ -122,22 +153,38 @@ class TorchLight {
 		}
 
 		// Initial button state when the HUD comes up
-		if (statusLight) {
-			tbuttonLight.addClass("active");
-		}
+		if (statusLight) tbuttonLight.addClass("active");
+		if (statusLantern) tbuttonLantern.addClass("active");
 
 		// Check the permissions to manage the lights
 		if (data.isGM === true || game.settings.get("torchlight", "playerActivation") === true) {
 
-			enableTorchlightButton(tbuttonLight);
-
-
-
+			// If the a specific light is on, enable only that light otherwise enable all three of them
+			if (statusLight) {
+				enableTorchlightButton(tbuttonLight);
+				disableTorchlightButton(tbuttonLantern);
+				disableTorchlightButton(tbuttonTorch);
+			} else if (statusLantern) {
+				disableTorchlightButton(tbuttonLight);
+				enableTorchlightButton(tbuttonLantern);
+				disableTorchlightButton(tbuttonTorch);
+			} else if (statusTorch) {
+				disableTorchlightButton(tbuttonLight);
+				disableTorchlightButton(tbuttonLantern);
+				enableTorchlightButton(tbuttonTorch);
+			} else if {
+				enableTorchlightButton(tbuttonLight);
+				enableTorchlightButton(tbuttonLantern);
+				enableTorchlightButton(tbuttonTorch);
+			}
 		} else {
 			// If no permission exists, disable all the buttons
-			tbuttonLight.find('i').addClass('fa-disabled');
-			tbuttonLantern.find('i').addClass('fa-disabled');
-			tbuttonTorch.find('i').addClass('fa-disabled');
+			//tbuttonLight.find('i').addClass('fa-disabled');
+			//tbuttonLantern.find('i').addClass('fa-disabled');
+			//tbuttonTorch.find('i').addClass('fa-disabled');
+			disableTorchlightButton(tbuttonLight);
+			disableTorchlightButton(tbuttonLantern);
+			disableTorchlightButton(tbuttonTorch);
 		}
 
 		async function createDancingLights() {
