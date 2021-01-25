@@ -697,7 +697,7 @@ Hooks.once("init", () => {
 		scope: "world",
 		config: true,
 		type: String,
-		default: "left",
+		default: "Type1",
 		choices: {
 			"Type1": game.i18n.localize("torchlight.lightType.type1"),
 			"Type2": game.i18n.localize("torchlight.lightType.type2"),
@@ -738,7 +738,7 @@ Hooks.once("init", () => {
 		scope: "world",
 		config: true,
 		type: String,
-		default: "left",
+		default: "Type1",
 		choices: {
 			"Type1": game.i18n.localize("torchlight.lanternType.type1"),
 			"Type2": game.i18n.localize("torchlight.lanternType.type2"),
@@ -775,7 +775,7 @@ Hooks.once("init", () => {
 		scope: "world",
 		config: true,
 		type: String,
-		default: "left",
+		default: "Type1",
 		choices: {
 			"Type1": game.i18n.localize("torchlight.torchType.type1"),
 			"Type2": game.i18n.localize("torchlight.torchType.type2"),

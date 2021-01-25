@@ -6,7 +6,7 @@ Instead of managing one light source, the Torchlight module recognises three dif
 
 From the original module, I have dropped the management of Dancing Lights, as this should really just be its own module. I also have not yet implemented back the management of resources, in particular the availability of the Light spell, and the consumption of torches (and now flasks of oil for a lantern), as I feel that not every group manages that to that level of detail, and often the character bearing the light is not necessarily the one providing the resources. But I might put it back in as a future request.
 
-I must also confess that I am a complete noob at Foundry VTT, Javascript, JQuery and GitHub, so developping this was really a good way for me to learn things and discoved Foundry VTT, so every bit of advice that can be provided would really be appreciated.
+I must also confess that I am a complete noob at Foundry VTT, Javascript, JQuery and GitHub, so developing this was really a good way for me to learn things and discover Foundry VTT, so every bit of advice that can be provided would really be appreciated.
 
 ## Installation
 ### Method 1 (Not yet available)
@@ -46,10 +46,15 @@ In addition, the options allow the independent configuration of the light source
 ## Known Issues
 None yet, but I'm sure some will be found very quickly... :)
 
+## Release Notes
+### 0.6.2 - Quick patch to correct the default values on the types of lights, causing problem on initial install.
+
+### 0.6.1 - Initial Release for testing to Discord and Reddit
+
 ## Acknowledgements
 - Big thanks to Atropos for making a wonderful VTT that's worth making modules for!
 - Many thanks to RealDeuce as well for making the original Torch module and giving me all these ideas!
 - RedReign for providing the template for this Read me.
 
 ## License
-The source code is licensed under GPL-3.0.
+The source code is licensed under "THE BEER-WARE LICENSE" (Revision 42).
