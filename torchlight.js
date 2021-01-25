@@ -132,7 +132,7 @@ class TorchLight {
 			});
 		}
 
-		function updateTokenLighting(newDimLight, newBrightLight, newLightColor, newColorIntensity, newLightAngle,
+		function updateTokenLighting(nDimLight, nBrightLight, nLightColor, nColorIntensity, nLightAngle,
 										animationType, animationSpeed, animationIntensity) {
 			let lightEffect = {
 				'type': animationType,
@@ -140,8 +140,8 @@ class TorchLight {
 				'intensity': animationIntensity
 			};
 
-			await app.object.update({dimLight: newDimLight, brightLight: newBrightLight,
-									lightColor: newLightColor, lightAlpha: (colorIntensity * colorIntensity), newLightAngle: lightAngle, 
+			await app.object.update({dimLight: nDimLight, brightLight: nBrightLight,
+									lightColor: nLightColor, lightAlpha: (colorIntensity * colorIntensity), lightAngle: mLightAngle, 
 									"lightAnimation": JSON.parse(lightEffect)
 			});
 
