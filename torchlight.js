@@ -139,6 +139,7 @@ class TorchLight {
 				'speed': animationSpeed,
 				'intensity': animationIntensity
 			};
+			let lightAnimation = JSON.parse(lightEffect);
 
 			await app.object.update({
 				//dimLight: nDimLight,
@@ -146,7 +147,7 @@ class TorchLight {
 				//lightColor: nLightColor,
 				//lightAlpha: (colorIntensity * colorIntensity),
 				//lightAngle: nLightAngle, 
-				"lightAnimation": JSON.parse(lightEffect)
+				"lightAnimation": lightAnimation
 			});
 
 		}
