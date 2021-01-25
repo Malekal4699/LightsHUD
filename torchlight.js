@@ -118,19 +118,33 @@ class TorchLight {
 						// Enable the Torch Source
 						//app.object.light.animation.type = "torch";
 						//await app.object.update({light.animation.type: "torch"});
-						lightEffect = {
-							'type': 'torch',
-							'speed': 1,
-							'intensity': 1
-						};
-						await app.object.update({brightLight: game.settings.get("torchlight", "torchBrightRadius"),
-												 dimLight: game.settings.get("torchlight", "torchDimRadius"),
-												 "lightAnimation": JSON.parse(lightEffect)
-												});
+						//await app.object.update({brightLight: game.settings.get("torchlight", "torchBrightRadius"),
+						//						 dimLight: game.settings.get("torchlight", "torchDimRadius"),
+						//						 "lightAnimation": JSON.parse(lightEffect)
+						//						});
+						updateTokenLighting(game.settings.get("torchlight", "torchDimRadius"),
+											game.settings.get("torchlight", "torchDimRadius"),
+											"#a2642a", "0.4", "360",
+											"Torch", 1, 1);
 					}
 				}
 
 			});
+		}
+
+		function updateTokenLighting(dimLight, brightLight, lightColor, colorIntensity, lightAngle,
+										animationType, animationSpeed, animationIntensity) {
+			let lightEffect = {
+				'type': animationType,
+				'speed': animationSpeed,
+				'intensity': animationIntensity
+			};
+
+			await app.object.update({dimLight: dimLight, brightLight: brightLight,
+									lightColor: lightColor, lightAlpha: (colorIntensity * colorIntensity), lightAngle: lightAngle
+									"lightAnimation": JSON.parse(lightEffect)
+			});
+
 		}
 
 		// Visually and functionally disable a torchlight button
