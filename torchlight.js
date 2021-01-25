@@ -189,11 +189,11 @@ class TorchLight {
 			await app.object.setFlag("torchlight", "InitialEmitsLight", app.object.emitsLight);
 			await app.object.setFlag("torchlight", "InitialBrightRadius", app.object.brightRadius);
 			await app.object.setFlag("torchlight", "InitialDimRadius", app.object.dimRadius);
-			await app.object.setFlag("torchlight", "InitialAnimationType", app.object.light.animation.type);
+			//await app.object.setFlag("torchlight", "InitialAnimationType", app.object.light.animation.type);
 			console.log("Stored emitsLight:" + app.object.getFlag("torchlight", "InitialEmitsLight"));
 			console.log("Stored brightRadius:" + app.object.getFlag("torchlight", "InitialBrightRadius"));
 			console.log("Stored dimRadius:" + app.object.getFlag("torchlight", "InitialDimRadius"));
-			console.log("Stored animationType:" + app.object.getFlag("torchlight", "InitialAnimationType"));
+			//console.log("Stored animationType:" + app.object.getFlag("torchlight", "InitialAnimationType"));
 		}
 
 		// Initial button state when the HUD comes up
