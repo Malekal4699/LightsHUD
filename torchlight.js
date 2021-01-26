@@ -272,8 +272,8 @@ class TorchLight {
 
 		// Store the initial status of illumination for the token to restore if all light sources are extinguished
 		function storeTokenLighting() {
-			app.object.setFlag("torchlight", "InitialBrightRadius", app.object.brightRadius);
-			app.object.setFlag("torchlight", "InitialDimRadius", app.object.dimRadius);
+			app.object.setFlag("torchlight", "InitialBrightRadius", app.object.data.brightLight);
+			app.object.setFlag("torchlight", "InitialDimRadius", app.object.data.dimLight);
 			app.object.setFlag("torchlight", "InitialLightColor", app.object.light.color);
 			app.object.setFlag("torchlight", "InitialColorIntensity", app.object.light.alpha);
 			app.object.setFlag("torchlight", "InitialLightAngle", app.object.light.angle);
