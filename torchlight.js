@@ -263,8 +263,7 @@ class TorchLight {
 				brightLight: brightLight,
 				dimLight: dimLight,
 				lightColor: lightColor,
-				//lightAlpha: (colorIntensity * colorIntensity),
-				lightAlpha: colorIntensity,
+				lightAlpha: (colorIntensity * colorIntensity),
 				lightAngle: lightAngle,
 				"lightAnimation": lightEffect
 			});
