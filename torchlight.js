@@ -274,7 +274,10 @@ class TorchLight {
 			app.object.setFlag("torchlight", "InitialBrightRadius", app.object.data.brightLight);
 			app.object.setFlag("torchlight", "InitialDimRadius", app.object.data.dimLight);
 			app.object.setFlag("torchlight", "InitialLightColor", app.object.light.color);
-			app.object.setFlag("torchlight", "InitialColorIntensity", app.object.light.alpha);
+			if (app.object.light.animation === undefined)
+				app.object.setFlag("torchlight", "InitialColorIntensity", 0.5);
+			else
+				app.object.setFlag("torchlight", "InitialColorIntensity", app.object.light.alpha);
 			app.object.setFlag("torchlight", "InitialLightAngle", app.object.light.angle);
 			if (app.object.light.animation === undefined) {
 				app.object.setFlag("torchlight", "InitialAnimationType", "none");

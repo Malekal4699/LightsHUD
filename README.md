@@ -70,6 +70,9 @@ None yet, but I'm sure some will be found very quickly... :)
 
 ## Release Notes
 
+##### 0.6.5 - Yet Another Small Update
+* Corrected the "Required field LightAlpha not present in token" error.
+
 ##### 0.6.4 - Another Small Update
 * Corrected the colour of the effects not showing up
 * Added the reference numbers to the types of lights, so that they can easily be referenced in macros
