@@ -4,15 +4,15 @@
 
 	"torchlight.position.name": "Position par rapport au token",
 	"torchlight.position.hint": "Dequel côté du token doivent apparaître les icones?",
-	"torchlight.position.left": "gauche",
-	"torchlight.position.right": "droit",
+	"torchlight.position.left": "Gauche",
+	"torchlight.position.right": "Droit",
 
 	"torchlight.playerActivation.name": "Autorisation des joueurs",
 	"torchlight.playerActivation.hint": "Autoriser les joueurs à allumer leurs propres torches et lumières.",
 	"torchlight.checkAvailability.name": "Vérification de la Disponibilité",
 	"torchlight.checkAvailability.hint": "Vérifier que les joueurs ont des torches dans leur inventaire ou la capacité de lancer des sorts de lumière.",
-	"torchlight.gmUsesInventory.name": "Utilisation de l'inventaire",
-	"torchlight.gmUsesInventory.hint": "Si actif, lorsque une torche est allumée, elle sera déduite de l'inventaire du joueur cible.",
+	"torchlight.dmAsPlayer.name": "DM Vérifier/Utilise comme Joueur",
+	"torchlight.dmAsPlayer.hint": "Si actif, le DM vérifie la disponibilité des sources de lumière pour le joueur sélectionné et utilise son inventaire.",
 
 	"torchlight.lightBrightRadius.name": "Sort de Lumière: Portée Lumière Vive",
 	"torchlight.lightBrightRadius.hint": "Sort de Lumière: Détermine l'étendue (en unité de grille) de la lumière vive émise.",

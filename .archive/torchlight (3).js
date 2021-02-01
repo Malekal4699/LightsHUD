@@ -339,9 +339,9 @@ class TorchLight {
 			statusTorch = false;
 			await app.object.setFlag("torchlight", "statusTorch", false);
 		}
-		//console.log("Initialised statusLight:" + statusLight);
-		//console.log("Initialised statusLantern:" + statusLantern);
-		//console.log("Initialised statusTorch:" + statusTorch);
+		console.log("Initialised statusLight:" + statusLight);
+		console.log("Initialised statusLantern:" + statusLantern);
+		console.log("Initialised statusTorch:" + statusTorch);
 
 		// Initial button state when the HUD comes up
 		if (statusLight) tbuttonLight.addClass("active");
@@ -367,23 +367,9 @@ class TorchLight {
 				enableTorchlightButton(tbuttonTorch);
 				tbuttonTorch.addClass("active");
 			} else {
-				let noCheck = (data.isGM && !game.settings.get("torchlight", "dmAsPlayer")) || game.system.id !== 'dnd5e' || !game.settings.get("torchlight", "checkAvailability");
-				if (noCheck || canCastLight())
-					enableTorchlightButton(tbuttonLight);
-				else
-					disableTorchlightButton(tbuttonLight);
-
-				if (noCheck || (hasItemInInventory("Oil (flask)") && (hasItemInInventory("Lantern, Hooded") || hasItemInInventory("Lantern, Bullseye"))))
-					enableTorchlightButton(tbuttonLantern);
-				else
-					disableTorchlightButton(tbuttonLantern);
-
-
-				if (noCheck || hasItemInInventory("Torch"))
-					enableTorchlightButton(tbuttonTorch);
-				else
-					disableTorchlightButton(tbuttonTorch);
-
+				enableTorchlightButton(tbuttonLight);
+				enableTorchlightButton(tbuttonLantern);
+				enableTorchlightButton(tbuttonTorch);
 			}
 		} else {
 			// If no permission exists, disable all the buttons
@@ -395,38 +381,6 @@ class TorchLight {
 			disableTorchlightButton(tbuttonTorch);
 		}
 
-
-		// Returns true if the character can use the Light spell
-		// This also returns true if the game system is not D&D 5e...
-		function canCastLight() {
-			let actor = game.actors.get(data.actorId);
-			if (actor === undefined)
-				return false;
-			let hasLight = false;
-			actor.data.items.forEach(item => {
-				if (item.type === 'spell') {
-					if (item.name === 'Light')
-						hasLight = true;
-				}
-			});
-			return hasLight;
-		}
-
-		// Returns true if the character has a specific item in his inventory
-		// This also returns true if the game system is not D&D 5e...
-		function hasItemInInventory(itemToCheck) {
-			let actor = game.actors.get(data.actorId);
-			if (actor === undefined)
-				return false;
-			let hasItem = false;
-			actor.data.items.forEach(item => {
-				if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
-					if (item.data.quantity > 0)
-						hasItem = true;
-				}
-			});
-			return hasItem;
-		}
 
 		/*
 		 * Returns the first GM id.
@@ -453,7 +407,6 @@ class TorchLight {
 				TorchLight.handleSocketRequest(req);
 			}
 		}
-
 
 		/*
 		 * Returns true if a torch can be used... ie:
@@ -704,24 +657,24 @@ Hooks.once("init", () => {
 		type: Boolean
 	});
 
-	if (game.system.id === 'dnd5e') {
-		game.settings.register("torchlight", "checkAvailability", {
-			name: game.i18n.localize("torchlight.checkAvailability.name"),
-			hint: game.i18n.localize("torchlight.checkAvailability.hint"),
-			scope: "world",
-			config: true,
-			default: true,
-			type: Boolean
-		});
-		game.settings.register("torchlight", "dmAsPlayer", {
-			name: game.i18n.localize("torchlight.dmAsPlayer.name"),
-			hint: game.i18n.localize("torchlight.dmAsPlayer.hint"),
-			scope: "world",
-			config: true,
-			default: false,
-			type: Boolean
-		});
-	}
+//	if (game.system.id === 'dnd5e') {
+//		game.settings.register("torchlight", "checkAvailability", {
+//			name: game.i18n.localize("torchlight.checkAvailability.name"),
+//			hint: game.i18n.localize("torchlight.checkAvailability.hint"),
+//			scope: "world",
+//			config: true,
+//			default: true,
+//			type: Boolean
+//		});
+//		game.settings.register("torchlight", "gmUsesInventory", {
+//			name: game.i18n.localize("torchlight.gmUsesInventory.name"),
+//			hint: game.i18n.localize("torchlight.gmUsesInventory.hint"),
+//			scope: "world",
+//			config: true,
+//			default: false,
+//			type: Boolean
+//		});
+//	}
 
 	// Light Parameters
 	game.settings.register("torchlight", "lightBrightRadius", {

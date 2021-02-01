@@ -3,15 +3,15 @@
 
 	"torchlight.position.name": "Token Position",
 	"torchlight.position.hint": "Which side of the token should the icons appear on?",
-	"torchlight.position.left": "left",
-	"torchlight.position.right": "right",
+	"torchlight.position.left": "Left",
+	"torchlight.position.right": "Right",
 
 	"torchlight.playerActivation.name": "Player Activation",
 	"torchlight.playerActivation.hint": "Allow players to toggle their own torches and lights.",
 	"torchlight.checkAvailability.name": "Check Availability",
 	"torchlight.checkAvailability.hint": "Perform a check to see if the character has torches in his inventory or can cast light spells.",
-	"torchlight.gmUsesInventory.name": "GM Uses Inventory",
-	"torchlight.gmUsesInventory.hint": "If set, when the GM toggles a torch, it will use the actors inventory.",
+	"torchlight.dmAsPlayer.name": "DM Checks/Uses as Player",
+	"torchlight.dmAsPlayer.hint": "If set, the DM checks the availability of light sources fot the selected player and uses his/her inventory.",
 
 	"torchlight.lightBrightRadius.name": "Light Spell: Bright Light Radius",
 	"torchlight.lightBrightRadius.hint": "Light Spell: How many grid units of bright light to emit.",

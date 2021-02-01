@@ -4,7 +4,9 @@ This is a slightly enhanced Torch and Light Module for Foundry VTT, based on the
 
 Instead of managing one light source, the Torchlight module recognises three different types of light sources, torches, lanterns and light spells, each with its own characteristics.
 
-From the original module, I have dropped the management of Dancing Lights, as this should really just be its own module. I also have not yet implemented back the management of resources, in particular the availability of the Light spell, and the consumption of torches (and now flasks of oil for a lantern), as I feel that not every group manages that to that level of detail, and often the character bearing the light is not necessarily the one providing the resources. But I might put it back in as a future request.
+From the original module, I have dropped the management of Dancing Lights, as this should really just be its own module.
+
+I also have not yet completely implemented back the management of resources, in particular the consumption of torches (and now flasks of oil for a lantern), as I feel that not every group manages that to that level of detail, and often the character bearing the light is not necessarily the one providing the resources. I have implemented the checking of resources in a slightly more efficient way and will manage the consumption of resources in a future version.
 
 I must also confess that I am a complete noob at Foundry VTT, Javascript, JQuery and GitHub, so developing this was really a good way for me to learn things and discover Foundry VTT, so every bit of advice that can be provided would really be appreciated.
 
@@ -48,6 +50,10 @@ In addition, the options allow the independent configuration of the light source
 - Range for bright and dim light
 - Type of light emitted
 
+At this stage, the module also has the option to check whether a character had the resources to create a light, casting the light spell, or having a torch, or a lantern with oil in his inventory. This is optional because very often (at least in our groups) the character bearing the light is not necessarily the one owning it or being able to cast it.
+
+The check can be enabled for players, and the DM can also choose to have it made for him as well.
+
 ## Tips and Tricks
 
 Note that although it's not obvious from the description, the module really allows you to add different types of lights to different players. For example, you can easily set-up a hooded lantern on a token and a bullseye one on another token.
@@ -61,7 +67,6 @@ It just depends on the type selected for a given source of light, as set-up in t
 * etc.
 
 ## Planned Features
-- Verification of the availability of resources (ability to cast Light, flask of oil or torches in inventory).
 - Actual consumption of resources like flask of oil or torches from the inventory
 - Cleaning up the code from the original (all the code used is brand new, but there are remaining unused functions from the Torch module)
 
@@ -69,6 +74,10 @@ It just depends on the type selected for a given source of light, as set-up in t
 None yet, but I'm sure some will be found very quickly... :)
 
 ## Release Notes
+
+##### 0.7.0 - Availability Check Update
+* Added the check of availability for a player to create a light
+* Added the capability for the DM to have the check done for the actor/token selected
 
 ##### 0.6.5 - Yet Another Small Update
 * Corrected the "Required field LightAlpha not present in token" error.
