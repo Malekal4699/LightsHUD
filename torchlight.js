@@ -309,14 +309,23 @@ class TorchLight {
 
 		// Create the column
 		let buttonsdiv =  $(`<div class="col torchlight-column-${position}"></div>`);
-		//buttonsdiv.appendChild(tbuttonLight);
 
+/*
 		// Wrap the previous icons
 		let newdiv = '<div class="torchlight-container"></div>';
 		html.find('.col.left').wrap(newdiv);
 
 		// Add the column
 		html.find('.col.left').before(buttonsdiv);
+*/
+
+		// Wrap the previous icons
+		let newdiv = '<div class="torchlight-container"></div>';
+		html.find('.col.left').before(newdiv);
+
+		// Add the column
+		html.find('.torchlight-container').prepend(buttonsdiv);
+
 
 		console.log("Initialisation");
 
@@ -693,6 +702,8 @@ Hooks.once("init", () => {
 		choices: {
 			"left": game.i18n.localize("torchlight.position.left"),
 			"right": game.i18n.localize("torchlight.position.right"),
+			"top": game.i18n.localize("torchlight.position.top"),
+			"bottom": game.i18n.localize("torchlight.position.bottom"),
 		}
 	});
 	game.settings.register("torchlight", "playerActivation", {

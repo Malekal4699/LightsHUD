@@ -75,6 +75,9 @@ None yet, but I'm sure some will be found very quickly... :)
 
 ## Release Notes
 
+##### 0.7.1 - Top/Bottom Update
+* Added the capability to display the icons at the top or bottom of the HUD
+
 ##### 0.7.0 - Availability Check Update
 * Added the check of availability for a player to create a light
 * Added the capability for the DM to have the check done for the actor/token selected
