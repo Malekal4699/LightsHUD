@@ -71,7 +71,8 @@ It just depends on the type selected for a given source of light, as set-up in t
 - Cleaning up the code from the original (all the code used is brand new, but there are remaining unused functions from the Torch module)
 
 ## Known Issues
-None yet, but I'm sure some will be found very quickly... :)
+* The position of the icons needs to be adjusted according to the size of the token.
+* The menus for the top/down position are incorrect.
 
 ## Release Notes
 
