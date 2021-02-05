@@ -376,7 +376,9 @@ class TorchLight {
 				enableTorchlightButton(tbuttonTorch);
 				tbuttonTorch.addClass("active");
 			} else {
-				let noCheck = (data.isGM && !game.settings.get("torchlight", "dmAsPlayer")) || game.system.id !== 'dnd5e' || !game.settings.get("torchlight", "checkAvailability");
+				let noCheck = game.system.id !== 'dnd5e';
+				if (!noCheck)
+					noCheck = (data.isGM && !game.settings.get("torchlight", "dmAsPlayer")) || !game.settings.get("torchlight", "checkAvailability");
 				if (noCheck || canCastLight())
 					enableTorchlightButton(tbuttonLight);
 				else

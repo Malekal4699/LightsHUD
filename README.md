@@ -72,9 +72,12 @@ It just depends on the type selected for a given source of light, as set-up in t
 
 ## Known Issues
 * The position of the icons needs to be adjusted according to the size of the token.
-* The menus for the top/down position are incorrect.
 
 ## Release Notes
+
+##### 0.7.2 - Bug Fixes
+* Corrected the problem occuring with systems other than 5e because of the check of a parameter defined only for 5e
+* Corrected the menus for Top and Bottom
 
 ##### 0.7.1 - Top/Bottom Update
 * Added the capability to display the icons at the top or bottom of the HUD

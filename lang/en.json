@@ -5,6 +5,8 @@
 	"torchlight.position.hint": "Which side of the token should the icons appear on?",
 	"torchlight.position.left": "Left",
 	"torchlight.position.right": "Right",
+	"torchlight.position.top": "Top",
+	"torchlight.position.bottom": "Bottom",
 
 	"torchlight.playerActivation.name": "Player Activation",
 	"torchlight.playerActivation.hint": "Allow players to toggle their own torches and lights.",

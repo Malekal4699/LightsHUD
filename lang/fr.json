@@ -6,6 +6,8 @@
 	"torchlight.position.hint": "Dequel côté du token doivent apparaître les icones?",
 	"torchlight.position.left": "Gauche",
 	"torchlight.position.right": "Droit",
+	"torchlight.position.top": "Haut",
+	"torchlight.position.bottom": "Bas",
 
 	"torchlight.playerActivation.name": "Autorisation des joueurs",
 	"torchlight.playerActivation.hint": "Autoriser les joueurs à allumer leurs propres torches et lumières.",
