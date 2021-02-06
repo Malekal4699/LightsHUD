@@ -6,8 +6,6 @@ Instead of managing one light source, the Torchlight module recognises three dif
 
 From the original module, I have dropped the management of Dancing Lights, as this should really just be its own module.
 
-I also have not yet completely implemented back the management of resources, in particular the consumption of torches (and now flasks of oil for a lantern), as I feel that not every group manages that to that level of detail, and often the character bearing the light is not necessarily the one providing the resources. I have implemented the checking of resources in a slightly more efficient way and will manage the consumption of resources in a future version.
-
 I must also confess that I am a complete noob at Foundry VTT, Javascript, JQuery and GitHub, so developing this was really a good way for me to learn things and discover Foundry VTT, so every bit of advice that can be provided would really be appreciated.
 
 ## Installation
@@ -54,6 +52,8 @@ At this stage, the module also has the option to check whether a character had t
 
 The check can be enabled for players, and the DM can also choose to have it made for him as well.
 
+And there is another check, whether the resource is actually consumed when the light is lit. Finally, the name of the items to check and potentially consume is another parameter, with the default being "Torch" for a torch and "Oil (flask)" for a lantern, as these are the standard names from 5e.
+
 ## Tips and Tricks
 
 Note that although it's not obvious from the description, the module really allows you to add different types of lights to different players. For example, you can easily set-up a hooded lantern on a token and a bullseye one on another token.
@@ -67,13 +67,17 @@ It just depends on the type selected for a given source of light, as set-up in t
 * etc.
 
 ## Planned Features
-- Actual consumption of resources like flask of oil or torches from the inventory
-- Cleaning up the code from the original (all the code used is brand new, but there are remaining unused functions from the Torch module)
+- None left, waiting for suggestions... :)
 
 ## Known Issues
 * The position of the icons needs to be adjusted according to the size of the token.
 
 ## Release Notes
+
+##### 0.8.0 - Consumption Update
+* Added the potential consumption of a resource (torch or oil flask) when a light is lit
+* Added the configuration of the name of the resource to consume
+* Cleaned up the code from the original inspiration
 
 ##### 0.7.2 - Bug Fixes
 * Corrected the problem occuring with systems other than 5e because of the check of a parameter defined only for 5e

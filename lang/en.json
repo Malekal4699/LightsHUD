@@ -12,6 +12,8 @@
 	"torchlight.playerActivation.hint": "Allow players to toggle their own torches and lights.",
 	"torchlight.checkAvailability.name": "Check Availability",
 	"torchlight.checkAvailability.hint": "Perform a check to see if the character has torches in his inventory or can cast light spells.",
+	"torchlight.consumeItem.name": "Consume Item",
+	"torchlight.consumeItem.hint": "Actually removes one item from the inventory when the light is lit.",
 	"torchlight.dmAsPlayer.name": "DM Checks/Uses as Player",
 	"torchlight.dmAsPlayer.hint": "If set, the DM checks the availability of light sources fot the selected player and uses his/her inventory.",
 
@@ -33,7 +35,7 @@
 	"torchlight.lightType.type10": "10 - Chroma Green",
 	"torchlight.lightType.type11": "11 - Pulsating Green",
 	"torchlight.lightType.type12": "12 - Ghostly Green",
-	
+
 	"torchlight.lanternBrightRadius.name": "Lantern: Bright Light Radius",
 	"torchlight.lanternBrightRadius.hint": "Lantern: How many grid units of bright light to emit.",
 	"torchlight.lanternDimRadius.name": "Lantern: Dim Light Radius",
@@ -49,7 +51,9 @@
 	"torchlight.lanternType.type7": "7 - Bullseye, Intense",
 	"torchlight.lanternType.type8": "8 - Bullseye, Standard",
 	"torchlight.lanternType.type9": "9 - Bullseye, Dim",
-	
+	"torchlight.nameConsumableTorch.name": "Consumable Item for Lantern",
+	"torchlight.nameConsumableTorch.hint": "Name of the inventory item to check and potentially consume when a lantern is lit.",
+
 	"torchlight.torchBrightRadius.name": "Torch: Bright Light Radius",
 	"torchlight.torchBrightRadius.hint": "Torch: How many grid units of bright light to emit.",
 	"torchlight.torchDimRadius.name": "Torch: Dim Light Radius",
@@ -65,19 +69,6 @@
 	"torchlight.torchType.type7": "7 - Intense Purple",
 	"torchlight.torchType.type8": "8 - Standard Purple",
 	"torchlight.torchType.type9": "9 - Dim Purple",
-
-
-
-	"torchlight.brightRadius.hint": "How many grid units of bright light to emit.",
-	"torchlight.dimRadius.hint": "How many grid units of dim light to emit.",
-	"torchlight.gmInventoryItemName.name": "Inventory item name to use",
-	"torchlight.gmInventoryItemName.hint": "Name of the inventory item to use if \"GM Uses Inventory\" is set.",
-	"torchlight.offBrightRadius.name": "Emit bright when off",
-	"torchlight.offBrightRadius.hint": "How many grid units of bright light to emit when light is toggled off.",
-	"torchlight.offDimRadius.name": "Emit dim when off.",
-	"torchlight.offDimRadius.hint": "How many grid units of dim light to emit when light is toggled off.",
-	"torchlight.turnOffAllLights": "Force bright and dim to configured \"off\" values.",
-	"torchlight.holdCtrlOnClick": "Hold <span class=\"key\">Ctrl</span> on Click",
-	"torchlight.dancingLightVision.name": "Give Dancing Lights Vision.",
-	"torchlight.dancingLightVision.hint": "When enabled, each dancing light has vision so can be used to reveal areas of the map players can't actually see."
+	"torchlight.nameConsumableTorch.name": "Consumable Item for Torch",
+	"torchlight.nameConsumableTorch.hint": "Name of the inventory item to check and potentially consume when a torch is lit.",
 }
