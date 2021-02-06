@@ -74,6 +74,9 @@ It just depends on the type selected for a given source of light, as set-up in t
 
 ## Release Notes
 
+##### 0.8.1 - json bug fix update
+* Fixed the problem in the json that prevented it from loading
+
 ##### 0.8.0 - Consumption Update
 * Added the potential consumption of a resource (torch or oil flask) when a light is lit
 * Added the configuration of the name of the resource to consume

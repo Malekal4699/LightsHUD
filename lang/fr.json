@@ -71,5 +71,5 @@
 	"torchlight.torchType.type8": "8 - Pourpre Standard",
 	"torchlight.torchType.type9": "9 - Pourpre Faible",
 	"torchlight.nameConsumableTorch.name": "Object Consommable pour Torche",
-	"torchlight.nameConsumableTorch.hint": "Nom de l'objet à vérifier puis éventuellement consommer lors qu'une torche est allumée.",
+	"torchlight.nameConsumableTorch.hint": "Nom de l'objet à vérifier puis éventuellement consommer lors qu'une torche est allumée."
 }

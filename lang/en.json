@@ -70,5 +70,5 @@
 	"torchlight.torchType.type8": "8 - Standard Purple",
 	"torchlight.torchType.type9": "9 - Dim Purple",
 	"torchlight.nameConsumableTorch.name": "Consumable Item for Torch",
-	"torchlight.nameConsumableTorch.hint": "Name of the inventory item to check and potentially consume when a torch is lit.",
+	"torchlight.nameConsumableTorch.hint": "Name of the inventory item to check and potentially consume when a torch is lit."
 }
