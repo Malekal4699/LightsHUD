@@ -66,6 +66,9 @@ class TorchLight {
 						let nDim    = game.settings.get("torchlight", "lightDimRadius");
 						let nType   = game.settings.get("torchlight", "lightType");
 						switch (nType){
+							case "Type0":
+								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "none", 5, 5);
+								break;
 							case "Type1":
 								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "torch", 5, 5);
 								break;
@@ -144,6 +147,9 @@ class TorchLight {
 							let nDim    = game.settings.get("torchlight", "lanternDimRadius");
 							let nType   = game.settings.get("torchlight", "lanternType");
 							switch (nType){
+								case "Type0":
+									updateTokenLighting(nBright,nDim, "#a2642a", "0.7", 360, "none", 10, 7);
+									break;
 								case "Type1":
 									updateTokenLighting(nBright,nDim, "#a2642a", "0.7", 360, "torch", 10, 7);
 									break;
@@ -222,6 +228,9 @@ class TorchLight {
 							let nDim    = game.settings.get("torchlight", "torchDimRadius");
 							let nType   = game.settings.get("torchlight", "torchType");
 							switch (nType){
+								case "Type0":
+									updateTokenLighting(nBright,nDim, "#a2642a", "0.7", 360, "none", 5, 7);
+									break;
 								case "Type1":
 									updateTokenLighting(nBright,nDim, "#a2642a", "0.7", 360, "torch", 5, 7);
 									break;
@@ -637,6 +646,7 @@ Hooks.once("init", () => {
 		type: String,
 		default: "Type1",
 		choices: {
+			"Type0": game.i18n.localize("torchlight.lightType.type0"),
 			"Type1": game.i18n.localize("torchlight.lightType.type1"),
 			"Type2": game.i18n.localize("torchlight.lightType.type2"),
 			"Type3": game.i18n.localize("torchlight.lightType.type3"),
@@ -678,6 +688,7 @@ Hooks.once("init", () => {
 		type: String,
 		default: "Type1",
 		choices: {
+			"Type0": game.i18n.localize("torchlight.lanternType.type0"),
 			"Type1": game.i18n.localize("torchlight.lanternType.type1"),
 			"Type2": game.i18n.localize("torchlight.lanternType.type2"),
 			"Type3": game.i18n.localize("torchlight.lanternType.type3"),
@@ -725,6 +736,7 @@ Hooks.once("init", () => {
 		type: String,
 		default: "Type1",
 		choices: {
+			"Type0": game.i18n.localize("torchlight.torchType.type0"),
 			"Type1": game.i18n.localize("torchlight.torchType.type1"),
 			"Type2": game.i18n.localize("torchlight.torchType.type2"),
 			"Type3": game.i18n.localize("torchlight.torchType.type3"),
@@ -748,4 +760,4 @@ Hooks.once("init", () => {
 	}
 });
 
-console.log("--- Flame on!");
+console.log("--- Torchlight Activated!");

@@ -74,7 +74,10 @@ It just depends on the type selected for a given source of light, as set-up in t
 
 ## Release Notes
 
-##### 0.8.1 - json bug fix update
+##### 0.8.2 - Neutral Lights Update
+* Added "Type 0" lights for all types of lights without effects
+
+##### 0.8.1 - json Bug Fix uUdate
 * Fixed the problem in the json that prevented it from loading
 
 ##### 0.8.0 - Consumption Update
