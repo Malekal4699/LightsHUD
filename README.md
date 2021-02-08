@@ -40,7 +40,7 @@ Torchlight provides 3 potential sources of light:
 - Lantern, with hooded lanterns in both open and closed position, and bullseye lantern with enhanced range but only in a cone.
 - Torch, with various colours and intensity
 
-These are toggled on and off from the HUD of tokens, form three icons that can be positioned either to the left or to the right of the standard HUD. Only one type of light source can be active at a given time, if you change your light source, simply deactivate the current one and activate the new one.
+These are toggled on and off from the HUD of tokens, form three icons that can be positioned either to the left or to the right of the standard HUD. The icons are in the order Light >> Lantern >> Torch (top to bottom or left to right), and there are title texts (now, thanks for the suggestion and the way to implement, paullessing). Only one type of light source can be active at a given time, if you change your light source, simply deactivate the current one and activate the new one.
 
 The DM can keep the activation/deactivation to himself (in which case the HUD of the players will just show whether there is a light source active) or he can delegate the management of the light to his player through an option of the module.
 
@@ -73,6 +73,10 @@ It just depends on the type selected for a given source of light, as set-up in t
 * The position of the icons needs to be adjusted according to the size of the token.
 
 ## Release Notes
+
+##### 0.8.3 - Very Minor Update
+* Change the Light Spell Pulsating to real Pulse and add the swirly thing
+* Added title text to the buttons and explanations above
 
 ##### 0.8.2 - Neutral Lights Update
 * Added "Type 0" lights for all types of lights without effects

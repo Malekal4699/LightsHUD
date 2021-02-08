@@ -76,34 +76,43 @@ class TorchLight {
 								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "chroma", 5, 5);
 								break;
 							case "Type3":
-								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "emanation", 5, 5);
+								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "pulse", 5, 5);
 								break;
 							case "Type4":
 								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "ghost", 5, 5);
 								break;
 							case "Type5":
-								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "torch", 5, 5);
+								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "emanation", 5, 5);
 								break;
 							case "Type6":
-								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "chroma", 5, 5);
+								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "torch", 5, 5);
 								break;
 							case "Type7":
-								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "emanation", 5, 5);
+								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "chroma", 5, 5);
 								break;
 							case "Type8":
-								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "ghost", 5, 5);
+								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "pulse", 5, 5);
 								break;
 							case "Type9":
-								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "torch", 5, 5);
+								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "ghost", 5, 5);
 								break;
 							case "Type10":
-								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "chroma", 5, 5);
+								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "emanation", 5, 5);
 								break;
 							case "Type11":
-								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "emanation", 5, 5);
+								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "torch", 5, 5);
 								break;
 							case "Type12":
+								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "chroma", 5, 5);
+								break;
+							case "Type13":
+								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "pulse", 5, 5);
+								break;
+							case "Type14":
 								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "ghost", 5, 5);
+								break;
+							case "Type15":
+								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "emanation", 5, 5);
 								break;
 						}
 					}
@@ -355,9 +364,12 @@ class TorchLight {
 		}
 
 		// Define all three buttons
-		let tbuttonLight   = $(`<div class="control-icon torchlight"><i class="fas fa-sun"></i></div>`);
-		let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-lightbulb"></i></div>`);
-		let tbuttonTorch   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
+		//let tbuttonLight   = $(`<div class="control-icon torchlight"><i class="fas fa-sun"></i></div>`);
+		//let tbuttonLantern = $(`<div class="control-icon torchlight"><i class="fas fa-lightbulb"></i></div>`);
+		//let tbuttonTorch   = $(`<div class="control-icon torchlight"><i class="fas fa-fire"></i></div>`);
+		let tbuttonLight   = $(`<div class="control-icon torchlight" title="Toggle Light Spell"><i class="fas fa-sun"></i></div>`);
+		let tbuttonLantern = $(`<div class="control-icon torchlight" title="Toggle Lantern"><i class="fas fa-lightbulb"></i></div>`);
+		let tbuttonTorch   = $(`<div class="control-icon torchlight" title="Toggle Torch"><i class="fas fa-fire"></i></div>`);
 
 		// Get the position of the column
 		let position = game.settings.get('torchlight', 'position');
@@ -659,6 +671,9 @@ Hooks.once("init", () => {
 			"Type10": game.i18n.localize("torchlight.lightType.type10"),
 			"Type11": game.i18n.localize("torchlight.lightType.type11"),
 			"Type12": game.i18n.localize("torchlight.lightType.type12"),
+			"Type13": game.i18n.localize("torchlight.lightType.type13"),
+			"Type14": game.i18n.localize("torchlight.lightType.type14"),
+			"Type15": game.i18n.localize("torchlight.lightType.type15"),
 		}
 	});
 
@@ -760,4 +775,4 @@ Hooks.once("init", () => {
 	}
 });
 
-console.log("--- Torchlight Activated!");
+console.log("--- Flame on!");
