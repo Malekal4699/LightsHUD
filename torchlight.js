@@ -114,6 +114,15 @@ class TorchLight {
 							case "Type15":
 								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "emanation", 5, 5);
 								break;
+							case "TypeC":
+								updateTokenLighting(nBright,nDim,
+									game.settings.get("torchlight", "customLightColor"),
+									game.settings.get("torchlight", "customLightColorIntensity"),
+									360,
+									game.settings.get("torchlight", "customLightAnimationType"),
+									game.settings.get("torchlight", "customLightAnimationSpeed"),
+									game.settings.get("torchlight", "customLightAnimationIntensity"));
+								break;
 						}
 					}
 				// Or are we dealing with the Lantern Button
@@ -185,6 +194,15 @@ class TorchLight {
 									break;
 								case "Type9":
 									updateTokenLighting(nBright*2,nDim*2, "#a2642a", "0.3", 60, "torch", 10, 3);
+									break;
+								case "TypeC":
+									updateTokenLighting(nBright,nDim,
+										game.settings.get("torchlight", "customLanternColor"),
+										game.settings.get("torchlight", "customLanternColorIntensity"),
+										360,
+										game.settings.get("torchlight", "customLanternAnimationType"),
+										game.settings.get("torchlight", "customLanternAnimationSpeed"),
+										game.settings.get("torchlight", "customLanternAnimationIntensity"));
 									break;
 							}
 						} else {
@@ -266,6 +284,15 @@ class TorchLight {
 									break;
 								case "Type9":
 									updateTokenLighting(nBright,nDim, "#822aa2", "0.3", 360, "torch", 5, 3);
+									break;
+								case "TypeC":
+									updateTokenLighting(nBright,nDim,
+										game.settings.get("torchlight", "customTorchColor"),
+										game.settings.get("torchlight", "customTorchColorIntensity"),
+										360,
+										game.settings.get("torchlight", "customTorchAnimationType"),
+										game.settings.get("torchlight", "customTorchAnimationSpeed"),
+										game.settings.get("torchlight", "customTorchAnimationIntensity"));
 									break;
 							}
 						} else {
@@ -674,8 +701,89 @@ Hooks.once("init", () => {
 			"Type13": game.i18n.localize("torchlight.lightType.type13"),
 			"Type14": game.i18n.localize("torchlight.lightType.type14"),
 			"Type15": game.i18n.localize("torchlight.lightType.type15"),
+			"TypeC": game.i18n.localize("torchlight.lightType.typeC"),
 		}
 	});
+
+
+
+	game.settings.register("torchlight", "customLightColor", {
+		name: game.i18n.localize("torchlight.lightType.customColor.name"),
+		hint: game.i18n.localize("torchlight.lightType.customColor.hint"),
+		scope: "world",
+		config: true,
+		restricted: false,
+		type: String,
+		default: "#a2642a"
+	});
+	game.settings.register("torchlight", "customLightColorIntensity", {
+		name: game.i18n.localize("torchlight.lightType.customIntensity.name"),
+		hint: game.i18n.localize("torchlight.lightType.customIntensity.hint"),
+		scope: "world",
+		config: true,
+		restricted: true,
+		type: Number,
+		default: 0.5,
+		range: {
+			min: 0.0,
+			step: 0.05,
+			max: 1,
+		}
+	});
+	game.settings.register('torchlight', 'customLightAnimationType', {
+		name: game.i18n.localize("torchlight.lightType.customAnimationType.name"),
+		hint: game.i18n.localize("torchlight.lightType.customAnimationType.hint"),
+		scope: "world",
+		config: true,
+		type: String,
+		default: "none",
+		choices: {
+			"none": game.i18n.localize("torchlight.animationType.none"),
+			"torch": game.i18n.localize("torchlight.animationType.torch"),
+			"pulse": game.i18n.localize("torchlight.animationType.pulse"),
+			"chroma": game.i18n.localize("torchlight.animationType.chroma"),
+			"wave": game.i18n.localize("torchlight.animationType.wave"),
+			"fog": game.i18n.localize("torchlight.animationType.fog"),
+			"sunburst": game.i18n.localize("torchlight.animationType.sunburst"),
+			"dome": game.i18n.localize("torchlight.animationType.dome"),
+			"emanation": game.i18n.localize("torchlight.animationType.emanation"),
+			"hexa": game.i18n.localize("torchlight.animationType.hexa"),
+			"ghost": game.i18n.localize("torchlight.animationType.ghost"),
+			"energy": game.i18n.localize("torchlight.animationType.energy"),
+			"roiling": game.i18n.localize("torchlight.animationType.roiling"),
+			"hole": game.i18n.localize("torchlight.animationType.hole"),
+		}
+	});
+	game.settings.register("torchlight", "customLightAnimationSpeed", {
+		name: game.i18n.localize("torchlight.lightType.customAnimationSpeed.name"),
+		hint: game.i18n.localize("torchlight.lightType.customAnimationSpeed.hint"),
+		scope: "world",
+		config: true,
+		restricted: true,
+		type: Number,
+		default: 5,
+		range: {
+			min: 1,
+			step: 1,
+			max: 10,
+		}
+	});
+	game.settings.register("torchlight", "customLightAnimationIntensity", {
+		name: game.i18n.localize("torchlight.lightType.customAnimationIntensity.name"),
+		hint: game.i18n.localize("torchlight.lightType.customAnimationIntensity.hint"),
+		scope: "world",
+		config: true,
+		restricted: true,
+		type: Number,
+		default: 5,
+		range: {
+			min: 1,
+			step: 1,
+			max: 10,
+		}
+	});
+
+
 
 
 	// Lantern Parameters
@@ -713,8 +821,89 @@ Hooks.once("init", () => {
 			"Type7": game.i18n.localize("torchlight.lanternType.type7"),
 			"Type8": game.i18n.localize("torchlight.lanternType.type8"),
 			"Type9": game.i18n.localize("torchlight.lanternType.type9"),
+			"TypeC": game.i18n.localize("torchlight.lanternType.typeC"),
 		}
 	});
+
+
+	game.settings.register("torchlight", "customLanternColor", {
+		name: game.i18n.localize("torchlight.lanternType.customColor.name"),
+		hint: game.i18n.localize("torchlight.lanternType.customColor.hint"),
+		scope: "world",
+		config: true,
+		restricted: false,
+		type: String,
+		default: "#a2642a"
+	});
+	game.settings.register("torchlight", "customLanternColorIntensity", {
+		name: game.i18n.localize("torchlight.lanternType.customIntensity.name"),
+		hint: game.i18n.localize("torchlight.lanternType.customIntensity.hint"),
+		scope: "world",
+		config: true,
+		restricted: true,
+		type: Number,
+		default: 0.5,
+		range: {
+			min: 0.0,
+			step: 0.05,
+			max: 1,
+		}
+	});
+	game.settings.register('torchlight', 'customLanternAnimationType', {
+		name: game.i18n.localize("torchlight.lanternType.customAnimationType.name"),
+		hint: game.i18n.localize("torchlight.lanternType.customAnimationType.hint"),
+		scope: "world",
+		config: true,
+		type: String,
+		default: "none",
+		choices: {
+			"none": game.i18n.localize("torchlight.animationType.none"),
+			"torch": game.i18n.localize("torchlight.animationType.torch"),
+			"pulse": game.i18n.localize("torchlight.animationType.pulse"),
+			"chroma": game.i18n.localize("torchlight.animationType.chroma"),
+			"wave": game.i18n.localize("torchlight.animationType.wave"),
+			"fog": game.i18n.localize("torchlight.animationType.fog"),
+			"sunburst": game.i18n.localize("torchlight.animationType.sunburst"),
+			"dome": game.i18n.localize("torchlight.animationType.dome"),
+			"emanation": game.i18n.localize("torchlight.animationType.emanation"),
+			"hexa": game.i18n.localize("torchlight.animationType.hexa"),
+			"ghost": game.i18n.localize("torchlight.animationType.ghost"),
+			"energy": game.i18n.localize("torchlight.animationType.energy"),
+			"roiling": game.i18n.localize("torchlight.animationType.roiling"),
+			"hole": game.i18n.localize("torchlight.animationType.hole"),
+		}
+	});
+	game.settings.register("torchlight", "customLanternAnimationSpeed", {
+		name: game.i18n.localize("torchlight.lanternType.customAnimationSpeed.name"),
+		hint: game.i18n.localize("torchlight.lanternType.customAnimationSpeed.hint"),
+		scope: "world",
+		config: true,
+		restricted: true,
+		type: Number,
+		default: 5,
+		range: {
+			min: 1,
+			step: 1,
+			max: 10,
+		}
+	});
+	game.settings.register("torchlight", "customLanternAnimationIntensity", {
+		name: game.i18n.localize("torchlight.lanternType.customAnimationIntensity.name"),
+		hint: game.i18n.localize("torchlight.lanternType.customAnimationIntensity.hint"),
+		scope: "world",
+		config: true,
+		restricted: true,
+		type: Number,
+		default: 5,
+		range: {
+			min: 1,
+			step: 1,
+			max: 10,
+		}
+	});
+
+
+
 	if (game.system.id === 'dnd5e') {
 		game.settings.register("torchlight", "nameConsumableLantern", {
 			name: game.i18n.localize("torchlight.nameConsumableLantern.name"),
@@ -761,8 +950,88 @@ Hooks.once("init", () => {
 			"Type7": game.i18n.localize("torchlight.torchType.type7"),
 			"Type8": game.i18n.localize("torchlight.torchType.type8"),
 			"Type9": game.i18n.localize("torchlight.torchType.type9"),
+			"TypeC": game.i18n.localize("torchlight.torchType.typeC"),
 		}
 	});
+
+
+	game.settings.register("torchlight", "customTorchColor", {
+		name: game.i18n.localize("torchlight.torchType.customColor.name"),
+		hint: game.i18n.localize("torchlight.torchType.customColor.hint"),
+		scope: "world",
+		config: true,
+		restricted: false,
+		type: String,
+		default: "#a2642a"
+	});
+	game.settings.register("torchlight", "customTorchColorIntensity", {
+		name: game.i18n.localize("torchlight.torchType.customIntensity.name"),
+		hint: game.i18n.localize("torchlight.torchType.customIntensity.hint"),
+		scope: "world",
+		config: true,
+		restricted: true,
+		type: Number,
+		default: 0.5,
+		range: {
+			min: 0.0,
+			step: 0.05,
+			max: 1,
+		}
+	});
+	game.settings.register('torchlight', 'customTorchAnimationType', {
+		name: game.i18n.localize("torchlight.torchType.customAnimationType.name"),
+		hint: game.i18n.localize("torchlight.torchType.customAnimationType.hint"),
+		scope: "world",
+		config: true,
+		type: String,
+		default: "none",
+		choices: {
+			"none": game.i18n.localize("torchlight.animationType.none"),
+			"torch": game.i18n.localize("torchlight.animationType.torch"),
+			"pulse": game.i18n.localize("torchlight.animationType.pulse"),
+			"chroma": game.i18n.localize("torchlight.animationType.chroma"),
+			"wave": game.i18n.localize("torchlight.animationType.wave"),
+			"fog": game.i18n.localize("torchlight.animationType.fog"),
+			"sunburst": game.i18n.localize("torchlight.animationType.sunburst"),
+			"dome": game.i18n.localize("torchlight.animationType.dome"),
+			"emanation": game.i18n.localize("torchlight.animationType.emanation"),
+			"hexa": game.i18n.localize("torchlight.animationType.hexa"),
+			"ghost": game.i18n.localize("torchlight.animationType.ghost"),
+			"energy": game.i18n.localize("torchlight.animationType.energy"),
+			"roiling": game.i18n.localize("torchlight.animationType.roiling"),
+			"hole": game.i18n.localize("torchlight.animationType.hole"),
+		}
+	});
+	game.settings.register("torchlight", "customTorchAnimationSpeed", {
+		name: game.i18n.localize("torchlight.torchType.customAnimationSpeed.name"),
+		hint: game.i18n.localize("torchlight.torchType.customAnimationSpeed.hint"),
+		scope: "world",
+		config: true,
+		restricted: true,
+		type: Number,
+		default: 5,
+		range: {
+			min: 1,
+			step: 1,
+			max: 10,
+		}
+	});
+	game.settings.register("torchlight", "customTorchAnimationIntensity", {
+		name: game.i18n.localize("torchlight.torchType.customAnimationIntensity.name"),
+		hint: game.i18n.localize("torchlight.torchType.customAnimationIntensity.hint"),
+		scope: "world",
+		config: true,
+		restricted: true,
+		type: Number,
+		default: 5,
+		range: {
+			min: 1,
+			step: 1,
+			max: 10,
+		}
+	});
+
+
 	if (game.system.id === 'dnd5e') {
 		game.settings.register("torchlight", "nameConsumableTorch", {
 			name: game.i18n.localize("torchlight.nameConsumableTorch.name"),

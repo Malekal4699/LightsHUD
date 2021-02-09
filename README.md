@@ -39,6 +39,7 @@ Torchlight provides 3 potential sources of light:
 - Light Spell of varying aspects, with White Light (possibly for good characters), Red Light (probably not so good) and Green Light (for nature lovers out there, druids and rangers, I'm pointing at you)...
 - Lantern, with hooded lanterns in both open and closed position, and bullseye lantern with enhanced range but only in a cone.
 - Torch, with various colours and intensity
+In addition to standard types of illumination, the module now allows to customise the light and animation for each of the three types of light. Note that, at this stage, I don't know how to make a color picker in the settings, to the light color has to be inserted using the #rrggbb format.
 
 These are toggled on and off from the HUD of tokens, form three icons that can be positioned either to the left or to the right of the standard HUD. The icons are in the order Light >> Lantern >> Torch (top to bottom or left to right), and there are title texts (now, thanks for the suggestion and the way to implement, paullessing). Only one type of light source can be active at a given time, if you change your light source, simply deactivate the current one and activate the new one.
 
@@ -70,9 +71,13 @@ It just depends on the type selected for a given source of light, as set-up in t
 - None left, waiting for suggestions... :)
 
 ## Known Issues
+* I can't do a color picker yet, so you have to enter the light in a #xxxxxx format for it to work.
 * The position of the icons needs to be adjusted according to the size of the token.
 
 ## Release Notes
+
+##### 0.9.0 - Custom Update
+* Allows custom parameters for each of the three types of light
 
 ##### 0.8.3 - Very Minor Update
 * Change the Light Spell Pulsating to real Pulse and add the swirly thing
