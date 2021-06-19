@@ -10,6 +10,12 @@
  * think this stuff is worth it, you can buy me a beer in return, but only if
  * you promise to buy one for Stephen as well.                   Philippe Krait
  * ----------------------------------------------------------------------------
+ * <alan.n.davies@gmail.com> updated this file.  As long as you retain this
+ * notice you can do whatever you want with this stuff.  If we meet some day,
+ * and you think this stuff is worth it, you can buy me a beer in return, but
+ * only if you promise to buy one for Stephen and Philippe as well.
+ * Alan Davies
+ * ----------------------------------------------------------------------------
  */
 
 class TorchLight {
@@ -20,306 +26,23 @@ class TorchLight {
 			// Remove the disabled status, if any
 			tbutton.find('i').removeClass('fa-disabled');
 
-			// If a torchlight button is clicked
-			tbutton.find('i').click(async (ev) => {
-				//console.log("Clicked on a Button.");
-				ev.preventDefault();
-				ev.stopPropagation();
-
-				// Are we dealing with the Light Button
-				if (tbutton === tbuttonLight) {
-					// Check if the token has the light spell on
-					if (statusLight) {
-						// The token has the light spell on
-						console.log("Clicked on the light button when the light is on.");
-						statusLight = false;
-						await app.object.setFlag("torchlight", "statusLight", false);
-						tbuttonLight.removeClass("active");
-						// Light is inactive, enable the relevant light sources according to parameters
-						enableRelevantButtons();
-						// Restore the initial light source
-						updateTokenLighting(
-							app.object.getFlag("torchlight", "InitialBrightRadius"),
-							app.object.getFlag("torchlight", "InitialDimRadius"),
-							app.object.getFlag("torchlight", "InitialLightColor"),
-							app.object.getFlag("torchlight", "InitialColorIntensity"),
-							app.object.getFlag("torchlight", "InitialLightAngle"),
-							app.object.getFlag("torchlight", "InitialAnimationType"),
-							app.object.getFlag("torchlight", "InitialAnimationSpeed"),
-							app.object.getFlag("torchlight", "InitialAnimationIntensity"),
-						);
-					} else {
-						// The token does not have the light spell on
-						console.log("Clicked on the light button when the light is off.");
-						statusLight = true;
-						await app.object.setFlag("torchlight", "statusLight", true);
-						tbuttonLight.addClass("active");
-						// Light is active, disable the other light sources
-						disableTorchlightButton(tbuttonLantern);
-						disableTorchlightButton(tbuttonTorch);
-						// Store the lighting for later restoration
-						storeTokenLighting();
-						// Enable the Light Source according to the type
-						// "torch" / "pulse" / "chroma" / "wave" / "fog" / "sunburst" / "dome"
-						// "emanation" / "hexa" / "ghost" / "energy" / "roiling" / "hole"
-						let nBright = game.settings.get("torchlight", "lightBrightRadius");
-						let nDim    = game.settings.get("torchlight", "lightDimRadius");
-						let nType   = game.settings.get("torchlight", "lightType");
-						switch (nType){
-							case "Type0":
-								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "none", 5, 5);
-								break;
-							case "Type1":
-								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "torch", 5, 5);
-								break;
-							case "Type2":
-								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "chroma", 5, 5);
-								break;
-							case "Type3":
-								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "pulse", 5, 5);
-								break;
-							case "Type4":
-								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "ghost", 5, 5);
-								break;
-							case "Type5":
-								updateTokenLighting(nBright,nDim, "#ffffff", "0.5", 360, "emanation", 5, 5);
-								break;
-							case "Type6":
-								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "torch", 5, 5);
-								break;
-							case "Type7":
-								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "chroma", 5, 5);
-								break;
-							case "Type8":
-								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "pulse", 5, 5);
-								break;
-							case "Type9":
-								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "ghost", 5, 5);
-								break;
-							case "Type10":
-								updateTokenLighting(nBright,nDim, "#ff0000", "0.5", 360, "emanation", 5, 5);
-								break;
-							case "Type11":
-								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "torch", 5, 5);
-								break;
-							case "Type12":
-								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "chroma", 5, 5);
-								break;
-							case "Type13":
-								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "pulse", 5, 5);
-								break;
-							case "Type14":
-								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "ghost", 5, 5);
-								break;
-							case "Type15":
-								updateTokenLighting(nBright,nDim, "#00ff00", "0.5", 360, "emanation", 5, 5);
-								break;
-							case "TypeC":
-								updateTokenLighting(nBright,nDim,
-									game.settings.get("torchlight", "customLightColor"),
-									game.settings.get("torchlight", "customLightColorIntensity"),
-									360,
-									game.settings.get("torchlight", "customLightAnimationType"),
-									game.settings.get("torchlight", "customLightAnimationSpeed"),
-									game.settings.get("torchlight", "customLightAnimationIntensity"));
-								break;
-						}
-					}
-				// Or are we dealing with the Lantern Button
-				} else if (tbutton === tbuttonLantern) {
-					// Check if the token has the lantern on
-					if (statusLantern) {
-						// The token has the light spell on
-						console.log("Clicked on the lantern button when the lantern is on.");
-						statusLantern = false;
-						await app.object.setFlag("torchlight", "statusLantern", false);
-						tbuttonLantern.removeClass("active");
-						// Lantern is inactive, enable the relevant light sources according to parameters
-						enableRelevantButtons();
-						// Restore the initial light source
-						updateTokenLighting(
-							app.object.getFlag("torchlight", "InitialBrightRadius"),
-							app.object.getFlag("torchlight", "InitialDimRadius"),
-							app.object.getFlag("torchlight", "InitialLightColor"),
-							app.object.getFlag("torchlight", "InitialColorIntensity"),
-							app.object.getFlag("torchlight", "InitialLightAngle"),
-							app.object.getFlag("torchlight", "InitialAnimationType"),
-							app.object.getFlag("torchlight", "InitialAnimationSpeed"),
-							app.object.getFlag("torchlight", "InitialAnimationIntensity"),
-						);
-					} else {
-						// The token does not have the lantern on
-						console.log("Clicked on the lantern when the lantern is off.");
-						// Checks whether the character can consume an oil flask
-						if (consumeItem("Oil (flask)")) {
-							statusLantern = true;
-							await app.object.setFlag("torchlight", "statusLantern", true);
-							tbuttonLantern.addClass("active");
-							// Lantern is active, disable the other light sources
-							disableTorchlightButton(tbuttonLight);
-							disableTorchlightButton(tbuttonTorch);
-							// Store the lighting for later restoration
-							storeTokenLighting();
-							// Enable the Lantern Source according to the type
-							let nBright = game.settings.get("torchlight", "lanternBrightRadius");
-							let nDim    = game.settings.get("torchlight", "lanternDimRadius");
-							let nType   = game.settings.get("torchlight", "lanternType");
-							switch (nType){
-								case "Type0":
-									updateTokenLighting(nBright,nDim, "#a2642a", "0.7", 360, "none", 10, 7);
-									break;
-								case "Type1":
-									updateTokenLighting(nBright,nDim, "#a2642a", "0.7", 360, "torch", 10, 7);
-									break;
-								case "Type2":
-									updateTokenLighting(nBright,nDim, "#a2642a", "0.5", 360, "torch", 10, 5);
-									break;
-								case "Type3":
-									updateTokenLighting(nBright,nDim, "#a2642a", "0.3", 360, "torch", 10, 3);
-									break;
-								case "Type4":
-									updateTokenLighting(5,5, "#a2642a", "0.7", 360, "torch", 10, 7);
-									break;
-								case "Type5":
-									updateTokenLighting(5,5, "#a2642a", "0.5", 360, "torch", 10, 5);
-									break;
-								case "Type6":
-									updateTokenLighting(5,5, "#a2642a", "0.3", 360, "torch", 10, 3);
-									break;
-								case "Type7":
-									updateTokenLighting(nBright*2,nDim*2, "#a2642a", "0.7", 60, "torch", 10, 7);
-									break;
-								case "Type8":
-									updateTokenLighting(nBright*2,nDim*2, "#a2642a", "0.5", 60, "torch", 10, 5);
-									break;
-								case "Type9":
-									updateTokenLighting(nBright*2,nDim*2, "#a2642a", "0.3", 60, "torch", 10, 3);
-									break;
-								case "TypeC":
-									updateTokenLighting(nBright,nDim,
-										game.settings.get("torchlight", "customLanternColor"),
-										game.settings.get("torchlight", "customLanternColorIntensity"),
-										360,
-										game.settings.get("torchlight", "customLanternAnimationType"),
-										game.settings.get("torchlight", "customLanternAnimationSpeed"),
-										game.settings.get("torchlight", "customLanternAnimationIntensity"));
-									break;
-							}
-						} else {
-							// There is no oil to consume, signal and disable the button
-							ChatMessage.create({
-								user: game.user._id,
-								speaker: game.actors.get(data.actorId),
-								content: "No Oil (flask) in Inventory !"
-							});
-							disableTorchlightButton(tbuttonLantern);
-						}
-					}
-				// Or are we dealing with the Torch Button
-				} else if (tbutton === tbuttonTorch) {
-					// Check if the token has the torch on
-					if (statusTorch) {
-						// The token has the torch on
-						console.log("Clicked on the torch button when the torch is on.");
-						statusTorch = false;
-						await app.object.setFlag("torchlight", "statusTorch", false);
-						tbuttonTorch.removeClass("active");
-						// Torch is inactive, enable the relevant light sources according to parameters
-						await enableRelevantButtons();
-						// Restore the initial light source
-						updateTokenLighting(
-							app.object.getFlag("torchlight", "InitialBrightRadius"),
-							app.object.getFlag("torchlight", "InitialDimRadius"),
-							app.object.getFlag("torchlight", "InitialLightColor"),
-							app.object.getFlag("torchlight", "InitialColorIntensity"),
-							app.object.getFlag("torchlight", "InitialLightAngle"),
-							app.object.getFlag("torchlight", "InitialAnimationType"),
-							app.object.getFlag("torchlight", "InitialAnimationSpeed"),
-							app.object.getFlag("torchlight", "InitialAnimationIntensity"),
-						);
-					} else {
-						// The token does not have the torch on
-						console.log("Clicked on the torch when the torch is off.");
-						// Checks whether the character can consume a torch
-						if (consumeItem("Torch")) {
-							statusTorch = true;
-							await app.object.setFlag("torchlight", "statusTorch", true);
-							tbuttonTorch.addClass("active");
-							// Torch is active, disable the other light sources
-							disableTorchlightButton(tbuttonLight);
-							disableTorchlightButton(tbuttonLantern);
-							// Store the lighting for later restoration
-							storeTokenLighting();
-							// Enable the Torch Source according to the type
-							let nBright = game.settings.get("torchlight", "torchBrightRadius");
-							let nDim    = game.settings.get("torchlight", "torchDimRadius");
-							let nType   = game.settings.get("torchlight", "torchType");
-							switch (nType){
-								case "Type0":
-									updateTokenLighting(nBright,nDim, "#a2642a", "0.7", 360, "none", 5, 7);
-									break;
-								case "Type1":
-									updateTokenLighting(nBright,nDim, "#a2642a", "0.7", 360, "torch", 5, 7);
-									break;
-								case "Type2":
-									updateTokenLighting(nBright,nDim, "#a2642a", "0.5", 360, "torch", 5, 5);
-									break;
-								case "Type3":
-									updateTokenLighting(nBright,nDim, "#a2642a", "0.3", 360, "torch", 5, 3);
-									break;
-								case "Type4":
-									updateTokenLighting(nBright,nDim, "#a22a2a", "0.7", 360, "torch", 5, 7);
-									break;
-								case "Type5":
-									updateTokenLighting(nBright,nDim, "#a22a2a", "0.5", 360, "torch", 5, 5);
-									break;
-								case "Type6":
-									updateTokenLighting(nBright,nDim, "#a22a2a", "0.3", 360, "torch", 5, 3);
-									break;
-								case "Type7":
-									updateTokenLighting(nBright,nDim, "#822aa2", "0.7", 360, "torch", 5, 7);
-									break;
-								case "Type8":
-									updateTokenLighting(nBright,nDim, "#822aa2", "0.5", 360, "torch", 5, 5);
-									break;
-								case "Type9":
-									updateTokenLighting(nBright,nDim, "#822aa2", "0.3", 360, "torch", 5, 3);
-									break;
-								case "TypeC":
-									updateTokenLighting(nBright,nDim,
-										game.settings.get("torchlight", "customTorchColor"),
-										game.settings.get("torchlight", "customTorchColorIntensity"),
-										360,
-										game.settings.get("torchlight", "customTorchAnimationType"),
-										game.settings.get("torchlight", "customTorchAnimationSpeed"),
-										game.settings.get("torchlight", "customTorchAnimationIntensity"));
-									break;
-							}
-						} else {
-							// There is no torch to consume, signal and disable the button
-							ChatMessage.create({
-								user: game.user._id,
-								speaker: game.actors.get(data.actorId),
-								content: "No Torch in Inventory !"
-							});
-							disableTorchlightButton(tbuttonTorch);
-						}
-					}
-				}
-			});
+			// Install a click handler if one is not already bound
+			if (!tbutton.hasClass('clickBound')) {
+				tbutton.click(async (ev) => onButtonClick(ev, tbutton));
+				tbutton.addClass('clickBound');
+			}
 		}
 
 		// Visually and functionally disable a torchlight button
 		function disableTorchlightButton(tbutton) {
 			tbutton.find('i').addClass('fa-disabled');
-			tbutton.find('i').off( "click" );
-			tbutton.removeClass("active");
+			tbutton.off('click');
+			tbutton.removeClass('clickBound');
+			tbutton.removeClass('active');
 		}
-
 
 		// Enable or disable buttons according to parameters
 		function enableRelevantButtons() {
-
 			// Stores if checks need to be made to enable buttons
 			let noCheck = game.system.id !== 'dnd5e';
 			if (!noCheck)
@@ -339,55 +62,339 @@ class TorchLight {
 				enableTorchlightButton(tbuttonTorch);
 			else
 				disableTorchlightButton(tbuttonTorch);
-
 		}
 
+		async function onButtonClick(ev, tbutton) {
+			//console.log("Clicked on a Button.");
+			ev.preventDefault();
+			ev.stopPropagation();
+
+			// Are we dealing with the Light Button
+			if (tbutton === tbuttonLight) {
+				// Check if the token has the light spell on
+				if (statusLight) {
+					// The token has the light spell on
+					console.log("Clicked on the light button when the light is on.");
+					statusLight = false;
+					await app.object.document.setFlag("torchlight", "statusLight", false);
+					tbuttonLight.removeClass("active");
+					// Light is inactive, enable the relevant light sources according to parameters
+					enableRelevantButtons();
+					// Restore the initial light source
+					updateTokenLighting(
+						app.object.document.getFlag("torchlight", "InitialBrightRadius"),
+						app.object.document.getFlag("torchlight", "InitialDimRadius"),
+						app.object.document.getFlag("torchlight", "InitialLightColor"),
+						app.object.document.getFlag("torchlight", "InitialColorIntensity"),
+						app.object.document.getFlag("torchlight", "InitialLightAngle"),
+						app.object.document.getFlag("torchlight", "InitialAnimationType"),
+						app.object.document.getFlag("torchlight", "InitialAnimationSpeed"),
+						app.object.document.getFlag("torchlight", "InitialAnimationIntensity"),
+					);
+				} else {
+					// The token does not have the light spell on
+					console.log("Clicked on the light button when the light is off.");
+					statusLight = true;
+					await app.object.document.setFlag("torchlight", "statusLight", true);
+					tbuttonLight.addClass("active");
+					// Light is active, disable the other light sources
+					disableTorchlightButton(tbuttonLantern);
+					disableTorchlightButton(tbuttonTorch);
+					// Store the lighting for later restoration
+					storeTokenLighting();
+					// Enable the Light Source according to the type
+					// "torch" / "pulse" / "chroma" / "wave" / "fog" / "sunburst" / "dome"
+					// "emanation" / "hexa" / "ghost" / "energy" / "roiling" / "hole"
+					let nBright = game.settings.get("torchlight", "lightBrightRadius");
+					let nDim    = game.settings.get("torchlight", "lightDimRadius");
+					let nType   = game.settings.get("torchlight", "lightType");
+					switch (nType){
+						case "Type0":
+							updateTokenLighting(nBright,nDim, "#ffffff", 0.5, 360, "none", 5, 5);
+							break;
+						case "Type1":
+							updateTokenLighting(nBright,nDim, "#ffffff", 0.5, 360, "torch", 5, 5);
+							break;
+						case "Type2":
+							updateTokenLighting(nBright,nDim, "#ffffff", 0.5, 360, "chroma", 5, 5);
+							break;
+						case "Type3":
+							updateTokenLighting(nBright,nDim, "#ffffff", 0.5, 360, "pulse", 5, 5);
+							break;
+						case "Type4":
+							updateTokenLighting(nBright,nDim, "#ffffff", 0.5, 360, "ghost", 5, 5);
+							break;
+						case "Type5":
+							updateTokenLighting(nBright,nDim, "#ffffff", 0.5, 360, "emanation", 5, 5);
+							break;
+						case "Type6":
+							updateTokenLighting(nBright,nDim, "#ff0000", 0.5, 360, "torch", 5, 5);
+							break;
+						case "Type7":
+							updateTokenLighting(nBright,nDim, "#ff0000", 0.5, 360, "chroma", 5, 5);
+							break;
+						case "Type8":
+							updateTokenLighting(nBright,nDim, "#ff0000", 0.5, 360, "pulse", 5, 5);
+							break;
+						case "Type9":
+							updateTokenLighting(nBright,nDim, "#ff0000", 0.5, 360, "ghost", 5, 5);
+							break;
+						case "Type10":
+							updateTokenLighting(nBright,nDim, "#ff0000", 0.5, 360, "emanation", 5, 5);
+							break;
+						case "Type11":
+							updateTokenLighting(nBright,nDim, "#00ff00", 0.5, 360, "torch", 5, 5);
+							break;
+						case "Type12":
+							updateTokenLighting(nBright,nDim, "#00ff00", 0.5, 360, "chroma", 5, 5);
+							break;
+						case "Type13":
+							updateTokenLighting(nBright,nDim, "#00ff00", 0.5, 360, "pulse", 5, 5);
+							break;
+						case "Type14":
+							updateTokenLighting(nBright,nDim, "#00ff00", 0.5, 360, "ghost", 5, 5);
+							break;
+						case "Type15":
+							updateTokenLighting(nBright,nDim, "#00ff00", 0.5, 360, "emanation", 5, 5);
+							break;
+						case "TypeC":
+							updateTokenLighting(nBright,nDim,
+								game.settings.get("torchlight", "customLightColor"),
+								game.settings.get("torchlight", "customLightColorIntensity"),
+								360,
+								game.settings.get("torchlight", "customLightAnimationType"),
+								game.settings.get("torchlight", "customLightAnimationSpeed"),
+								game.settings.get("torchlight", "customLightAnimationIntensity"));
+							break;
+					}
+				}
+			// Or are we dealing with the Lantern Button
+			} else if (tbutton === tbuttonLantern) {
+				// Check if the token has the lantern on
+				if (statusLantern) {
+					// The token has the light spell on
+					console.log("Clicked on the lantern button when the lantern is on.");
+					statusLantern = false;
+					await app.object.document.setFlag("torchlight", "statusLantern", false);
+					tbuttonLantern.removeClass("active");
+					// Lantern is inactive, enable the relevant light sources according to parameters
+					enableRelevantButtons();
+					// Restore the initial light source
+					updateTokenLighting(
+						app.object.document.getFlag("torchlight", "InitialBrightRadius"),
+						app.object.document.getFlag("torchlight", "InitialDimRadius"),
+						app.object.document.getFlag("torchlight", "InitialLightColor"),
+						app.object.document.getFlag("torchlight", "InitialColorIntensity"),
+						app.object.document.getFlag("torchlight", "InitialLightAngle"),
+						app.object.document.getFlag("torchlight", "InitialAnimationType"),
+						app.object.document.getFlag("torchlight", "InitialAnimationSpeed"),
+						app.object.document.getFlag("torchlight", "InitialAnimationIntensity"),
+					);
+				} else {
+					// The token does not have the lantern on
+					console.log("Clicked on the lantern when the lantern is off.");
+					// Checks whether the character can consume an oil flask
+					if (consumeItem("Oil (flask)")) {
+						statusLantern = true;
+						await app.object.document.setFlag("torchlight", "statusLantern", true);
+						tbuttonLantern.addClass("active");
+						// Lantern is active, disable the other light sources
+						disableTorchlightButton(tbuttonLight);
+						disableTorchlightButton(tbuttonTorch);
+						// Store the lighting for later restoration
+						storeTokenLighting();
+						// Enable the Lantern Source according to the type
+						let nBright = game.settings.get("torchlight", "lanternBrightRadius");
+						let nDim    = game.settings.get("torchlight", "lanternDimRadius");
+						let nType   = game.settings.get("torchlight", "lanternType");
+						switch (nType){
+							case "Type0":
+								updateTokenLighting(nBright,nDim, "#a2642a", 0.7, 360, "none", 10, 7);
+								break;
+							case "Type1":
+								updateTokenLighting(nBright,nDim, "#a2642a", 0.7, 360, "torch", 10, 7);
+								break;
+							case "Type2":
+								updateTokenLighting(nBright,nDim, "#a2642a", 0.5, 360, "torch", 10, 5);
+								break;
+							case "Type3":
+								updateTokenLighting(nBright,nDim, "#a2642a", 0.3, 360, "torch", 10, 3);
+								break;
+							case "Type4":
+								updateTokenLighting(5,5, "#a2642a", 0.7, 360, "torch", 10, 7);
+								break;
+							case "Type5":
+								updateTokenLighting(5,5, "#a2642a", 0.5, 360, "torch", 10, 5);
+								break;
+							case "Type6":
+								updateTokenLighting(5,5, "#a2642a", 0.3, 360, "torch", 10, 3);
+								break;
+							case "Type7":
+								updateTokenLighting(nBright*2,nDim*2, "#a2642a", 0.7, 60, "torch", 10, 7);
+								break;
+							case "Type8":
+								updateTokenLighting(nBright*2,nDim*2, "#a2642a", 0.5, 60, "torch", 10, 5);
+								break;
+							case "Type9":
+								updateTokenLighting(nBright*2,nDim*2, "#a2642a", 0.3, 60, "torch", 10, 3);
+								break;
+							case "TypeC":
+								updateTokenLighting(nBright,nDim,
+									game.settings.get("torchlight", "customLanternColor"),
+									game.settings.get("torchlight", "customLanternColorIntensity"),
+									360,
+									game.settings.get("torchlight", "customLanternAnimationType"),
+									game.settings.get("torchlight", "customLanternAnimationSpeed"),
+									game.settings.get("torchlight", "customLanternAnimationIntensity"));
+								break;
+						}
+					} else {
+						// There is no oil to consume, signal and disable the button
+						ChatMessage.create({
+							user: game.user._id,
+							speaker: game.actors.get(data.actorId),
+							content: "No Oil (flask) in Inventory !"
+						});
+						disableTorchlightButton(tbuttonLantern);
+					}
+				}
+			// Or are we dealing with the Torch Button
+			} else if (tbutton === tbuttonTorch) {
+				// Check if the token has the torch on
+				if (statusTorch) {
+					// The token has the torch on
+					console.log("Clicked on the torch button when the torch is on.");
+					statusTorch = false;
+					await app.object.document.setFlag("torchlight", "statusTorch", false);
+					tbuttonTorch.removeClass("active");
+					// Torch is inactive, enable the relevant light sources according to parameters
+					enableRelevantButtons();
+					// Restore the initial light source
+					updateTokenLighting(
+						app.object.document.getFlag("torchlight", "InitialBrightRadius"),
+						app.object.document.getFlag("torchlight", "InitialDimRadius"),
+						app.object.document.getFlag("torchlight", "InitialLightColor"),
+						app.object.document.getFlag("torchlight", "InitialColorIntensity"),
+						app.object.document.getFlag("torchlight", "InitialLightAngle"),
+						app.object.document.getFlag("torchlight", "InitialAnimationType"),
+						app.object.document.getFlag("torchlight", "InitialAnimationSpeed"),
+						app.object.document.getFlag("torchlight", "InitialAnimationIntensity"),
+					);
+				} else {
+					// The token does not have the torch on
+					console.log("Clicked on the torch when the torch is off.");
+					// Checks whether the character can consume a torch
+					if (consumeItem("Torch")) {
+						statusTorch = true;
+						await app.object.document.setFlag("torchlight", "statusTorch", true);
+						tbuttonTorch.addClass("active");
+						// Torch is active, disable the other light sources
+						disableTorchlightButton(tbuttonLight);
+						disableTorchlightButton(tbuttonLantern);
+						// Store the lighting for later restoration
+						storeTokenLighting();
+						// Enable the Torch Source according to the type
+						let nBright = game.settings.get("torchlight", "torchBrightRadius");
+						let nDim    = game.settings.get("torchlight", "torchDimRadius");
+						let nType   = game.settings.get("torchlight", "torchType");
+						switch (nType){
+							case "Type0":
+								updateTokenLighting(nBright,nDim, "#a2642a", 0.7, 360, "none", 5, 7);
+								break;
+							case "Type1":
+								updateTokenLighting(nBright,nDim, "#a2642a", 0.7, 360, "torch", 5, 7);
+								break;
+							case "Type2":
+								updateTokenLighting(nBright,nDim, "#a2642a", 0.5, 360, "torch", 5, 5);
+								break;
+							case "Type3":
+								updateTokenLighting(nBright,nDim, "#a2642a", 0.3, 360, "torch", 5, 3);
+								break;
+							case "Type4":
+								updateTokenLighting(nBright,nDim, "#a22a2a", 0.7, 360, "torch", 5, 7);
+								break;
+							case "Type5":
+								updateTokenLighting(nBright,nDim, "#a22a2a", 0.5, 360, "torch", 5, 5);
+								break;
+							case "Type6":
+								updateTokenLighting(nBright,nDim, "#a22a2a", 0.3, 360, "torch", 5, 3);
+								break;
+							case "Type7":
+								updateTokenLighting(nBright,nDim, "#822aa2", 0.7, 360, "torch", 5, 7);
+								break;
+							case "Type8":
+								updateTokenLighting(nBright,nDim, "#822aa2", 0.5, 360, "torch", 5, 5);
+								break;
+							case "Type9":
+								updateTokenLighting(nBright,nDim, "#822aa2", 0.3, 360, "torch", 5, 3);
+								break;
+							case "TypeC":
+								updateTokenLighting(nBright,nDim,
+									game.settings.get("torchlight", "customTorchColor"),
+									game.settings.get("torchlight", "customTorchColorIntensity"),
+									360,
+									game.settings.get("torchlight", "customTorchAnimationType"),
+									game.settings.get("torchlight", "customTorchAnimationSpeed"),
+									game.settings.get("torchlight", "customTorchAnimationIntensity"));
+								break;
+						}
+					} else {
+						// There is no torch to consume, signal and disable the button
+						ChatMessage.create({
+							user: game.user._id,
+							speaker: game.actors.get(data.actorId),
+							content: "No Torch in Inventory !"
+						});
+						disableTorchlightButton(tbuttonTorch);
+					}
+				}
+			}
+		}
 
 		// Update the relevant light parameters of a token
 		function updateTokenLighting(brightLight, dimLight, lightColor, colorIntensity, lightAngle, animationType, animationSpeed, animationIntensity) {
-				const lightEffect = {
-					"type": animationType,
-					"speed": animationSpeed,
-					"intensity": animationIntensity
-				};
-			app.object.update({
+			app.object.document.update({
 				brightLight: brightLight,
 				dimLight: dimLight,
 				lightColor: lightColor,
-				lightAlpha: (colorIntensity * colorIntensity),
+				lightAlpha: colorIntensity ** 2,
 				lightAngle: lightAngle,
-				"lightAnimation": lightEffect
+				lightAnimation: {
+					type: animationType,
+					speed: animationSpeed,
+					intensity: animationIntensity
+				}
 			});
 		}
 
 		// Store the initial status of illumination for the token to restore if all light sources are extinguished
 		function storeTokenLighting() {
-			app.object.setFlag("torchlight", "InitialBrightRadius", app.object.data.brightLight);
-			app.object.setFlag("torchlight", "InitialDimRadius", app.object.data.dimLight);
-			app.object.setFlag("torchlight", "InitialLightColor", app.object.light.color);
-			if (app.object.light.animation === undefined)
-				app.object.setFlag("torchlight", "InitialColorIntensity", 0.5);
-			else
-				app.object.setFlag("torchlight", "InitialColorIntensity", app.object.light.alpha);
-			app.object.setFlag("torchlight", "InitialLightAngle", app.object.light.angle);
-			if (app.object.light.animation === undefined) {
-				app.object.setFlag("torchlight", "InitialAnimationType", "none");
-				app.object.setFlag("torchlight", "InitialAnimationSpeed", 5);
-				app.object.setFlag("torchlight", "InitialAnimationIntensity", 5);
+			let promises = [];
+			promises.push(app.object.document.setFlag("torchlight", "InitialBrightRadius", app.object.data.brightLight));
+			promises.push(app.object.document.setFlag("torchlight", "InitialDimRadius", app.object.data.dimLight));
+			promises.push(app.object.document.setFlag("torchlight", "InitialLightColor", "#" + app.object.light.color.toString(16).padStart(6, 0)));
+			promises.push(app.object.document.setFlag("torchlight", "InitialColorIntensity", Math.sqrt(app.object.light.alpha)));
+			promises.push(app.object.document.setFlag("torchlight", "InitialLightAngle", app.object.light.angle));
+			if (app.object.light.animation.type === undefined) {
+				promises.push(app.object.document.setFlag("torchlight", "InitialAnimationType", "none"));
 			} else {
-				app.object.setFlag("torchlight", "InitialAnimationType", app.object.light.animation.type);
-				app.object.setFlag("torchlight", "InitialAnimationSpeed", app.object.light.animation.speed);
-				app.object.setFlag("torchlight", "InitialAnimationIntensity", app.object.light.animation.intensity);
+				promises.push(app.object.document.setFlag("torchlight", "InitialAnimationType", app.object.light.animation.type));
 			}
+			promises.push(app.object.document.setFlag("torchlight", "InitialAnimationSpeed", app.object.light.animation.speed))
+			promises.push(app.object.document.setFlag("torchlight", "InitialAnimationIntensity", app.object.light.animation.intensity));
 
-			console.log("Stored brightRadius:" + app.object.getFlag("torchlight", "InitialBrightRadius"));
-			console.log("Stored dimRadius:" + app.object.getFlag("torchlight", "InitialDimRadius"));
-			console.log("Stored lightColor:" + app.object.getFlag("torchlight", "InitialLightColor"));
-			console.log("Stored light.alpha:" + app.object.getFlag("torchlight", "InitialColorIntensity"));
-			console.log("Stored dimRadius:" + app.object.getFlag("torchlight", "InitialLightAngle"));
-			console.log("Stored animation.type:" + app.object.getFlag("torchlight", "InitialAnimationType"));
-			console.log("Stored animation.speed:" + app.object.getFlag("torchlight", "InitialAnimationSpeed"));
-			console.log("Stored animation.intensity:" + app.object.getFlag("torchlight", "InitialAnimationIntensity"));
+			Promise.all(promises).then(_ => {
+				/*
+				console.log("Stored brightRadius:" + app.object.document.getFlag("torchlight", "InitialBrightRadius"));
+				console.log("Stored dimRadius:" + app.object.document.getFlag("torchlight", "InitialDimRadius"));
+				console.log("Stored lightColor:" + app.object.document.getFlag("torchlight", "InitialLightColor"));
+				console.log("Stored light.alpha:" + app.object.document.getFlag("torchlight", "InitialColorIntensity"));
+				console.log("Stored dimRadius:" + app.object.document.getFlag("torchlight", "InitialLightAngle"));
+				console.log("Stored animation.type:" + app.object.document.getFlag("torchlight", "InitialAnimationType"));
+				console.log("Stored animation.speed:" + app.object.document.getFlag("torchlight", "InitialAnimationSpeed"));
+				console.log("Stored animation.intensity:" + app.object.document.getFlag("torchlight", "InitialAnimationIntensity"));
+				*/
+			});
 		}
 
 		// Define all three buttons
@@ -424,23 +431,23 @@ class TorchLight {
 		console.log("Initialisation");
 
 		// Get the status of the three types of lights
-		let statusLight = app.object.getFlag("torchlight", "statusLight");
+		let statusLight = app.object.document.getFlag("torchlight", "statusLight");
 		//console.log("Initial statusLight:" + statusLight);
 		if (statusLight == undefined || statusLight == null) {
 			statusLight = false;
-			await app.object.setFlag("torchlight", "statusLight", false);
+			await app.object.document.setFlag("torchlight", "statusLight", false);
 		}
-		let statusLantern = app.object.getFlag("torchlight", "statusLantern");
+		let statusLantern = app.object.document.getFlag("torchlight", "statusLantern");
 		//console.log("Initial statusLantern:" + statusLantern);
 		if (statusLantern == undefined || statusLantern == null) {
 			statusLantern = false;
-			await app.object.setFlag("torchlight", "statusLantern", false);
+			await app.object.document.setFlag("torchlight", "statusLantern", false);
 		}
-		let statusTorch = app.object.getFlag("torchlight", "statusTorch");
+		let statusTorch = app.object.document.getFlag("torchlight", "statusTorch");
 		//console.log("Initial statusTorch:" + statusTorch);
 		if (statusTorch == undefined || statusTorch == null) {
 			statusTorch = false;
-			await app.object.setFlag("torchlight", "statusTorch", false);
+			await app.object.document.setFlag("torchlight", "statusTorch", false);
 		}
 		//console.log("Initialised statusLight:" + statusLight);
 		//console.log("Initialised statusLantern:" + statusLantern);
