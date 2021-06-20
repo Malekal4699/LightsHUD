@@ -101,7 +101,7 @@ class TorchLight {
 					disableTorchlightButton(tbuttonLantern);
 					disableTorchlightButton(tbuttonTorch);
 					// Store the lighting for later restoration
-					storeTokenLighting();
+					await storeTokenLighting();
 					// Enable the Light Source according to the type
 					// "torch" / "pulse" / "chroma" / "wave" / "fog" / "sunburst" / "dome"
 					// "emanation" / "hexa" / "ghost" / "energy" / "roiling" / "hole"
@@ -202,7 +202,7 @@ class TorchLight {
 						disableTorchlightButton(tbuttonLight);
 						disableTorchlightButton(tbuttonTorch);
 						// Store the lighting for later restoration
-						storeTokenLighting();
+						await storeTokenLighting();
 						// Enable the Lantern Source according to the type
 						let nBright = game.settings.get("torchlight", "lanternBrightRadius");
 						let nDim    = game.settings.get("torchlight", "lanternDimRadius");
@@ -292,7 +292,7 @@ class TorchLight {
 						disableTorchlightButton(tbuttonLight);
 						disableTorchlightButton(tbuttonLantern);
 						// Store the lighting for later restoration
-						storeTokenLighting();
+						await storeTokenLighting();
 						// Enable the Torch Source according to the type
 						let nBright = game.settings.get("torchlight", "torchBrightRadius");
 						let nDim    = game.settings.get("torchlight", "torchDimRadius");
@@ -368,33 +368,31 @@ class TorchLight {
 		}
 
 		// Store the initial status of illumination for the token to restore if all light sources are extinguished
-		function storeTokenLighting() {
+		async function storeTokenLighting() {
 			let promises = [];
-			promises.push(app.object.document.setFlag("torchlight", "InitialBrightRadius", app.object.data.brightLight));
-			promises.push(app.object.document.setFlag("torchlight", "InitialDimRadius", app.object.data.dimLight));
-			promises.push(app.object.document.setFlag("torchlight", "InitialLightColor", "#" + app.object.light.color.toString(16).padStart(6, 0)));
-			promises.push(app.object.document.setFlag("torchlight", "InitialColorIntensity", Math.sqrt(app.object.light.alpha)));
-			promises.push(app.object.document.setFlag("torchlight", "InitialLightAngle", app.object.light.angle));
-			if (app.object.light.animation.type === undefined) {
-				promises.push(app.object.document.setFlag("torchlight", "InitialAnimationType", "none"));
-			} else {
-				promises.push(app.object.document.setFlag("torchlight", "InitialAnimationType", app.object.light.animation.type));
-			}
-			promises.push(app.object.document.setFlag("torchlight", "InitialAnimationSpeed", app.object.light.animation.speed))
-			promises.push(app.object.document.setFlag("torchlight", "InitialAnimationIntensity", app.object.light.animation.intensity));
+			const tokenData = app.object.data;
+			promises.push(app.object.document.setFlag("torchlight", "InitialBrightRadius", tokenData.brightLight));
+			promises.push(app.object.document.setFlag("torchlight", "InitialDimRadius", tokenData.dimLight));
+			promises.push(app.object.document.setFlag("torchlight", "InitialLightColor",
+				tokenData.lightColor ? tokenData.lightColor.toString(16).padStart(6, 0) : null));
+			promises.push(app.object.document.setFlag("torchlight", "InitialColorIntensity", Math.sqrt(tokenData.lightAlpha)));
+			promises.push(app.object.document.setFlag("torchlight", "InitialLightAngle", tokenData.lightAngle));
+			promises.push(app.object.document.setFlag("torchlight", "InitialAnimationType", tokenData.lightAnimation.type ?? null));
+			promises.push(app.object.document.setFlag("torchlight", "InitialAnimationSpeed", tokenData.lightAnimation.speed));
+			promises.push(app.object.document.setFlag("torchlight", "InitialAnimationIntensity", tokenData.lightAnimation.intensity));
 
+			/*
 			Promise.all(promises).then(_ => {
-				/*
 				console.log("Stored brightRadius:" + app.object.document.getFlag("torchlight", "InitialBrightRadius"));
 				console.log("Stored dimRadius:" + app.object.document.getFlag("torchlight", "InitialDimRadius"));
 				console.log("Stored lightColor:" + app.object.document.getFlag("torchlight", "InitialLightColor"));
-				console.log("Stored light.alpha:" + app.object.document.getFlag("torchlight", "InitialColorIntensity"));
-				console.log("Stored dimRadius:" + app.object.document.getFlag("torchlight", "InitialLightAngle"));
+				console.log("Stored lightAlpha:" + app.object.document.getFlag("torchlight", "InitialColorIntensity"));
+				console.log("Stored lightAngle:" + app.object.document.getFlag("torchlight", "InitialLightAngle"));
 				console.log("Stored animation.type:" + app.object.document.getFlag("torchlight", "InitialAnimationType"));
 				console.log("Stored animation.speed:" + app.object.document.getFlag("torchlight", "InitialAnimationSpeed"));
 				console.log("Stored animation.intensity:" + app.object.document.getFlag("torchlight", "InitialAnimationIntensity"));
-				*/
-			});
+			});*/
+			return Promise.all(promises);
 		}
 
 		// Define all three buttons
