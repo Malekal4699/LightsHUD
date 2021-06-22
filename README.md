@@ -1,5 +1,7 @@
 # TorchLight - A FoundryVTT Module
 
+First, many thanks to Alan Davies, who really picked this up for the Foundry 0.8.x. Unfortunately, while I wanted to experiment with the development within foundry and had some available leisure at that point in time, it is no longer the case. Moreover, I did not foreseen the amount of requests to expand the module. I have tried to follow up at start, but it has become quite bloated and therefore difficult in particular to test. Neither did I foreseen that a change of version in Foundry would require me to update the module, especially when the documentation about the update is not that precise. So I'm sorry, but I won't be able to maintain the module anymore, if anyone wants to take it over, it will be with my full blessing.
+
 This is a slightly enhanced Torch and Light Module for Foundry VTT, based on the excellent work of RealDeuce on the Torch Module.
 
 Instead of managing one light source, the Torchlight module recognises three different types of light sources, torches, lanterns and light spells, each with its own characteristics.
@@ -9,7 +11,7 @@ From the original module, I have dropped the management of Dancing Lights, as th
 I must also confess that I am a complete noob at Foundry VTT, Javascript, JQuery and GitHub, so developing this was really a good way for me to learn things and discover Foundry VTT, so every bit of advice that can be provided would really be appreciated.
 
 ## Installation
-### Method 1 (Not yet available)
+### Method 1
 - Start up Foundry and click "Install Module" in the "Add-On Modules" tab.
 - Search for "Torchlight" in the pop up window.
 - Click "Install" and it should appear in your modules list.
@@ -68,13 +70,16 @@ It just depends on the type selected for a given source of light, as set-up in t
 * etc.
 
 ## Planned Features
-- None left, waiting for suggestions... :)
+- Not planning to implement anything more, the way I see it Torchlight is already fairly bloated for something that was intended to be small, but if someone picks it up, well, they can do whatever they want... :)
 
 ## Known Issues
 * I can't do a color picker yet, so you have to enter the light in a #xxxxxx format for it to work.
 * The position of the icons needs to be adjusted according to the size of the token.
 
 ## Release Notes
+
+##### 0.10.0 - Foundry 0.8.x Update by Alan  Davies
+* Many internal changes to be in line with Foundry 0.8.x
 
 ##### 0.9.0 - Custom Update
 * Allows custom parameters for each of the three types of light
