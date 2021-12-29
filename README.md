@@ -78,6 +78,9 @@ It just depends on the type selected for a given source of light, as set-up in t
 
 ## Release Notes
 
+##### 0.10.2 - Foundry VTT 0.9.x Update by Malekal
+* Code update for v9.
+
 ##### 0.10.0 - Foundry 0.8.x Update by Alan  Davies
 * Many internal changes to be in line with Foundry 0.8.x
 
