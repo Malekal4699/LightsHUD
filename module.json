@@ -5,7 +5,7 @@
 	"version": "0.10.1",
 	"author": "PhilippeK, Malekal",
 	"allowBugReporter": true,
-  	"bugs": "https://github.com/League-of-Foundry-Developers/fvtt-module-permission-viewer/issues",
+  	"bugs": "https://github.com/Malekal4699/TorchLight/issues",
 	"changelog": "https://github.com/Malekal4699/TorchLight/README.md",
 	"languages": [
 		{
@@ -19,10 +19,10 @@
 			"path": "./lang/fr.json"
 		}
 	],
-	"esmodules": ["./torchlight.js"],
+	"esmodules": ["/scripts/torchlight.js"],
 	"socket": true,
 	"styles": [
-		"/css/torchlight.css"
+		"/styles/torchlight.css"
 	],
 	"packs": [],
 	"manifest": "https://github.com/Malekal4699/TorchLight/releases/latest/download/module.json",
