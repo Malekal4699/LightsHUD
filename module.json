@@ -1,12 +1,12 @@
 {
-    "name": "torchlight",
-    "title": "TorchLight",
-    "description": "TorchLight HUD Controls",
+    "name": "LightsHUD",
+    "title": "LightsHUD",
+    "description": "Lights HUD Control",
     "version": "0.10.2",
     "author": "PhilippeK, Malekal",
     "allowBugReporter": true,
-    "bugs": "https://github.com/Malekal4699/TorchLight/issues",
-    "changelog": "https://github.com/Malekal4699/TorchLight/README.md",
+    "bugs": "https://github.com/Malekal4699/LightsHUD/issues",
+    "changelog": "https://github.com/Malekal4699/LightsHUD/README.md",
     "languages": [
         {
             "lang": "en",
@@ -20,16 +20,16 @@
         }
     ],
     "esmodules": [
-        "/scripts/torchlight.js"
+        "/scripts/LightsHUD.js"
     ],
     "socket": true,
     "styles": [
-        "/styles/torchlight.css"
+        "/styles/LightsHUD.css"
     ],
     "packs": [],
-    "url": "https://github.com/Malekal4699/TorchLight",
-    "manifest": "https://github.com/Malekal4699/TorchLight/releases/latest/download/module.json",
-    "download": "https://github.com/Malekal4699/TorchLight/releases/download/0.10.2/module.zip",
+    "url": "https://github.com/Malekal4699/LightsHUD",
+    "manifest": "https://github.com/Malekal4699/LightsHUD/releases/latest/download/module.json",
+    "download": "https://github.com/Malekal4699/LightsHUD/releases/download/0.10.2/module.zip",
     "minimumCoreVersion": 9,
     "compatibleCoreVersion": 9,
     "protected": false
