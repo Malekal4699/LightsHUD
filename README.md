@@ -15,8 +15,8 @@ Derived and updated version of Torchlight, which in turn was derived from Torch.
 
 ### Method 3
 	
-- Download the [.zip file]("https://github.com/Malekal4699/LightsHUD/releases/download/0.10.2/module.zip") in this repository.
-- Extract the contents of the zip in `\resources\app\public\modules\`
+- Download the [.zip file]("https://github.com/Malekal4699/LightsHUD/releases/latest/download/module.zip") in this repository.
+- Extract the contents of the zip in `{YOUR_DATA_FOLDER}\modules\`
 - Restart Foundry.
 
 ### Examples
@@ -66,7 +66,6 @@ It just depends on the type selected for a given source of light, as set-up in t
 - TBD
 
 ## Known Issues
-* I can't do a color picker yet, so you have to enter the light in a #xxxxxx format for it to work.
 * The position of the icons needs to be adjusted according to the size of the token.
 
 ## License
