@@ -1,38 +1,31 @@
-# TorchLight - A FoundryVTT Module
+# LightsHUD - A FoundryVTT Module
 
-First, many thanks to Alan Davies, who really picked this up for the Foundry 0.8.x. Unfortunately, while I wanted to experiment with the development within foundry and had some available leisure at that point in time, it is no longer the case. Moreover, I did not foreseen the amount of requests to expand the module. I have tried to follow up at start, but it has become quite bloated and therefore difficult in particular to test. Neither did I foreseen that a change of version in Foundry would require me to update the module, especially when the documentation about the update is not that precise. So I'm sorry, but I won't be able to maintain the module anymore, if anyone wants to take it over, it will be with my full blessing.
-
-This is a slightly enhanced Torch and Light Module for Foundry VTT, based on the excellent work of RealDeuce on the Torch Module.
-
-Instead of managing one light source, the Torchlight module recognises three different types of light sources, torches, lanterns and light spells, each with its own characteristics.
-
-From the original module, I have dropped the management of Dancing Lights, as this should really just be its own module.
-
-I must also confess that I am a complete noob at Foundry VTT, Javascript, JQuery and GitHub, so developing this was really a good way for me to learn things and discover Foundry VTT, so every bit of advice that can be provided would really be appreciated.
+Derived and updated version of Torchlight, which in turn was derived from Torch.
 
 ## Installation
 ### Method 1
 - Start up Foundry and click "Install Module" in the "Add-On Modules" tab.
-- Search for "Torchlight" in the pop up window.
+- Search for "LightsHUD" in the pop up window.
 - Click "Install" and it should appear in your modules list.
 
 ### Method 2
 - Start up Foundry and click "Install Module" in the "Add-On Modules" tab.
-- Paste the link: `https://raw.githubusercontent.com/PhilippeKr/TorchLight/main/module.json`
+- Paste the link: "https://github.com/Malekal4699/LightsHUD/releases/latest/download/module.json",
 - Click "Install" and it should appear in your modules list.
 
 ### Method 3
-- Download the [.zip file](https://github.com/PhilippeKr/TorchLight/raw/main/torchlight.zip) in this repository.
-- Extract the contents of the zip in `\resources\app\public\modules\`
+	
+- Download the [.zip file]("https://github.com/Malekal4699/LightsHUD/releases/latest/download/module.zip") in this repository.
+- Extract the contents of the zip in `{USER_DATA_PATH}\data\modules\`
 - Restart Foundry.
 
 ### Examples
 
 ##### HUD with TorchLight Icons
-![](./docs/HUDwithTorchLightIcons.png)
+![](./assets/HUDwithTorchLightIcons.png)
 
 ##### Light Spell Activated
-![](./docs/LightSpellActivated.png)
+![](./assets/LightSpellActivated.png)
 
 All the lights are animated and look much better "live".
 
@@ -70,70 +63,10 @@ It just depends on the type selected for a given source of light, as set-up in t
 * etc.
 
 ## Planned Features
-- Not planning to implement anything more, the way I see it Torchlight is already fairly bloated for something that was intended to be small, but if someone picks it up, well, they can do whatever they want... :)
+- TBD
 
 ## Known Issues
-* I can't do a color picker yet, so you have to enter the light in a #xxxxxx format for it to work.
 * The position of the icons needs to be adjusted according to the size of the token.
-
-## Release Notes
-
-##### 0.10.2 - Foundry VTT 0.9.x Update by Malekal
-* Code update for v9.
-
-##### 0.10.0 - Foundry 0.8.x Update by Alan  Davies
-* Many internal changes to be in line with Foundry 0.8.x
-
-##### 0.9.0 - Custom Update
-* Allows custom parameters for each of the three types of light
-
-##### 0.8.3 - Very Minor Update
-* Change the Light Spell Pulsating to real Pulse and add the swirly thing
-* Added title text to the buttons and explanations above
-
-##### 0.8.2 - Neutral Lights Update
-* Added "Type 0" lights for all types of lights without effects
-
-##### 0.8.1 - json Bug Fix uUdate
-* Fixed the problem in the json that prevented it from loading
-
-##### 0.8.0 - Consumption Update
-* Added the potential consumption of a resource (torch or oil flask) when a light is lit
-* Added the configuration of the name of the resource to consume
-* Cleaned up the code from the original inspiration
-
-##### 0.7.2 - Bug Fixes
-* Corrected the problem occuring with systems other than 5e because of the check of a parameter defined only for 5e
-* Corrected the menus for Top and Bottom
-
-##### 0.7.1 - Top/Bottom Update
-* Added the capability to display the icons at the top or bottom of the HUD
-
-##### 0.7.0 - Availability Check Update
-* Added the check of availability for a player to create a light
-* Added the capability for the DM to have the check done for the actor/token selected
-
-##### 0.6.5 - Yet Another Small Update
-* Corrected the "Required field LightAlpha not present in token" error.
-
-##### 0.6.4 - Another Small Update
-* Corrected the colour of the effects not showing up
-* Added the reference numbers to the types of lights, so that they can easily be referenced in macros
-* Added the macros to quickly change the type in the readme.
-
-##### 0.6.3 - Small Initial Update
-* Corrected the problem generated by restoring the previous light of the token (storing the radius in pixels instead of grid units)
-* Added images in the ReadMe.
-
-##### 0.6.2 - Quick patch to correct the default values on the types of lights, causing problem on initial install.
-
-##### 0.6.1 - Initial Release for testing to Discord and Reddit
-
-## Acknowledgements
-- Big thanks to Atropos for making a wonderful VTT that's worth making modules for!
-- Many thanks to RealDeuce as well for making the original Torch module and giving me all these ideas!
-- RedReign for providing the template for this Read me.
-- Many thanks to the community on Dicord, so reactive and so helpful !
 
 ## License
 The source code is licensed under "THE BEER-WARE LICENSE" (Revision 42).

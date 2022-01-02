@@ -1,4 +1,4 @@
-.torchlight-container {
+.lightshud-container {
 	display: flex; 
 	justify-content: flex-end; 
 	align-items:center; 
@@ -6,16 +6,16 @@
 	flex: 0 !important;
 }
 
-#token-hud .col.torchlight-column-top {
+#token-hud .col.lightshud-column-top {
   height: calc(100% + 100px);
   top: -170px;
 }
 
-#token-hud .col.torchlight-column-top .control-icon:first-child {
+#token-hud .col.lightshud-column-top .control-icon:first-child {
     margin-top: 8px;
 }
 
-#token-hud .col.torchlight-column-bottom .control-icon:first-child {
+#token-hud .col.lightshud-column-bottom .control-icon:first-child {
     margin-top: 8px;
 }
 
@@ -23,31 +23,31 @@
     margin-right: 8px;
 }
 
-#token-hud .col.torchlight-column-bottom {
+#token-hud .col.lightshud-column-bottom {
   height: calc(100% + 100px);
   top: 75px;
 }
 
-.col.torchlight-column-left {
+.col.lightshud-column-left {
 	flex-direction: column; 
 	left: -130px;
 	width: 70px;
 	padding-top: 20px;
 }
-.col.torchlight-column-right {
+.col.lightshud-column-right {
 	flex-direction: column; 
 	right: -130px;
 	width: 70px;
 	padding-top: 17px;
 }
-.col.torchlight-column-top {
+.col.lightshud-column-top {
 	flex-direction: row; 
 	top: -50px;
 	left: -27px;
 	width: 210px;
 	padding-top: 17px;
 }
-.col.torchlight-column-bottom {
+.col.lightshud-column-bottom {
 	flex-direction: row; 
 	top: 200px;
 	left: -25px;
