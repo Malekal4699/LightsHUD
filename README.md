@@ -16,7 +16,7 @@ Derived and updated version of Torchlight, which in turn was derived from Torch.
 ### Method 3
 	
 - Download the [.zip file]("https://github.com/Malekal4699/LightsHUD/releases/latest/download/module.zip") in this repository.
-- Extract the contents of the zip in `{YOUR_DATA_FOLDER}\modules\`
+- Extract the contents of the zip in `{USER_DATA_PATH}\data\modules\`
 - Restart Foundry.
 
 ### Examples
