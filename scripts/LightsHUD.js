@@ -20,26 +20,28 @@
 
 class LightsHUD {
 
+  constructor(){}
+
 	static clBanner(){
 	  const title =
-      " _______             _     _ _       _     _    \n" +
-      "|__   __|           | |   | (_)     | |   | |   \n" +
-      "   | | ___  _ __ ___| |__ | |_  __ _| |__ | |_  \n" +
-      "   | |/ _ | '__/ __| '_ | | |/ _` | '_ | __| \n" +
-      "   | | (_) | | | (__| | | | | | (_| | | | | |_  \n" +
-      "   |_|___/|_|  ___|_| |_|_|_|__, |_| |_|__| \n" +
-      "								__/ |            \n" +
-      "							   |___/             \n";
+    " _     _       _     _       _   _ _   _ ____   \n"+
+    "| |   (_) __ _| |__ | |_ ___| | | | | | |  _ \  \n"+
+    "| |   | |/ _` | '_ \| __/ __| |_| | | | | | | | \n"+
+    "| |___| | (_| | | | | |_\__ \  _  | |_| | |_| | \n"+
+    "|_____|_|\__, |_| |_|\__|___/_| |_|\___/|____/  \n"+
+    "         |___/                                 \n";
 	  console.log( "%c" + title, "color:orange" )
 	}
 
+
   static async addlightshudButtons(app, html, data) {
-	  LightsHUD.log(data)
+
+
+
     // Visually and functionally enable a lightshud button
     function enablelightshudButton(tbutton) {
       // Remove the disabled status, if any
       tbutton.find("i").removeClass("fa-disabled");
-
       // Install a click handler if one is not already bound
       if (!tbutton.hasClass("clickBound")) {
         tbutton.click(async (ev) => onButtonClick(ev, tbutton));
@@ -123,9 +125,6 @@ class LightsHUD {
           let nBright = game.settings.get("lightshud", "lightBrightRadius");
           let nDim = game.settings.get("lightshud", "lightDimRadius");
           let nType = game.settings.get("lightshud", "lightType");
-          LightsHUD.log(nBright);
-          LightsHUD.log(nDim);
-          LightsHUD.log(nType);
           switch (nType) {
             case "Type0":
               updateTokenLighting(
@@ -694,7 +693,6 @@ class LightsHUD {
           }
         }
       }
-      LightsHUD.log(app.object);
     }
 
     // Update the relevant light parameters of a token
@@ -777,25 +775,11 @@ class LightsHUD {
           tokenData.light.animation.intensity
         )
       );
-
-      /*
-			Promise.all(promises).then(_ => {
-				lightshud.log("Stored brightRadius:" + app.object.document.getFlag("lightshud", "InitialBrightRadius"));
-				lightshud.log("Stored dimRadius:" + app.object.document.getFlag("lightshud", "InitialDimRadius"));
-				lightshud.log("Stored lightColor:" + app.object.document.getFlag("lightshud", "InitialLightColor"));
-				lightshud.log("Stored lightAlpha:" + app.object.document.getFlag("lightshud", "InitialColorIntensity"));
-				lightshud.log("Stored light.angle:" + app.object.document.getFlag("lightshud", "Initiallight.angle"));
-				lightshud.log("Stored animation.type:" + app.object.document.getFlag("lightshud", "InitialAnimationType"));
-				lightshud.log("Stored animation.speed:" + app.object.document.getFlag("lightshud", "InitialAnimationSpeed"));
-				lightshud.log("Stored animation.intensity:" + app.object.document.getFlag("lightshud", "InitialAnimationIntensity"));
-			});*/
+ 
       return Promise.all(promises);
     }
 
     // Define all three buttons
-    //let tbuttonLight   = $(`<div class="control-icon lightshud"><i class="fas fa-sun"></i></div>`);
-    //let tbuttonLantern = $(`<div class="control-icon lightshud"><i class="fas fa-lightbulb"></i></div>`);
-    //let tbuttonTorch   = $(`<div class="control-icon lightshud"><i class="fas fa-fire"></i></div>`);
     let tbuttonLight = $(
       `<div class="control-icon lightshud" title="Toggle Light Spell"><i class="fas fa-sun"></i></div>`
     );
@@ -811,16 +795,7 @@ class LightsHUD {
 
     // Create the column
     let buttonsdiv = $(`<div class="col lightshud-column-${position}"></div>`);
-
-    /*
-		// Wrap the previous icons
-		let newdiv = '<div class="lightshud-container"></div>';
-		html.find('.col.left').wrap(newdiv);
-
-		// Add the column
-		html.find('.col.left').before(buttonsdiv);
-*/
-
+ 
     // Wrap the previous icons
     let newdiv = '<div class="lightshud-container"></div>';
     html.find(".col.left").before(newdiv);
@@ -830,7 +805,6 @@ class LightsHUD {
 
     // Get the status of the three types of lights
     let statusLight = app.object.document.getFlag("lightshud", "statusLight");
-    LightsHUD.log(statusLight);
     if (statusLight == undefined || statusLight == null) {
       statusLight = false;
       await app.object.document.setFlag("lightshud", "statusLight", false);
@@ -839,20 +813,15 @@ class LightsHUD {
       "lightshud",
       "statusLantern"
     );
-    LightsHUD.log(statusLantern);
     if (statusLantern == undefined || statusLantern == null) {
       statusLantern = false;
       await app.object.document.setFlag("lightshud", "statusLantern", false);
     }
     let statusTorch = app.object.document.getFlag("lightshud", "statusTorch");
-    LightsHUD.log(statusTorch);
     if (statusTorch == undefined || statusTorch == null) {
       statusTorch = false;
       await app.object.document.setFlag("lightshud", "statusTorch", false);
     }
-    LightsHUD.log(statusLight);
-    LightsHUD.log(statusLantern);
-    LightsHUD.log(statusTorch);
 
     // Initial button state when the HUD comes up
     if (statusLight) tbuttonLight.addClass("active");
@@ -882,9 +851,6 @@ class LightsHUD {
       } else enableRelevantButtons();
     } else {
       // If no permission exists, disable all the buttons
-      //tbuttonLight.find('i').addClass('fa-disabled');
-      //tbuttonLantern.find('i').addClass('fa-disabled');
-      //tbuttonTorch.find('i').addClass('fa-disabled');
       disablelightshudButton(tbuttonLight);
       disablelightshudButton(tbuttonLantern);
       disablelightshudButton(tbuttonTorch);
@@ -982,7 +948,8 @@ class LightsHUD {
   }
 
   static log(data) {
-    console.log("lightshud | ", data);
+    if (this.debug())
+      console.log("lightshud | ", data);
   }
 
   static async handleSocketRequest(req) {
@@ -1000,7 +967,6 @@ class LightsHUD {
               tok.light.dim === 20 &&
               tok.light.bright === 10
             ) {
-              //let dltok = canvas.tokens.get(tok._id);
               dltoks.push(scn.getEmbeddedEntity("Token", tok._id)._id);
             }
           });
@@ -1009,6 +975,17 @@ class LightsHUD {
       }
     }
   }
+
+  static debug(){
+    let isDebug = game.settings.get("lightshud", "debug");
+      if (isDebug)
+        CONFIG.debug.hooks = true;
+      if (!isDebug)
+        CONFIG.debug.hooks = false;
+
+      return isDebug;
+  }
+
 }
 
 
@@ -1033,9 +1010,6 @@ Hooks.on("ready", () => {
   });
 });
 Hooks.once("init", () => {
-
-	CONFIG.debug.hooks = true;
-
   game.settings.register("lightshud", "position", {
     name: game.i18n.localize("lightshud.position.name"),
     hint: game.i18n.localize("lightshud.position.hint"),
@@ -1465,6 +1439,18 @@ Hooks.once("init", () => {
       type: String,
     });
   }
-});
+  game.settings.register("lightshud", "debug", {
+    name: "Debug",
+    hint: "Enable Debug.",
+    scope: "world",
+    config: true,
+    restricted: true,
+    type: Boolean,
+    default: false
+    });
 
-LightsHUD.clBanner();
+  LightsHUD.debug();
+  LightsHUD.clBanner();
+  });
+
+  
