@@ -93,8 +93,8 @@
 	"LightsHUD.lanternType.customAnimationSpeed.hint": "Choose the animation speed of the custom lantern.",
 	"LightsHUD.lanternType.customAnimationIntensity.name": "Custom Lantern Animation Intensity",
 	"LightsHUD.lanternType.customAnimationIntensity.hint": "Choose the animation intensity of the custom lantern.",
-	"LightsHUD.nameConsumableTorch.name": "Consumable Item for Lantern",
-	"LightsHUD.nameConsumableTorch.hint": "Name of the inventory item to check and potentially consume when a lantern is lit.",
+	"LightsHUD.lanternType.nameConsumableTorch.name": "Consumable Item for Lantern",
+	"LightsHUD.lanternType.nameConsumableTorch.hint": "Name of the inventory item to check and potentially consume when a lantern is lit.",
 
 	"LightsHUD.torchBrightRadius.name": "Torch: Bright Light Radius",
 	"LightsHUD.torchBrightRadius.hint": "Torch: How many grid units of bright light to emit.",
@@ -123,6 +123,6 @@
 	"LightsHUD.torchType.customAnimationSpeed.hint": "Choose the animation speed of the custom torch.",
 	"LightsHUD.torchType.customAnimationIntensity.name": "Custom Torch Animation Intensity",
 	"LightsHUD.torchType.customAnimationIntensity.hint": "Choose the animation intensity of the custom torch.",
-	"LightsHUD.nameConsumableTorch.name": "Consumable Item for Torch",
-	"LightsHUD.nameConsumableTorch.hint": "Name of the inventory item to check and potentially consume when a torch is lit."
+	"LightsHUD.torchType.nameConsumableTorch.name": "Consumable Item for Torch",
+	"LightsHUD.torchType.nameConsumableTorch.hint": "Name of the inventory item to check and potentially consume when a torch is lit."
 }
