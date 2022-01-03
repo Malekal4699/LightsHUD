@@ -1,6 +1,6 @@
 {
 	"I18N.LANGUAGE": "Français",
-	"I18N.MAINTAINERS": ["PhilippeK"],
+	"I18N.MAINTAINERS": ["PhilippeK/Sasmira"],
 
 	"LightsHUD.position.name": "Position par rapport au token",
 	"LightsHUD.position.hint": "Dequel côté du token doivent apparaître les icones?",
@@ -13,10 +13,25 @@
 	"LightsHUD.playerActivation.hint": "Autoriser les joueurs à allumer leurs propres torches et lumières.",
 	"LightsHUD.checkAvailability.name": "Vérification de la Disponibilité",
 	"LightsHUD.checkAvailability.hint": "Vérifier que les joueurs ont des torches dans leur inventaire ou la capacité de lancer des sorts de lumière.",
-	"LightsHUD.consumeItem.name": "Consommer l'Ojet",
+	"LightsHUD.consumeItem.name": "Consommer l'objet",
 	"LightsHUD.consumeItem.hint": "Effectivement enlver un objet de l'inventaire quand la lumière est activée.",
 	"LightsHUD.dmAsPlayer.name": "DM Vérifier/Utilise comme Joueur",
 	"LightsHUD.dmAsPlayer.hint": "Si actif, le DM vérifie la disponibilité des sources de lumière pour le joueur sélectionné et utilise son inventaire.",
+
+	"LightsHUD.animationType.none": "Aucune",
+	"LightsHUD.animationType.torch": "Torche",
+	"LightsHUD.animationType.pulse": "Pulsation",
+	"LightsHUD.animationType.chroma": "Chroma",
+	"LightsHUD.animationType.wave": "Onde pulsante",
+	"LightsHUD.animationType.fog": "Brouillard tourbillonnant",
+	"LightsHUD.animationType.sunburst": "Rayonnement solaire",
+	"LightsHUD.animationType.dome": "Dôme de lumière",
+	"LightsHUD.animationType.emanation": "Emanation mystérieuse",
+	"LightsHUD.animationType.hexa": "Dôme hexagonal",
+	"LightsHUD.animationType.ghost": "Lumière fantomatique",
+	"LightsHUD.animationType.energy": "Champ énergétique",
+	"LightsHUD.animationType.roiling": "Masse bouillonnante",
+	"LightsHUD.animationType.hole": "Trou noir",
 
 	"LightsHUD.lightBrightRadius.name": "Sort de Lumière: Portée Lumière Vive",
 	"LightsHUD.lightBrightRadius.hint": "Sort de Lumière: Détermine l'étendue (en unité de grille) de la lumière vive émise.",
@@ -41,7 +56,6 @@
 	"LightsHUD.lightType.type14": "14 - Vert Fantomatique",
 	"LightsHUD.lightType.type15": "15 - Vert Ondulant",
 	"LightsHUD.lightType.typeC": "C - Custom - Utilise les Paramètres Ci-dessous",
-	
 	"LightsHUD.lightType.customColor.name": "Lumière - Custom: Couleur Sort",
 	"LightsHUD.lightType.customColor.hint": "Choisir la couleur du sort de lumière custom.",
 	"LightsHUD.lightType.customIntensity.name": "Lumière - Custom: Intensité Couleur",
@@ -70,7 +84,6 @@
 	"LightsHUD.lanternType.type8": "8 - Lanterne Sourde, Standard",
 	"LightsHUD.lanternType.type9": "9 - Lanterne Sourde, Faible",
 	"LightsHUD.lanternType.typeC": "C - Custom - Utilise les Paramètres Ci-dessous",
-
 	"LightsHUD.lanternType.customColor.name": "Lanterne - Custom: Couleur",
 	"LightsHUD.lanternType.customColor.hint": "Choisir la couleur de la lanterne custom.",
 	"LightsHUD.lanternType.customIntensity.name": "Lanterne - Custom: Intensité Couleur",
@@ -81,7 +94,6 @@
 	"LightsHUD.lanternType.customAnimationSpeed.hint": "Choisir la vitesse d'animation de la lanterne custom.",
 	"LightsHUD.lanternType.customAnimationIntensity.name": "Lanterne - Custom: Intensité Animation",
 	"LightsHUD.lanternType.customAnimationIntensity.hint": "Choisir l'intensité d'animation de la lanterne custom.",
-
 	"LightsHUD.lanternType.nameConsumableLantern.name": "Object Consommable pour Lanterne",
 	"LightsHUD.lanternType.nameConsumableLantern.hint": "Nom de l'objet à vérifier puis éventuellement consommer lors qu'une lanterne est allumée.",
 
