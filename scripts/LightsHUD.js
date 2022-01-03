@@ -34,12 +34,12 @@ class LightsHUD {
 	}
 
 
-  static async addlightshudButtons(app, html, data) {
+  static async addLightsHUDButtons(app, html, data) {
 
 
 
-    // Visually and functionally enable a lightshud button
-    function enablelightshudButton(tbutton) {
+    // Visually and functionally enable a LightsHUD button
+    function enableLightsHUDButton(tbutton) {
       // Remove the disabled status, if any
       tbutton.find("i").removeClass("fa-disabled");
       // Install a click handler if one is not already bound
@@ -49,8 +49,8 @@ class LightsHUD {
       }
     }
 
-    // Visually and functionally disable a lightshud button
-    function disablelightshudButton(tbutton) {
+    // Visually and functionally disable a LightsHUD button
+    function disableLightsHUDButton(tbutton) {
       tbutton.find("i").addClass("fa-disabled");
       tbutton.off("click");
       tbutton.removeClass("clickBound");
@@ -63,11 +63,11 @@ class LightsHUD {
       let noCheck = game.system.id !== "dnd5e";
       if (!noCheck)
         noCheck =
-          (data.isGM && !game.settings.get("lightshud", "dmAsPlayer")) ||
-          !game.settings.get("lightshud", "checkAvailability");
+          (data.isGM && !game.settings.get("LightsHUD", "dmAsPlayer")) ||
+          !game.settings.get("LightsHUD", "checkAvailability");
 
-      if (noCheck || canCastLight()) enablelightshudButton(tbuttonLight);
-      else disablelightshudButton(tbuttonLight);
+      if (noCheck || canCastLight()) enableLightsHUDButton(tbuttonLight);
+      else disableLightsHUDButton(tbuttonLight);
 
       if (
         noCheck ||
@@ -75,12 +75,12 @@ class LightsHUD {
           (hasItemInInventory("Lantern, Hooded") ||
             hasItemInInventory("Lantern, Bullseye")))
       )
-        enablelightshudButton(tbuttonLantern);
-      else disablelightshudButton(tbuttonLantern);
+        enableLightsHUDButton(tbuttonLantern);
+      else disableLightsHUDButton(tbuttonLantern);
 
       if (noCheck || hasItemInInventory("Torch"))
-        enablelightshudButton(tbuttonTorch);
-      else disablelightshudButton(tbuttonTorch);
+        enableLightsHUDButton(tbuttonTorch);
+      else disableLightsHUDButton(tbuttonTorch);
     }
 
     async function onButtonClick(ev, tbutton) {
@@ -94,37 +94,37 @@ class LightsHUD {
         if (statusLight) {
           // The token has the light spell on
           statusLight = false;
-          await tokenD.setFlag("lightshud", "statusLight", false);
+          await tokenD.setFlag("LightsHUD", "statusLight", false);
           tbuttonLight.removeClass("active");
           // Light is inactive, enable the relevant light sources according to parameters
           enableRelevantButtons();
           // Restore the initial light source
           updateTokenLighting(
-            tokenD.getFlag("lightshud", "InitialBrightRadius"),
-            tokenD.getFlag("lightshud", "InitialDimRadius"),
-            tokenD.getFlag("lightshud", "InitialLightColor"),
-            tokenD.getFlag("lightshud", "InitialColorIntensity"),
-            tokenD.getFlag("lightshud", "Initiallight.angle"),
-            tokenD.getFlag("lightshud", "InitialAnimationType"),
-            tokenD.getFlag("lightshud", "InitialAnimationSpeed"),
-            tokenD.getFlag("lightshud", "InitialAnimationIntensity")
+            tokenD.getFlag("LightsHUD", "InitialBrightRadius"),
+            tokenD.getFlag("LightsHUD", "InitialDimRadius"),
+            tokenD.getFlag("LightsHUD", "InitialLightColor"),
+            tokenD.getFlag("LightsHUD", "InitialColorIntensity"),
+            tokenD.getFlag("LightsHUD", "Initiallight.angle"),
+            tokenD.getFlag("LightsHUD", "InitialAnimationType"),
+            tokenD.getFlag("LightsHUD", "InitialAnimationSpeed"),
+            tokenD.getFlag("LightsHUD", "InitialAnimationIntensity")
           );
         } else {
           // The token does not have the light spell on
           statusLight = true;
-          await tokenD.setFlag("lightshud", "statusLight", true);
+          await tokenD.setFlag("LightsHUD", "statusLight", true);
           tbuttonLight.addClass("active");
           // Light is active, disable the other light sources
-          disablelightshudButton(tbuttonLantern);
-          disablelightshudButton(tbuttonTorch);
+          disableLightsHUDButton(tbuttonLantern);
+          disableLightsHUDButton(tbuttonTorch);
           // Store the lighting for later restoration
           await storeTokenLighting();
           // Enable the Light Source according to the type
           // "torch" / "pulse" / "chroma" / "wave" / "fog" / "sunburst" / "dome"
           // "emanation" / "hexa" / "ghost" / "energy" / "roiling" / "hole"
-          let nBright = game.settings.get("lightshud", "lightBrightRadius");
-          let nDim = game.settings.get("lightshud", "lightDimRadius");
-          let nType = game.settings.get("lightshud", "lightType");
+          let nBright = game.settings.get("LightsHUD", "lightBrightRadius");
+          let nDim = game.settings.get("LightsHUD", "lightDimRadius");
+          let nType = game.settings.get("LightsHUD", "lightType");
           switch (nType) {
             case "Type0":
               updateTokenLighting(
@@ -322,13 +322,13 @@ class LightsHUD {
               updateTokenLighting(
                 nBright,
                 nDim,
-                game.settings.get("lightshud", "customLightColor"),
-                game.settings.get("lightshud", "customLightColorIntensity"),
+                game.settings.get("LightsHUD", "customLightColor"),
+                game.settings.get("LightsHUD", "customLightColorIntensity"),
                 360,
-                game.settings.get("lightshud", "customlight.animationType"),
-                game.settings.get("lightshud", "customlight.animationSpeed"),
+                game.settings.get("LightsHUD", "customlight.animationType"),
+                game.settings.get("LightsHUD", "customlight.animationSpeed"),
                 game.settings.get(
-                  "lightshud",
+                  "LightsHUD",
                   "customlight.animationIntensity"
                 )
               );
@@ -343,20 +343,20 @@ class LightsHUD {
           // The token has the light spell on
 
           statusLantern = false;
-          await tokenD.setFlag("lightshud", "statusLantern", false);
+          await tokenD.setFlag("LightsHUD", "statusLantern", false);
           tbuttonLantern.removeClass("active");
           // Lantern is inactive, enable the relevant light sources according to parameters
           enableRelevantButtons();
           // Restore the initial light source
           updateTokenLighting(
-            tokenD.getFlag("lightshud", "InitialBrightRadius"),
-            tokenD.getFlag("lightshud", "InitialDimRadius"),
-            tokenD.getFlag("lightshud", "InitialLightColor"),
-            tokenD.getFlag("lightshud", "InitialColorIntensity"),
-            tokenD.getFlag("lightshud", "Initiallight.angle"),
-            tokenD.getFlag("lightshud", "InitialAnimationType"),
-            tokenD.getFlag("lightshud", "InitialAnimationSpeed"),
-            tokenD.getFlag("lightshud", "InitialAnimationIntensity")
+            tokenD.getFlag("LightsHUD", "InitialBrightRadius"),
+            tokenD.getFlag("LightsHUD", "InitialDimRadius"),
+            tokenD.getFlag("LightsHUD", "InitialLightColor"),
+            tokenD.getFlag("LightsHUD", "InitialColorIntensity"),
+            tokenD.getFlag("LightsHUD", "Initiallight.angle"),
+            tokenD.getFlag("LightsHUD", "InitialAnimationType"),
+            tokenD.getFlag("LightsHUD", "InitialAnimationSpeed"),
+            tokenD.getFlag("LightsHUD", "InitialAnimationIntensity")
           );
         } else {
           // The token does not have the lantern on
@@ -364,20 +364,20 @@ class LightsHUD {
           // Checks whether the character can consume an oil flask
           if (consumeItem("Oil (flask)")) {
             statusLantern = true;
-            await tokenD.setFlag("lightshud", "statusLantern", true);
+            await tokenD.setFlag("LightsHUD", "statusLantern", true);
             tbuttonLantern.addClass("active");
             // Lantern is active, disable the other light sources
-            disablelightshudButton(tbuttonLight);
-            disablelightshudButton(tbuttonTorch);
+            disableLightsHUDButton(tbuttonLight);
+            disableLightsHUDButton(tbuttonTorch);
             // Store the lighting for later restoration
             await storeTokenLighting();
             // Enable the Lantern Source according to the type
             let nBright = game.settings.get(
-              "lightshud",
+              "LightsHUD",
               "lanternBrightRadius"
             );
-            let nDim = game.settings.get("lightshud", "lanternDimRadius");
-            let nType = game.settings.get("lightshud", "lanternType");
+            let nDim = game.settings.get("LightsHUD", "lanternDimRadius");
+            let nType = game.settings.get("LightsHUD", "lanternType");
             switch (nType) {
               case "Type0":
                 updateTokenLighting(
@@ -476,19 +476,19 @@ class LightsHUD {
                 updateTokenLighting(
                   nBright,
                   nDim,
-                  game.settings.get("lightshud", "customLanternColor"),
+                  game.settings.get("LightsHUD", "customLanternColor"),
                   game.settings.get(
-                    "lightshud",
+                    "LightsHUD",
                     "customLanternColorIntensity"
                   ),
                   360,
-                  game.settings.get("lightshud", "customLanternAnimationType"),
+                  game.settings.get("LightsHUD", "customLanternAnimationType"),
                   game.settings.get(
-                    "lightshud",
+                    "LightsHUD",
                     "customLanternAnimationSpeed"
                   ),
                   game.settings.get(
-                    "lightshud",
+                    "LightsHUD",
                     "customLanternAnimationIntensity"
                   )
                 );
@@ -501,7 +501,7 @@ class LightsHUD {
               speaker: game.actors.get(data.actorId),
               content: "No Oil (flask) in Inventory !",
             });
-            disablelightshudButton(tbuttonLantern);
+            disableLightsHUDButton(tbuttonLantern);
           }
         }
         // Or are we dealing with the Torch Button
@@ -512,21 +512,21 @@ class LightsHUD {
           // The token has the torch on
 
           statusTorch = false;
-          await tokenD.setFlag("lightshud", "statusTorch", false);
+          await tokenD.setFlag("LightsHUD", "statusTorch", false);
           tbuttonTorch.removeClass("active");
           // Torch is inactive, enable the relevant light sources according to parameters
           enableRelevantButtons();
           // Restore the initial light source
 
           updateTokenLighting(
-            tokenD.getFlag("lightshud", "InitialBrightRadius"),
-            tokenD.getFlag("lightshud", "InitialDimRadius"),
-            tokenD.getFlag("lightshud", "InitialLightColor"),
-            tokenD.getFlag("lightshud", "InitialColorIntensity"),
-            tokenD.getFlag("lightshud", "Initiallight.angle"),
-            tokenD.getFlag("lightshud", "InitialAnimationType"),
-            tokenD.getFlag("lightshud", "InitialAnimationSpeed"),
-            tokenD.getFlag("lightshud", "InitialAnimationIntensity")
+            tokenD.getFlag("LightsHUD", "InitialBrightRadius"),
+            tokenD.getFlag("LightsHUD", "InitialDimRadius"),
+            tokenD.getFlag("LightsHUD", "InitialLightColor"),
+            tokenD.getFlag("LightsHUD", "InitialColorIntensity"),
+            tokenD.getFlag("LightsHUD", "Initiallight.angle"),
+            tokenD.getFlag("LightsHUD", "InitialAnimationType"),
+            tokenD.getFlag("LightsHUD", "InitialAnimationSpeed"),
+            tokenD.getFlag("LightsHUD", "InitialAnimationIntensity")
           );
         } else {
           // The token does not have the torch on
@@ -534,17 +534,17 @@ class LightsHUD {
           // Checks whether the character can consume a torch
           if (consumeItem("Torch")) {
             statusTorch = true;
-            await tokenD.setFlag("lightshud", "statusTorch", true);
+            await tokenD.setFlag("LightsHUD", "statusTorch", true);
             tbuttonTorch.addClass("active");
             // Torch is active, disable the other light sources
-            disablelightshudButton(tbuttonLight);
-            disablelightshudButton(tbuttonLantern);
+            disableLightsHUDButton(tbuttonLight);
+            disableLightsHUDButton(tbuttonLantern);
             // Store the lighting for later restoration
             await storeTokenLighting();
             // Enable the Torch Source according to the type
-            let nBright = game.settings.get("lightshud", "torchBrightRadius");
-            let nDim = game.settings.get("lightshud", "torchDimRadius");
-            let nType = game.settings.get("lightshud", "torchType");
+            let nBright = game.settings.get("LightsHUD", "torchBrightRadius");
+            let nDim = game.settings.get("LightsHUD", "torchDimRadius");
+            let nType = game.settings.get("LightsHUD", "torchType");
             switch (nType) {
               case "Type0":
                 updateTokenLighting(
@@ -670,13 +670,13 @@ class LightsHUD {
                 updateTokenLighting(
                   nBright,
                   nDim,
-                  game.settings.get("lightshud", "customTorchColor"),
-                  game.settings.get("lightshud", "customTorchColorIntensity"),
+                  game.settings.get("LightsHUD", "customTorchColor"),
+                  game.settings.get("LightsHUD", "customTorchColorIntensity"),
                   360,
-                  game.settings.get("lightshud", "customTorchAnimationType"),
-                  game.settings.get("lightshud", "customTorchAnimationSpeed"),
+                  game.settings.get("LightsHUD", "customTorchAnimationType"),
+                  game.settings.get("LightsHUD", "customTorchAnimationSpeed"),
                   game.settings.get(
-                    "lightshud",
+                    "LightsHUD",
                     "customTorchAnimationIntensity"
                   )
                 );
@@ -689,7 +689,7 @@ class LightsHUD {
               speaker: game.actors.get(data.actorId),
               content: "No Torch in Inventory !",
             });
-            disablelightshudButton(tbuttonTorch);
+            disableLightsHUDButton(tbuttonTorch);
           }
         }
       }
@@ -719,21 +719,21 @@ class LightsHUD {
       const tokenFlags = app.object.document;
       promises.push(
         tokenFlags.setFlag(
-          "lightshud",
+          "LightsHUD",
           "InitialBrightRadius",
           tokenData.light.bright
         )
       );
       promises.push(
         tokenFlags.setFlag(
-          "lightshud",
+          "LightsHUD",
           "InitialDimRadius",
           tokenData.light.dim
         )
       );
       promises.push(
         tokenFlags.setFlag(
-          "lightshud",
+          "LightsHUD",
           "InitialLightColor",
           tokenData.lightColor
             ? tokenData.lightColor.toString(16).padStart(6, 0)
@@ -742,35 +742,35 @@ class LightsHUD {
       );
       promises.push(
         tokenFlags.setFlag(
-          "lightshud",
+          "LightsHUD",
           "InitialColorIntensity",
           Math.sqrt(tokenData.lightAlpha)
         )
       );
       promises.push(
         tokenFlags.setFlag(
-          "lightshud",
+          "LightsHUD",
           "Initiallight.angle",
           tokenData.light.angle
         )
       );
       promises.push(
         tokenFlags.setFlag(
-          "lightshud",
+          "LightsHUD",
           "InitialAnimationType",
           tokenData.light.animation.type ?? null
         )
       );
       promises.push(
         tokenFlags.setFlag(
-          "lightshud",
+          "LightsHUD",
           "InitialAnimationSpeed",
           tokenData.light.animation.speed
         )
       );
       promises.push(
         tokenFlags.setFlag(
-          "lightshud",
+          "LightsHUD",
           "InitialAnimationIntensity",
           tokenData.light.animation.intensity
         )
@@ -781,46 +781,47 @@ class LightsHUD {
 
     // Define all three buttons
     let tbuttonLight = $(
-      `<div class="control-icon lightshud" title="Toggle Light Spell"><i class="fas fa-sun"></i></div>`
+      `<div class="control-icon LightsHUD" title="Toggle Light Spell"><i class="fas fa-sun"></i></div>`
     );
     let tbuttonLantern = $(
-      `<div class="control-icon lightshud" title="Toggle Lantern"><i class="fas fa-lightbulb"></i></div>`
+      `<div class="control-icon LightsHUD" title="Toggle Lantern"><i class="fas fa-lightbulb"></i></div>`
     );
     let tbuttonTorch = $(
-      `<div class="control-icon lightshud" title="Toggle Torch"><i class="fas fa-fire"></i></div>`
+      `<div class="control-icon LightsHUD" title="Toggle Torch"><i class="fas fa-fire"></i></div>`
     );
 
     // Get the position of the column
-    let position = game.settings.get("lightshud", "position");
+    let position = game.settings.get("LightsHUD", "position");
 
     // Create the column
-    let buttonsdiv = $(`<div class="col lightshud-column-${position}"></div>`);
+    let buttonsdiv = $(`<div class="col LightsHUD-column-${position}"></div>`);
  
     // Wrap the previous icons
-    let newdiv = '<div class="lightshud-container"></div>';
+    let newdiv = '<div class="LightsHUD-container"></div>';
     html.find(".col.left").before(newdiv);
 
     // Add the column
-    html.find(".lightshud-container").prepend(buttonsdiv);
+    html.find(".LightsHUD-container").prepend(buttonsdiv);
 
     // Get the status of the three types of lights
-    let statusLight = app.object.document.getFlag("lightshud", "statusLight");
+    LightsHUD.log(app.object.document)
+    let statusLight = app.object.document.getFlag("LightsHUD", "statusLight");
     if (statusLight == undefined || statusLight == null) {
       statusLight = false;
-      await app.object.document.setFlag("lightshud", "statusLight", false);
+      await app.object.document.setFlag("LightsHUD", "statusLight", false);
     }
     let statusLantern = app.object.document.getFlag(
-      "lightshud",
+      "LightsHUD",
       "statusLantern"
     );
     if (statusLantern == undefined || statusLantern == null) {
       statusLantern = false;
-      await app.object.document.setFlag("lightshud", "statusLantern", false);
+      await app.object.document.setFlag("LightsHUD", "statusLantern", false);
     }
-    let statusTorch = app.object.document.getFlag("lightshud", "statusTorch");
+    let statusTorch = app.object.document.getFlag("LightsHUD", "statusTorch");
     if (statusTorch == undefined || statusTorch == null) {
       statusTorch = false;
-      await app.object.document.setFlag("lightshud", "statusTorch", false);
+      await app.object.document.setFlag("LightsHUD", "statusTorch", false);
     }
 
     // Initial button state when the HUD comes up
@@ -830,30 +831,30 @@ class LightsHUD {
     // Check the permissions to manage the lights
     if (
       data.isGM === true ||
-      game.settings.get("lightshud", "playerActivation") === true
+      game.settings.get("LightsHUD", "playerActivation") === true
     ) {
       // If the a specific light is on, enable only that light otherwise enable all three of them
       if (statusLight) {
-        enablelightshudButton(tbuttonLight);
-        disablelightshudButton(tbuttonLantern);
-        disablelightshudButton(tbuttonTorch);
+        enableLightsHUDButton(tbuttonLight);
+        disableLightsHUDButton(tbuttonLantern);
+        disableLightsHUDButton(tbuttonTorch);
         tbuttonLight.addClass("active");
       } else if (statusLantern) {
-        disablelightshudButton(tbuttonLight);
-        enablelightshudButton(tbuttonLantern);
-        disablelightshudButton(tbuttonTorch);
+        disableLightsHUDButton(tbuttonLight);
+        enableLightsHUDButton(tbuttonLantern);
+        disableLightsHUDButton(tbuttonTorch);
         tbuttonLantern.addClass("active");
       } else if (statusTorch) {
-        disablelightshudButton(tbuttonLight);
-        disablelightshudButton(tbuttonLantern);
-        enablelightshudButton(tbuttonTorch);
+        disableLightsHUDButton(tbuttonLight);
+        disableLightsHUDButton(tbuttonLantern);
+        enableLightsHUDButton(tbuttonTorch);
         tbuttonTorch.addClass("active");
       } else enableRelevantButtons();
     } else {
       // If no permission exists, disable all the buttons
-      disablelightshudButton(tbuttonLight);
-      disablelightshudButton(tbuttonLantern);
-      disablelightshudButton(tbuttonTorch);
+      disableLightsHUDButton(tbuttonLight);
+      disableLightsHUDButton(tbuttonLantern);
+      disableLightsHUDButton(tbuttonTorch);
     }
 
     // Returns true if the character can use the Light spell
@@ -890,9 +891,9 @@ class LightsHUD {
       let consume = game.system.id !== "dnd5e";
       if (!consume)
         consume =
-          (data.isGM && !game.settings.get("lightshud", "dmAsPlayer")) ||
-          !game.settings.get("lightshud", "checkAvailability") ||
-          !game.settings.get("lightshud", "consumeItem");
+          (data.isGM && !game.settings.get("LightsHUD", "dmAsPlayer")) ||
+          !game.settings.get("LightsHUD", "checkAvailability") ||
+          !game.settings.get("LightsHUD", "consumeItem");
       if (!consume) {
         let actor = game.actors.get(data.actorId);
         if (actor === undefined) return false;
@@ -942,14 +943,14 @@ class LightsHUD {
     }
 
     // Finally insert the buttons in the column
-    html.find(".col.lightshud-column-" + position).prepend(tbuttonTorch);
-    html.find(".col.lightshud-column-" + position).prepend(tbuttonLantern);
-    html.find(".col.lightshud-column-" + position).prepend(tbuttonLight);
+    html.find(".col.LightsHUD-column-" + position).prepend(tbuttonTorch);
+    html.find(".col.LightsHUD-column-" + position).prepend(tbuttonLantern);
+    html.find(".col.LightsHUD-column-" + position).prepend(tbuttonLight);
   }
 
   static log(data) {
     if (this.debug())
-      console.log("lightshud | ", data);
+      console.log("LightsHUD | ", data);
   }
 
   static async handleSocketRequest(req) {
@@ -977,7 +978,7 @@ class LightsHUD {
   }
 
   static debug(){
-    let isDebug = game.settings.get("lightshud", "debug");
+    let isDebug = game.settings.get("LightsHUD", "debug");
       if (isDebug)
         CONFIG.debug.hooks = true;
       if (!isDebug)
@@ -991,17 +992,17 @@ class LightsHUD {
 
 Hooks.on("ready", () => {
   Hooks.on("renderTokenHUD", (app, html, data) => {
-    LightsHUD.addlightshudButtons(app, html, data);
+    LightsHUD.addLightsHUDButtons(app, html, data);
   });
   Hooks.on("renderControlsReference", (app, html, data) => {
     html
       .find("div")
       .first()
       .append(
-        '<h3>lightshud</h3><ol class="hotkey-list"><li><h4>' +
-          game.i18n.localize("lightshud.turnOffAllLights") +
+        '<h3>LightsHUD</h3><ol class="hotkey-list"><li><h4>' +
+          game.i18n.localize("LightsHUD.turnOffAllLights") +
           '</h4><div class="keys">' +
-          game.i18n.localize("lightshud.holdCtrlOnClick") +
+          game.i18n.localize("LightsHUD.holdCtrlOnClick") +
           "</div></li></ol>"
       );
   });
@@ -1010,48 +1011,48 @@ Hooks.on("ready", () => {
   });
 });
 Hooks.once("init", () => {
-  game.settings.register("lightshud", "position", {
-    name: game.i18n.localize("lightshud.position.name"),
-    hint: game.i18n.localize("lightshud.position.hint"),
+  game.settings.register("LightsHUD", "position", {
+    name: game.i18n.localize("LightsHUD.position.name"),
+    hint: game.i18n.localize("LightsHUD.position.hint"),
     scope: "world",
     config: true,
     type: String,
     default: "left",
     choices: {
-      left: game.i18n.localize("lightshud.position.left"),
-      right: game.i18n.localize("lightshud.position.right"),
-      top: game.i18n.localize("lightshud.position.top"),
-      bottom: game.i18n.localize("lightshud.position.bottom"),
+      left: game.i18n.localize("LightsHUD.position.left"),
+      right: game.i18n.localize("LightsHUD.position.right"),
+      top: game.i18n.localize("LightsHUD.position.top"),
+      bottom: game.i18n.localize("LightsHUD.position.bottom"),
     },
   });
-  game.settings.register("lightshud", "playerActivation", {
-    name: game.i18n.localize("lightshud.playerActivation.name"),
-    hint: game.i18n.localize("lightshud.playerActivation.hint"),
+  game.settings.register("LightsHUD", "playerActivation", {
+    name: game.i18n.localize("LightsHUD.playerActivation.name"),
+    hint: game.i18n.localize("LightsHUD.playerActivation.hint"),
     scope: "world",
     config: true,
     default: true,
     type: Boolean,
   });
   if (game.system.id === "dnd5e") {
-    game.settings.register("lightshud", "checkAvailability", {
-      name: game.i18n.localize("lightshud.checkAvailability.name"),
-      hint: game.i18n.localize("lightshud.checkAvailability.hint"),
+    game.settings.register("LightsHUD", "checkAvailability", {
+      name: game.i18n.localize("LightsHUD.checkAvailability.name"),
+      hint: game.i18n.localize("LightsHUD.checkAvailability.hint"),
       scope: "world",
       config: true,
       default: true,
       type: Boolean,
     });
-    game.settings.register("lightshud", "consumeItem", {
-      name: game.i18n.localize("lightshud.consumeItem.name"),
-      hint: game.i18n.localize("lightshud.consumeItem.hint"),
+    game.settings.register("LightsHUD", "consumeItem", {
+      name: game.i18n.localize("LightsHUD.consumeItem.name"),
+      hint: game.i18n.localize("LightsHUD.consumeItem.hint"),
       scope: "world",
       config: true,
       default: true,
       type: Boolean,
     });
-    game.settings.register("lightshud", "dmAsPlayer", {
-      name: game.i18n.localize("lightshud.dmAsPlayer.name"),
-      hint: game.i18n.localize("lightshud.dmAsPlayer.hint"),
+    game.settings.register("LightsHUD", "dmAsPlayer", {
+      name: game.i18n.localize("LightsHUD.dmAsPlayer.name"),
+      hint: game.i18n.localize("LightsHUD.dmAsPlayer.hint"),
       scope: "world",
       config: true,
       default: false,
@@ -1059,61 +1060,61 @@ Hooks.once("init", () => {
     });
   }
   // Light Parameters
-  game.settings.register("lightshud", "lightBrightRadius", {
-    name: game.i18n.localize("lightshud.lightBrightRadius.name"),
-    hint: game.i18n.localize("lightshud.lightBrightRadius.hint"),
+  game.settings.register("LightsHUD", "lightBrightRadius", {
+    name: game.i18n.localize("LightsHUD.lightBrightRadius.name"),
+    hint: game.i18n.localize("LightsHUD.lightBrightRadius.hint"),
     scope: "world",
     config: true,
     default: 20,
     type: Number,
   });
-  game.settings.register("lightshud", "lightDimRadius", {
-    name: game.i18n.localize("lightshud.lightDimRadius.name"),
-    hint: game.i18n.localize("lightshud.lightDimRadius.hint"),
+  game.settings.register("LightsHUD", "lightDimRadius", {
+    name: game.i18n.localize("LightsHUD.lightDimRadius.name"),
+    hint: game.i18n.localize("LightsHUD.lightDimRadius.hint"),
     scope: "world",
     config: true,
     default: 40,
     type: Number,
   });
-  game.settings.register("lightshud", "lightType", {
-    name: game.i18n.localize("lightshud.lightType.name"),
-    hint: game.i18n.localize("lightshud.lightType.hint"),
+  game.settings.register("LightsHUD", "lightType", {
+    name: game.i18n.localize("LightsHUD.lightType.name"),
+    hint: game.i18n.localize("LightsHUD.lightType.hint"),
     scope: "world",
     config: true,
     type: String,
     default: "Type1",
     choices: {
-      Type0: game.i18n.localize("lightshud.lightType.type0"),
-      Type1: game.i18n.localize("lightshud.lightType.type1"),
-      Type2: game.i18n.localize("lightshud.lightType.type2"),
-      Type3: game.i18n.localize("lightshud.lightType.type3"),
-      Type4: game.i18n.localize("lightshud.lightType.type4"),
-      Type5: game.i18n.localize("lightshud.lightType.type5"),
-      Type6: game.i18n.localize("lightshud.lightType.type6"),
-      Type7: game.i18n.localize("lightshud.lightType.type7"),
-      Type8: game.i18n.localize("lightshud.lightType.type8"),
-      Type9: game.i18n.localize("lightshud.lightType.type9"),
-      Type10: game.i18n.localize("lightshud.lightType.type10"),
-      Type11: game.i18n.localize("lightshud.lightType.type11"),
-      Type12: game.i18n.localize("lightshud.lightType.type12"),
-      Type13: game.i18n.localize("lightshud.lightType.type13"),
-      Type14: game.i18n.localize("lightshud.lightType.type14"),
-      Type15: game.i18n.localize("lightshud.lightType.type15"),
-      TypeC: game.i18n.localize("lightshud.lightType.typeC"),
+      Type0: game.i18n.localize("LightsHUD.lightType.type0"),
+      Type1: game.i18n.localize("LightsHUD.lightType.type1"),
+      Type2: game.i18n.localize("LightsHUD.lightType.type2"),
+      Type3: game.i18n.localize("LightsHUD.lightType.type3"),
+      Type4: game.i18n.localize("LightsHUD.lightType.type4"),
+      Type5: game.i18n.localize("LightsHUD.lightType.type5"),
+      Type6: game.i18n.localize("LightsHUD.lightType.type6"),
+      Type7: game.i18n.localize("LightsHUD.lightType.type7"),
+      Type8: game.i18n.localize("LightsHUD.lightType.type8"),
+      Type9: game.i18n.localize("LightsHUD.lightType.type9"),
+      Type10: game.i18n.localize("LightsHUD.lightType.type10"),
+      Type11: game.i18n.localize("LightsHUD.lightType.type11"),
+      Type12: game.i18n.localize("LightsHUD.lightType.type12"),
+      Type13: game.i18n.localize("LightsHUD.lightType.type13"),
+      Type14: game.i18n.localize("LightsHUD.lightType.type14"),
+      Type15: game.i18n.localize("LightsHUD.lightType.type15"),
+      TypeC: game.i18n.localize("LightsHUD.lightType.typeC"),
     },
   });
-  game.settings.register("lightshud", "customLightColor", {
-    name: game.i18n.localize("lightshud.lightType.customColor.name"),
-    hint: game.i18n.localize("lightshud.lightType.customColor.hint"),
+  game.settings.register("LightsHUD", "customLightColor", {
+    name: game.i18n.localize("LightsHUD.lightType.customColor.name"),
+    hint: game.i18n.localize("LightsHUD.lightType.customColor.hint"),
     scope: "world",
     config: true,
     restricted: false,
     type: String,
     default: "#a2642a",
   });
-  game.settings.register("lightshud", "customLightColorIntensity", {
-    name: game.i18n.localize("lightshud.lightType.customIntensity.name"),
-    hint: game.i18n.localize("lightshud.lightType.customIntensity.hint"),
+  game.settings.register("LightsHUD", "customLightColorIntensity", {
+    name: game.i18n.localize("LightsHUD.lightType.customIntensity.name"),
+    hint: game.i18n.localize("LightsHUD.lightType.customIntensity.hint"),
     scope: "world",
     config: true,
     restricted: true,
@@ -1125,33 +1126,33 @@ Hooks.once("init", () => {
       max: 1,
     },
   });
-  game.settings.register("lightshud", "customlight.animationType", {
-    name: game.i18n.localize("lightshud.lightType.customAnimationType.name"),
-    hint: game.i18n.localize("lightshud.lightType.customAnimationType.hint"),
+  game.settings.register("LightsHUD", "customlight.animationType", {
+    name: game.i18n.localize("LightsHUD.lightType.customAnimationType.name"),
+    hint: game.i18n.localize("LightsHUD.lightType.customAnimationType.hint"),
     scope: "world",
     config: true,
     type: String,
     default: "none",
     choices: {
-      none: game.i18n.localize("lightshud.animationType.none"),
-      torch: game.i18n.localize("lightshud.animationType.torch"),
-      pulse: game.i18n.localize("lightshud.animationType.pulse"),
-      chroma: game.i18n.localize("lightshud.animationType.chroma"),
-      wave: game.i18n.localize("lightshud.animationType.wave"),
-      fog: game.i18n.localize("lightshud.animationType.fog"),
-      sunburst: game.i18n.localize("lightshud.animationType.sunburst"),
-      dome: game.i18n.localize("lightshud.animationType.dome"),
-      emanation: game.i18n.localize("lightshud.animationType.emanation"),
-      hexa: game.i18n.localize("lightshud.animationType.hexa"),
-      ghost: game.i18n.localize("lightshud.animationType.ghost"),
-      energy: game.i18n.localize("lightshud.animationType.energy"),
-      roiling: game.i18n.localize("lightshud.animationType.roiling"),
-      hole: game.i18n.localize("lightshud.animationType.hole"),
+      none: game.i18n.localize("LightsHUD.animationType.none"),
+      torch: game.i18n.localize("LightsHUD.animationType.torch"),
+      pulse: game.i18n.localize("LightsHUD.animationType.pulse"),
+      chroma: game.i18n.localize("LightsHUD.animationType.chroma"),
+      wave: game.i18n.localize("LightsHUD.animationType.wave"),
+      fog: game.i18n.localize("LightsHUD.animationType.fog"),
+      sunburst: game.i18n.localize("LightsHUD.animationType.sunburst"),
+      dome: game.i18n.localize("LightsHUD.animationType.dome"),
+      emanation: game.i18n.localize("LightsHUD.animationType.emanation"),
+      hexa: game.i18n.localize("LightsHUD.animationType.hexa"),
+      ghost: game.i18n.localize("LightsHUD.animationType.ghost"),
+      energy: game.i18n.localize("LightsHUD.animationType.energy"),
+      roiling: game.i18n.localize("LightsHUD.animationType.roiling"),
+      hole: game.i18n.localize("LightsHUD.animationType.hole"),
     },
   });
-  game.settings.register("lightshud", "customlight.animationSpeed", {
-    name: game.i18n.localize("lightshud.lightType.customAnimationSpeed.name"),
-    hint: game.i18n.localize("lightshud.lightType.customAnimationSpeed.hint"),
+  game.settings.register("LightsHUD", "customlight.animationSpeed", {
+    name: game.i18n.localize("LightsHUD.lightType.customAnimationSpeed.name"),
+    hint: game.i18n.localize("LightsHUD.lightType.customAnimationSpeed.hint"),
     scope: "world",
     config: true,
     restricted: true,
@@ -1163,12 +1164,12 @@ Hooks.once("init", () => {
       max: 10,
     },
   });
-  game.settings.register("lightshud", "customlight.animationIntensity", {
+  game.settings.register("LightsHUD", "customlight.animationIntensity", {
     name: game.i18n.localize(
-      "lightshud.lightType.customAnimationIntensity.name"
+      "LightsHUD.lightType.customAnimationIntensity.name"
     ),
     hint: game.i18n.localize(
-      "lightshud.lightType.customAnimationIntensity.hint"
+      "LightsHUD.lightType.customAnimationIntensity.hint"
     ),
     scope: "world",
     config: true,
@@ -1182,55 +1183,55 @@ Hooks.once("init", () => {
     },
   });
   // Lantern Parameters
-  game.settings.register("lightshud", "lanternBrightRadius", {
-    name: game.i18n.localize("lightshud.lanternBrightRadius.name"),
-    hint: game.i18n.localize("lightshud.lanternBrightRadius.hint"),
+  game.settings.register("LightsHUD", "lanternBrightRadius", {
+    name: game.i18n.localize("LightsHUD.lanternBrightRadius.name"),
+    hint: game.i18n.localize("LightsHUD.lanternBrightRadius.hint"),
     scope: "world",
     config: true,
     default: 20,
     type: Number,
   });
-  game.settings.register("lightshud", "lanternDimRadius", {
-    name: game.i18n.localize("lightshud.lanternDimRadius.name"),
-    hint: game.i18n.localize("lightshud.lanternDimRadius.hint"),
+  game.settings.register("LightsHUD", "lanternDimRadius", {
+    name: game.i18n.localize("LightsHUD.lanternDimRadius.name"),
+    hint: game.i18n.localize("LightsHUD.lanternDimRadius.hint"),
     scope: "world",
     config: true,
     default: 40,
     type: Number,
   });
-  game.settings.register("lightshud", "lanternType", {
-    name: game.i18n.localize("lightshud.lanternType.name"),
-    hint: game.i18n.localize("lightshud.lanternType.hint"),
+  game.settings.register("LightsHUD", "lanternType", {
+    name: game.i18n.localize("LightsHUD.lanternType.name"),
+    hint: game.i18n.localize("LightsHUD.lanternType.hint"),
     scope: "world",
     config: true,
     type: String,
     default: "Type1",
     choices: {
-      Type0: game.i18n.localize("lightshud.lanternType.type0"),
-      Type1: game.i18n.localize("lightshud.lanternType.type1"),
-      Type2: game.i18n.localize("lightshud.lanternType.type2"),
-      Type3: game.i18n.localize("lightshud.lanternType.type3"),
-      Type4: game.i18n.localize("lightshud.lanternType.type4"),
-      Type5: game.i18n.localize("lightshud.lanternType.type5"),
-      Type6: game.i18n.localize("lightshud.lanternType.type6"),
-      Type7: game.i18n.localize("lightshud.lanternType.type7"),
-      Type8: game.i18n.localize("lightshud.lanternType.type8"),
-      Type9: game.i18n.localize("lightshud.lanternType.type9"),
-      TypeC: game.i18n.localize("lightshud.lanternType.typeC"),
+      Type0: game.i18n.localize("LightsHUD.lanternType.type0"),
+      Type1: game.i18n.localize("LightsHUD.lanternType.type1"),
+      Type2: game.i18n.localize("LightsHUD.lanternType.type2"),
+      Type3: game.i18n.localize("LightsHUD.lanternType.type3"),
+      Type4: game.i18n.localize("LightsHUD.lanternType.type4"),
+      Type5: game.i18n.localize("LightsHUD.lanternType.type5"),
+      Type6: game.i18n.localize("LightsHUD.lanternType.type6"),
+      Type7: game.i18n.localize("LightsHUD.lanternType.type7"),
+      Type8: game.i18n.localize("LightsHUD.lanternType.type8"),
+      Type9: game.i18n.localize("LightsHUD.lanternType.type9"),
+      TypeC: game.i18n.localize("LightsHUD.lanternType.typeC"),
     },
   });
-  game.settings.register("lightshud", "customLanternColor", {
-    name: game.i18n.localize("lightshud.lanternType.customColor.name"),
-    hint: game.i18n.localize("lightshud.lanternType.customColor.hint"),
+  game.settings.register("LightsHUD", "customLanternColor", {
+    name: game.i18n.localize("LightsHUD.lanternType.customColor.name"),
+    hint: game.i18n.localize("LightsHUD.lanternType.customColor.hint"),
     scope: "world",
     config: true,
     restricted: false,
     type: String,
     default: "#a2642a",
   });
-  game.settings.register("lightshud", "customLanternColorIntensity", {
-    name: game.i18n.localize("lightshud.lanternType.customIntensity.name"),
-    hint: game.i18n.localize("lightshud.lanternType.customIntensity.hint"),
+  game.settings.register("LightsHUD", "customLanternColorIntensity", {
+    name: game.i18n.localize("LightsHUD.lanternType.customIntensity.name"),
+    hint: game.i18n.localize("LightsHUD.lanternType.customIntensity.hint"),
     scope: "world",
     config: true,
     restricted: true,
@@ -1242,36 +1243,36 @@ Hooks.once("init", () => {
       max: 1,
     },
   });
-  game.settings.register("lightshud", "customLanternAnimationType", {
-    name: game.i18n.localize("lightshud.lanternType.customAnimationType.name"),
-    hint: game.i18n.localize("lightshud.lanternType.customAnimationType.hint"),
+  game.settings.register("LightsHUD", "customLanternAnimationType", {
+    name: game.i18n.localize("LightsHUD.lanternType.customAnimationType.name"),
+    hint: game.i18n.localize("LightsHUD.lanternType.customAnimationType.hint"),
     scope: "world",
     config: true,
     type: String,
     default: "none",
     choices: {
-      none: game.i18n.localize("lightshud.animationType.none"),
-      torch: game.i18n.localize("lightshud.animationType.torch"),
-      pulse: game.i18n.localize("lightshud.animationType.pulse"),
-      chroma: game.i18n.localize("lightshud.animationType.chroma"),
-      wave: game.i18n.localize("lightshud.animationType.wave"),
-      fog: game.i18n.localize("lightshud.animationType.fog"),
-      sunburst: game.i18n.localize("lightshud.animationType.sunburst"),
-      dome: game.i18n.localize("lightshud.animationType.dome"),
-      emanation: game.i18n.localize("lightshud.animationType.emanation"),
-      hexa: game.i18n.localize("lightshud.animationType.hexa"),
-      ghost: game.i18n.localize("lightshud.animationType.ghost"),
-      energy: game.i18n.localize("lightshud.animationType.energy"),
-      roiling: game.i18n.localize("lightshud.animationType.roiling"),
-      hole: game.i18n.localize("lightshud.animationType.hole"),
+      none: game.i18n.localize("LightsHUD.animationType.none"),
+      torch: game.i18n.localize("LightsHUD.animationType.torch"),
+      pulse: game.i18n.localize("LightsHUD.animationType.pulse"),
+      chroma: game.i18n.localize("LightsHUD.animationType.chroma"),
+      wave: game.i18n.localize("LightsHUD.animationType.wave"),
+      fog: game.i18n.localize("LightsHUD.animationType.fog"),
+      sunburst: game.i18n.localize("LightsHUD.animationType.sunburst"),
+      dome: game.i18n.localize("LightsHUD.animationType.dome"),
+      emanation: game.i18n.localize("LightsHUD.animationType.emanation"),
+      hexa: game.i18n.localize("LightsHUD.animationType.hexa"),
+      ghost: game.i18n.localize("LightsHUD.animationType.ghost"),
+      energy: game.i18n.localize("LightsHUD.animationType.energy"),
+      roiling: game.i18n.localize("LightsHUD.animationType.roiling"),
+      hole: game.i18n.localize("LightsHUD.animationType.hole"),
     },
   });
-  game.settings.register("lightshud", "customLanternAnimationSpeed", {
+  game.settings.register("LightsHUD", "customLanternAnimationSpeed", {
     name: game.i18n.localize(
-      "lightshud.lanternType.customAnimationSpeed.name"
+      "LightsHUD.lanternType.customAnimationSpeed.name"
     ),
     hint: game.i18n.localize(
-      "lightshud.lanternType.customAnimationSpeed.hint"
+      "LightsHUD.lanternType.customAnimationSpeed.hint"
     ),
     scope: "world",
     config: true,
@@ -1284,12 +1285,12 @@ Hooks.once("init", () => {
       max: 10,
     },
   });
-  game.settings.register("lightshud", "customLanternAnimationIntensity", {
+  game.settings.register("LightsHUD", "customLanternAnimationIntensity", {
     name: game.i18n.localize(
-      "lightshud.lanternType.customAnimationIntensity.name"
+      "LightsHUD.lanternType.customAnimationIntensity.name"
     ),
     hint: game.i18n.localize(
-      "lightshud.lanternType.customAnimationIntensity.hint"
+      "LightsHUD.lanternType.customAnimationIntensity.hint"
     ),
     scope: "world",
     config: true,
@@ -1303,9 +1304,9 @@ Hooks.once("init", () => {
     },
   });
   if (game.system.id === "dnd5e") {
-    game.settings.register("lightshud", "nameConsumableLantern", {
-      name: game.i18n.localize("lightshud.nameConsumableLantern.name"),
-      hint: game.i18n.localize("lightshud.nameConsumableLantern.hint"),
+    game.settings.register("LightsHUD", "nameConsumableLantern", {
+      name: game.i18n.localize("LightsHUD.nameConsumableLantern.name"),
+      hint: game.i18n.localize("LightsHUD.nameConsumableLantern.hint"),
       scope: "world",
       config: true,
       default: "Oil (flask)",
@@ -1313,55 +1314,55 @@ Hooks.once("init", () => {
     });
   }
   // Torch Parameters
-  game.settings.register("lightshud", "torchBrightRadius", {
-    name: game.i18n.localize("lightshud.torchBrightRadius.name"),
-    hint: game.i18n.localize("lightshud.torchBrightRadius.hint"),
+  game.settings.register("LightsHUD", "torchBrightRadius", {
+    name: game.i18n.localize("LightsHUD.torchBrightRadius.name"),
+    hint: game.i18n.localize("LightsHUD.torchBrightRadius.hint"),
     scope: "world",
     config: true,
     default: 20,
     type: Number,
   });
-  game.settings.register("lightshud", "torchDimRadius", {
-    name: game.i18n.localize("lightshud.torchDimRadius.name"),
-    hint: game.i18n.localize("lightshud.torchDimRadius.hint"),
+  game.settings.register("LightsHUD", "torchDimRadius", {
+    name: game.i18n.localize("LightsHUD.torchDimRadius.name"),
+    hint: game.i18n.localize("LightsHUD.torchDimRadius.hint"),
     scope: "world",
     config: true,
     default: 40,
     type: Number,
   });
-  game.settings.register("lightshud", "torchType", {
-    name: game.i18n.localize("lightshud.torchType.name"),
-    hint: game.i18n.localize("lightshud.torchType.hint"),
+  game.settings.register("LightsHUD", "torchType", {
+    name: game.i18n.localize("LightsHUD.torchType.name"),
+    hint: game.i18n.localize("LightsHUD.torchType.hint"),
     scope: "world",
     config: true,
     type: String,
     default: "Type1",
     choices: {
-      Type0: game.i18n.localize("lightshud.torchType.type0"),
-      Type1: game.i18n.localize("lightshud.torchType.type1"),
-      Type2: game.i18n.localize("lightshud.torchType.type2"),
-      Type3: game.i18n.localize("lightshud.torchType.type3"),
-      Type4: game.i18n.localize("lightshud.torchType.type4"),
-      Type5: game.i18n.localize("lightshud.torchType.type5"),
-      Type6: game.i18n.localize("lightshud.torchType.type6"),
-      Type7: game.i18n.localize("lightshud.torchType.type7"),
-      Type8: game.i18n.localize("lightshud.torchType.type8"),
-      Type9: game.i18n.localize("lightshud.torchType.type9"),
-      TypeC: game.i18n.localize("lightshud.torchType.typeC"),
+      Type0: game.i18n.localize("LightsHUD.torchType.type0"),
+      Type1: game.i18n.localize("LightsHUD.torchType.type1"),
+      Type2: game.i18n.localize("LightsHUD.torchType.type2"),
+      Type3: game.i18n.localize("LightsHUD.torchType.type3"),
+      Type4: game.i18n.localize("LightsHUD.torchType.type4"),
+      Type5: game.i18n.localize("LightsHUD.torchType.type5"),
+      Type6: game.i18n.localize("LightsHUD.torchType.type6"),
+      Type7: game.i18n.localize("LightsHUD.torchType.type7"),
+      Type8: game.i18n.localize("LightsHUD.torchType.type8"),
+      Type9: game.i18n.localize("LightsHUD.torchType.type9"),
+      TypeC: game.i18n.localize("LightsHUD.torchType.typeC"),
     },
   });
-  game.settings.register("lightshud", "customTorchColor", {
-    name: game.i18n.localize("lightshud.torchType.customColor.name"),
-    hint: game.i18n.localize("lightshud.torchType.customColor.hint"),
+  game.settings.register("LightsHUD", "customTorchColor", {
+    name: game.i18n.localize("LightsHUD.torchType.customColor.name"),
+    hint: game.i18n.localize("LightsHUD.torchType.customColor.hint"),
     scope: "world",
     config: true,
     restricted: false,
     type: String,
     default: "#a2642a",
   });
-  game.settings.register("lightshud", "customTorchColorIntensity", {
-    name: game.i18n.localize("lightshud.torchType.customIntensity.name"),
-    hint: game.i18n.localize("lightshud.torchType.customIntensity.hint"),
+  game.settings.register("LightsHUD", "customTorchColorIntensity", {
+    name: game.i18n.localize("LightsHUD.torchType.customIntensity.name"),
+    hint: game.i18n.localize("LightsHUD.torchType.customIntensity.hint"),
     scope: "world",
     config: true,
     restricted: true,
@@ -1373,33 +1374,33 @@ Hooks.once("init", () => {
       max: 1,
     },
   });
-  game.settings.register("lightshud", "customTorchAnimationType", {
-    name: game.i18n.localize("lightshud.torchType.customAnimationType.name"),
-    hint: game.i18n.localize("lightshud.torchType.customAnimationType.hint"),
+  game.settings.register("LightsHUD", "customTorchAnimationType", {
+    name: game.i18n.localize("LightsHUD.torchType.customAnimationType.name"),
+    hint: game.i18n.localize("LightsHUD.torchType.customAnimationType.hint"),
     scope: "world",
     config: true,
     type: String,
     default: "none",
     choices: {
-      none: game.i18n.localize("lightshud.animationType.none"),
-      torch: game.i18n.localize("lightshud.animationType.torch"),
-      pulse: game.i18n.localize("lightshud.animationType.pulse"),
-      chroma: game.i18n.localize("lightshud.animationType.chroma"),
-      wave: game.i18n.localize("lightshud.animationType.wave"),
-      fog: game.i18n.localize("lightshud.animationType.fog"),
-      sunburst: game.i18n.localize("lightshud.animationType.sunburst"),
-      dome: game.i18n.localize("lightshud.animationType.dome"),
-      emanation: game.i18n.localize("lightshud.animationType.emanation"),
-      hexa: game.i18n.localize("lightshud.animationType.hexa"),
-      ghost: game.i18n.localize("lightshud.animationType.ghost"),
-      energy: game.i18n.localize("lightshud.animationType.energy"),
-      roiling: game.i18n.localize("lightshud.animationType.roiling"),
-      hole: game.i18n.localize("lightshud.animationType.hole"),
+      none: game.i18n.localize("LightsHUD.animationType.none"),
+      torch: game.i18n.localize("LightsHUD.animationType.torch"),
+      pulse: game.i18n.localize("LightsHUD.animationType.pulse"),
+      chroma: game.i18n.localize("LightsHUD.animationType.chroma"),
+      wave: game.i18n.localize("LightsHUD.animationType.wave"),
+      fog: game.i18n.localize("LightsHUD.animationType.fog"),
+      sunburst: game.i18n.localize("LightsHUD.animationType.sunburst"),
+      dome: game.i18n.localize("LightsHUD.animationType.dome"),
+      emanation: game.i18n.localize("LightsHUD.animationType.emanation"),
+      hexa: game.i18n.localize("LightsHUD.animationType.hexa"),
+      ghost: game.i18n.localize("LightsHUD.animationType.ghost"),
+      energy: game.i18n.localize("LightsHUD.animationType.energy"),
+      roiling: game.i18n.localize("LightsHUD.animationType.roiling"),
+      hole: game.i18n.localize("LightsHUD.animationType.hole"),
     },
   });
-  game.settings.register("lightshud", "customTorchAnimationSpeed", {
-    name: game.i18n.localize("lightshud.torchType.customAnimationSpeed.name"),
-    hint: game.i18n.localize("lightshud.torchType.customAnimationSpeed.hint"),
+  game.settings.register("LightsHUD", "customTorchAnimationSpeed", {
+    name: game.i18n.localize("LightsHUD.torchType.customAnimationSpeed.name"),
+    hint: game.i18n.localize("LightsHUD.torchType.customAnimationSpeed.hint"),
     scope: "world",
     config: true,
     restricted: true,
@@ -1411,12 +1412,12 @@ Hooks.once("init", () => {
       max: 10,
     },
   });
-  game.settings.register("lightshud", "customTorchAnimationIntensity", {
+  game.settings.register("LightsHUD", "customTorchAnimationIntensity", {
     name: game.i18n.localize(
-      "lightshud.torchType.customAnimationIntensity.name"
+      "LightsHUD.torchType.customAnimationIntensity.name"
     ),
     hint: game.i18n.localize(
-      "lightshud.torchType.customAnimationIntensity.hint"
+      "LightsHUD.torchType.customAnimationIntensity.hint"
     ),
     scope: "world",
     config: true,
@@ -1430,16 +1431,16 @@ Hooks.once("init", () => {
     },
   });
   if (game.system.id === "dnd5e") {
-    game.settings.register("lightshud", "nameConsumableTorch", {
-      name: game.i18n.localize("lightshud.nameConsumableTorch.name"),
-      hint: game.i18n.localize("lightshud.nameConsumableTorch.hint"),
+    game.settings.register("LightsHUD", "nameConsumableTorch", {
+      name: game.i18n.localize("LightsHUD.nameConsumableTorch.name"),
+      hint: game.i18n.localize("LightsHUD.nameConsumableTorch.hint"),
       scope: "world",
       config: true,
       default: "Torch",
       type: String,
     });
   }
-  game.settings.register("lightshud", "debug", {
+  game.settings.register("LightsHUD", "debug", {
     name: "Debug",
     hint: "Enable Debug.",
     scope: "world",
