@@ -1,3 +1,5 @@
+![](https://img.shields.io/badge/Maintainer-Malekal-green)
+
 # LightsHUD - A FoundryVTT Module
 
 Derived and updated version of Torchlight, which in turn was derived from Torch.
