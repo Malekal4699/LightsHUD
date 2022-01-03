@@ -1304,9 +1304,9 @@ Hooks.once("init", () => {
     },
   });
   if (game.system.id === "dnd5e") {
-    game.settings.register("LightsHUD", "nameConsumableLantern", {
-      name: game.i18n.localize("LightsHUD.nameConsumableLantern.name"),
-      hint: game.i18n.localize("LightsHUD.nameConsumableLantern.hint"),
+    game.settings.register("LightsHUD", "lanternType.nameConsumableLantern", {
+      name: game.i18n.localize("LightsHUD.lanternType.nameConsumableLantern.name"),
+      hint: game.i18n.localize("LightsHUD.lanternType.nameConsumableLantern.hint"),
       scope: "world",
       config: true,
       default: "Oil (flask)",
@@ -1431,9 +1431,9 @@ Hooks.once("init", () => {
     },
   });
   if (game.system.id === "dnd5e") {
-    game.settings.register("LightsHUD", "nameConsumableTorch", {
-      name: game.i18n.localize("LightsHUD.nameConsumableTorch.name"),
-      hint: game.i18n.localize("LightsHUD.nameConsumableTorch.hint"),
+    game.settings.register("LightsHUD", "torchType.nameConsumableTorch", {
+      name: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.name"),
+      hint: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.hint"),
       scope: "world",
       config: true,
       default: "Torch",
