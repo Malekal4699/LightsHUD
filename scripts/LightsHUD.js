@@ -20,7 +20,11 @@
 
 class LightsHUD {
 
-  constructor(){}
+  moduleName = "LightsHUD";
+
+  constructor(){
+    this.moduleName;
+  }
 
 	static clBanner(){
 	  const title =
@@ -35,8 +39,6 @@ class LightsHUD {
 
 
   static async addLightsHUDButtons(app, html, data) {
-
-
 
     // Visually and functionally enable a LightsHUD button
     function enableLightsHUDButton(tbutton) {
@@ -59,6 +61,9 @@ class LightsHUD {
 
     // Enable or disable buttons according to parameters
     function enableRelevantButtons() {
+      let torchConsumable = game.settings.get("LightsHUD","torchType.nameConsumableTorch");
+      let lanternConsumable = game.settings.get("LightsHUD","lanternType.nameConsumableLantern");
+
       // Stores if checks need to be made to enable buttons
       let noCheck = game.system.id !== "dnd5e";
       if (!noCheck)
@@ -71,22 +76,36 @@ class LightsHUD {
 
       if (
         noCheck ||
-        (hasItemInInventory("Oil (flask)") &&
+        (hasItemInInventory(lanternConsumable) ||
           (hasItemInInventory("Lantern, Hooded") ||
             hasItemInInventory("Lantern, Bullseye")))
       )
         enableLightsHUDButton(tbuttonLantern);
       else disableLightsHUDButton(tbuttonLantern);
 
-      if (noCheck || hasItemInInventory("Torch"))
-        enableLightsHUDButton(tbuttonTorch);
-      else disableLightsHUDButton(tbuttonTorch);
+      LightsHUD.log(torchConsumable)
+      
+      if (noCheck || hasItemInInventory(torchConsumable)){
+        LightsHUD.log("Has Item in inventory call Check Torch")
+        LightsHUD.log(torchConsumable)
+
+
+        enableLightsHUDButton(tbuttonTorch);}
+      else {
+        disableLightsHUDButton(tbuttonTorch);
+        // ChatMessage.create({
+        //   user: game.user._id,
+        //   speaker: game.actors.get(data.actorId),
+        //   content: `No ${torchConsumable} in inventory.`,
+        // });
+      }
     }
 
     async function onButtonClick(ev, tbutton) {
       ev.preventDefault();
       ev.stopPropagation();
-
+      LightsHUD.log("On Button Click")
+      LightsHUD.log(tbutton)
       let tokenD = app.object.document;
       // Are we dealing with the Light Button
       if (tbutton === tbuttonLight) {
@@ -496,11 +515,11 @@ class LightsHUD {
             }
           } else {
             // There is no oil to consume, signal and disable the button
-            ChatMessage.create({
-              user: game.user._id,
-              speaker: game.actors.get(data.actorId),
-              content: "No Oil (flask) in Inventory !",
-            });
+            // ChatMessage.create({
+            //   user: game.user._id,
+            //   speaker: game.actors.get(data.actorId),
+            //   content: "No Oil (flask) in Inventory !",
+            // });
             disableLightsHUDButton(tbuttonLantern);
           }
         }
@@ -683,12 +702,13 @@ class LightsHUD {
                 break;
             }
           } else {
-            // There is no torch to consume, signal and disable the button
-            ChatMessage.create({
-              user: game.user._id,
-              speaker: game.actors.get(data.actorId),
-              content: "No Torch in Inventory !",
-            });
+            // // There is no torch to consume, signal and disable the button
+            // ChatMessage.create({
+            //   user: game.user._id,
+            //   speaker: game.actors.get(data.actorId),
+            //   content: "No Torch in Inventory !",
+            // });
+            LightsHUD.log("Disable Torch Button")
             disableLightsHUDButton(tbuttonTorch);
           }
         }
@@ -860,6 +880,7 @@ class LightsHUD {
     // Returns true if the character can use the Light spell
     // This also returns true if the game system is not D&D 5e...
     function canCastLight() {
+      LightsHUD.log("Can Cast Light Check")
       let actor = game.actors.get(data.actorId);
       if (actor === undefined) return false;
       let hasLight = false;
@@ -874,12 +895,22 @@ class LightsHUD {
     // Returns true if the character has a specific item in his inventory
     // This also returns true if the game system is not D&D 5e...
     function hasItemInInventory(itemToCheck) {
+      LightsHUD.log("Has Item Check")
       let actor = game.actors.get(data.actorId);
       if (actor === undefined) return false;
       let hasItem = false;
       actor.data.items.forEach((item) => {
         if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
-          if (item.data.quantity > 0) hasItem = true;
+          LightsHUD.log(item)
+          LightsHUD.log(itemToCheck)
+          LightsHUD.log(item.data.data.quantity)
+          console.debug(item.data.data.quantity)
+          if (item.data.data.quantity > 0) 
+            {
+              hasItem = true;
+              LightsHUD.log("Has X number of Torches")
+              LightsHUD.log(item.data.data.quantity)
+            }
         }
       });
       return hasItem;
@@ -888,23 +919,29 @@ class LightsHUD {
     // Returns true if either the character does not need to consume an item
     // or if he can indeed consume it (and it is actually consumed)
     function consumeItem(itemToCheck) {
-      let consume = game.system.id !== "dnd5e";
+      LightsHUD.log("Consume Item")
+      let consume = game.system.id === "dnd5e";
+      LightsHUD.log(consume)
       if (!consume)
         consume =
           (data.isGM && !game.settings.get("LightsHUD", "dmAsPlayer")) ||
           !game.settings.get("LightsHUD", "checkAvailability") ||
           !game.settings.get("LightsHUD", "consumeItem");
-      if (!consume) {
+      if (consume) {
         let actor = game.actors.get(data.actorId);
         if (actor === undefined) return false;
         let hasItem = false;
-        actor.data.items.forEach((item, offset) => {
+        LightsHUD.log(actor.data.items)
+        actor.data.items.forEach((item) => {
+          LightsHUD.log(item)
+          // TODO fix index of item to be modified. let index = item.parent
+          LightsHUD.log(index)
           if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
-            if (item.data.quantity > 0) {
+            if (item.data.data.quantity > 0) {
               hasItem = true;
               actor.updateOwnedItem({
-                _id: actor.data.items[offset]._id,
-                "data.quantity": actor.data.items[offset].data.quantity - 1,
+                id: actor.data.items[index].id,
+                "data.quantity": actor.data.items[index].data.data.quantity - 1,
               });
             }
           }
@@ -980,7 +1017,7 @@ class LightsHUD {
   static debug(){
     let isDebug = game.settings.get("LightsHUD", "debug");
       if (isDebug)
-        CONFIG.debug.hooks = true;
+        CONFIG.debug.hooks = false;
       if (!isDebug)
         CONFIG.debug.hooks = false;
 
@@ -1227,7 +1264,7 @@ Hooks.once("init", () => {
     config: true,
     restricted: false,
     type: String,
-    default: "#a2642a",
+    default: "#a2642a"    
   });
   game.settings.register("LightsHUD", "customLanternColorIntensity", {
     name: game.i18n.localize("LightsHUD.lanternType.customIntensity.name"),
