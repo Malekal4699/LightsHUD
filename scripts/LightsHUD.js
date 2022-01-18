@@ -898,22 +898,30 @@ class LightsHUD {
       LightsHUD.log("Has Item Check")
       let actor = game.actors.get(data.actorId);
       if (actor === undefined) return false;
-      let hasItem = false;
-      actor.data.items.forEach((item) => {
-        if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
-          LightsHUD.log(item)
-          LightsHUD.log(itemToCheck)
-          LightsHUD.log(item.data.data.quantity)
-          console.debug(item.data.data.quantity)
-          if (item.data.data.quantity > 0) 
-            {
-              hasItem = true;
-              LightsHUD.log("Has X number of Torches")
-              LightsHUD.log(item.data.data.quantity)
-            }
-        }
-      });
-      return hasItem;
+      LightsHUD.log(actor.data.items.contents)
+      let consumables = actor.data.items.contents.filter(item => item.type === "consumable" && item.name.toLowerCase() === itemToCheck.toLowerCase() && item.data.data.quantity > 0) ?? false;
+      LightsHUD.log(consumables)
+      return consumables;
+      
+      
+
+      // let hasItem = actor.data.items.contents.find(item => {
+      //     item.name.toLowerCase() == itemToCheck.toLowerCase()
+      //   });
+      //   if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
+      //     LightsHUD.log(item)
+      //     LightsHUD.log(itemToCheck)
+      //     LightsHUD.log(item.data.data.quantity)
+      //     console.debug(item.data.data.quantity)
+      //     if (item.data.data.quantity > 0) 
+      //       {
+      //         hasItem = true;
+      //         LightsHUD.log("Has X number of Torches")
+      //         LightsHUD.log(item.data.data.quantity)
+      //       }
+      //   }
+      // });
+      // return hasItem;
     }
 
     // Returns true if either the character does not need to consume an item
@@ -930,25 +938,28 @@ class LightsHUD {
       if (consume) {
         let actor = game.actors.get(data.actorId);
         if (actor === undefined) return false;
-        let hasItem = false;
-        LightsHUD.log(actor.data.items)
-        actor.data.items.forEach((item) => {
-          LightsHUD.log(item)
-          // TODO fix index of item to be modified. let index = item.parent
-          LightsHUD.log(index)
-          if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
-            if (item.data.data.quantity > 0) {
-              hasItem = true;
-              actor.updateOwnedItem({
-                id: actor.data.items[index].id,
-                "data.quantity": actor.data.items[index].data.data.quantity - 1,
-              });
-            }
-          }
-        });
-        consume = hasItem;
+        let hasItem = hasItemInInventory(itemToCheck);
+        
+        //actor.data.items.contents.find(itemToCheck.toLowerCase()) ?? false;
+        LightsHUD.log(hasItem)
       }
-      return consume;
+      //   actor.data.items.forEach((item) => {
+      //     LightsHUD.log(item)
+      //     // TODO fix index of item to be modified. let index = item.parent
+          
+      //     if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
+      //       if (item.data.data.quantity > 0) {
+      //         hasItem = true;
+      //         actor.updateOwnedItem({
+      //           id: actor.data.items[index].id,
+      //           "data.quantity": actor.data.items[index].data.data.quantity - 1,
+      //         });
+      //       }
+      //     }
+      //   });
+      //   consume = hasItem;
+      // }
+      // return consume;
     }
 
     /*
