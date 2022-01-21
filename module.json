@@ -2,7 +2,7 @@
     "name": "LightsHUD",
     "title": "LightsHUD",
     "description": "Lights HUD Control",
-    "version": "0.10.3",
+    "version": "0.10.x",
     "authors": [
         {
           "name": "Malekal",
@@ -25,6 +25,11 @@
             "lang": "fr",
             "name": "Français",
             "path": "./lang/fr.json"
+        },
+        {
+            "lang": "ja",
+            "name": "日本語",
+            "path": "./lang/ja.json"
         }
     ],
     "esmodules": [

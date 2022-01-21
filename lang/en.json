@@ -15,7 +15,7 @@
 	"LightsHUD.consumeItem.name": "Consume Item",
 	"LightsHUD.consumeItem.hint": "Actually removes one item from the inventory when the light is lit.",
 	"LightsHUD.dmAsPlayer.name": "DM Checks/Uses as Player",
-	"LightsHUD.dmAsPlayer.hint": "If set, the DM checks the availability of light sources fot the selected player and uses his/her inventory.",
+	"LightsHUD.dmAsPlayer.hint": "If set, the DM checks the availability of light sources for the selected player and uses his/her inventory.",
 
 	"LightsHUD.animationType.none": "None",
 	"LightsHUD.animationType.torch": "Torch",
