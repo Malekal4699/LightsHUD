@@ -17,13 +17,8 @@
  * Alan Davies
  * ----------------------------------------------------------------------------
  */
-
+import { LightDataExt } from "./LightDataExt.js";
 class LightsHUD {
-  moduleName = "LightsHUD";
-
-  constructor() {
-    this.moduleName;
-  }
 
   static clBanner() {
     const title =
@@ -38,17 +33,18 @@ class LightsHUD {
 
   static async addLightsHUDButtons(app, html, data) {
     function enableLightsHUDButton(tbutton) {
-      tbutton.find("i").addClass("fa-enabled");
+      // Remove the disabled status, if any
       tbutton.find("i").removeClass("fa-disabled");
-      tbutton.on("click");
-      tbutton.addClass("clickBound");
-      tbutton.addClass("active");
+      // Install a click handler if one is not already bound
+      if (!tbutton.hasClass("clickBound")) {
+        tbutton.click(async (ev) => onButtonClick(ev, tbutton));
+        tbutton.addClass("clickBound");
+      }
     }
 
     // Visually and functionally disable a LightsHUD button
     function disableLightsHUDButton(tbutton) {
       tbutton.find("i").addClass("fa-disabled");
-      tbutton.find("i").removeClass("fa-enabled");
       tbutton.off("click");
       tbutton.removeClass("clickBound");
       tbutton.removeClass("active");
@@ -111,10 +107,10 @@ class LightsHUD {
       // Are we dealing with the Light Button
       if (tbutton === tbuttonLight) {
         // Check if the token has the light spell on
-        if (statusLight) {
+        if (lightSpell.state) {
           // The token has the light spell on
-          statusLight = false;
-          await tokenD.setFlag("LightsHUD", "statusLight", false);
+          lightSpell.state = false;
+          await tokenD.setFlag("LightsHUD", "lightSpell.state", false);
           tbuttonLight.removeClass("active");
           // Light is inactive, enable the relevant light sources according to parameters
           enableRelevantButtons();
@@ -131,8 +127,8 @@ class LightsHUD {
           );
         } else {
           // The token does not have the light spell on
-          statusLight = true;
-          await tokenD.setFlag("LightsHUD", "statusLight", true);
+          lightSpell.state = true;
+          await tokenD.setFlag("LightsHUD", "lightSpell.state", true);
           tbuttonLight.addClass("active");
           // Light is active, disable the other light sources
           disableLightsHUDButton(tbuttonLantern);
@@ -821,14 +817,9 @@ class LightsHUD {
     // Get the status of the three types of lights
     LightsHUD.log(app.object.document);
 
-    let lightSpell = new LightDataExt("Light", "Spell", false);
-    lightSpell.state =
-      app.object.document.getFlag("LightsHUD", "statusLight") ?? false;
-    await app.object.document.setFlag(
-      "LightsHUD",
-      "statusLight",
-      lightSpell.state
-    );
+    let lightSpell = new LightDataExt("Light", "Spell", false, app);
+    lightSpell.state = app.object.document.getFlag("LightsHUD", "lightSpell.state") ?? false;
+    await app.object.document.setFlag("LightsHUD","lightSpell.state",lightSpell.state);
     LightsHUD.log(lightSpell);
 
     let statusLantern = app.object.document.getFlag(
@@ -1484,20 +1475,3 @@ Hooks.once("init", () => {
   LightsHUD.debug();
   LightsHUD.clBanner();
 });
-
-class LightDataExt extends foundry.data.LightData {
-  name;
-  type;
-  state;
-
-  constructor(name, type, state) {
-    super();
-    this.name = name ?? "SampleName";
-    this.type = type ?? "LightType";
-    this.state = state ?? "false";
-  }
-
-  generateSettingName() {
-    return this.name + this.type;
-  }
-}
