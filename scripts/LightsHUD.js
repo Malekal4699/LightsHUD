@@ -69,16 +69,11 @@ class LightsHUD {
       if (noCheck || canCastLight()) enableLightsHUDButton(tbuttonLight);
       else disableLightsHUDButton(tbuttonLight);
 
-      if (
-        noCheck ||
-        (hasItemInInventory("Oil (flask)") &&
-          (hasItemInInventory("Lantern, Hooded") ||
-            hasItemInInventory("Lantern, Bullseye")))
-      )
+      if (noCheck || hasItemInInventory(game.settings.get('LightsHUD', 'lanternType.nameConsumableLantern')))
         enableLightsHUDButton(tbuttonLantern);
       else disableLightsHUDButton(tbuttonLantern);
 
-      if (noCheck || hasItemInInventory("Torch"))
+      if (noCheck || hasItemInInventory(game.settings.get('LightsHUD', 'torchType.nameConsumableTorch')))
         enableLightsHUDButton(tbuttonTorch);
       else disableLightsHUDButton(tbuttonTorch);
     }
@@ -362,7 +357,7 @@ class LightsHUD {
           // The token does not have the lantern on
 
           // Checks whether the character can consume an oil flask
-          if (consumeItem("Oil (flask)")) {
+          if (consumeItem(game.settings.get('LightsHUD', 'lanternType.nameConsumableLantern'))) {
             statusLantern = true;
             await tokenD.setFlag("LightsHUD", "statusLantern", true);
             tbuttonLantern.addClass("active");
@@ -532,7 +527,7 @@ class LightsHUD {
           // The token does not have the torch on
 
           // Checks whether the character can consume a torch
-          if (consumeItem("Torch")) {
+          if (consumeItem(game.settings.get('LightsHUD', 'torchType.nameConsumableTorch'))) {
             statusTorch = true;
             await tokenD.setFlag("LightsHUD", "statusTorch", true);
             tbuttonTorch.addClass("active");
@@ -686,7 +681,7 @@ class LightsHUD {
             // There is no torch to consume, signal and disable the button
             ChatMessage.create({
               user: game.user._id,
-              speaker: game.actors.get(data.actorId),
+              speaker: ChatMessage.getSpeakerActor(data.actorId), 
               content: "No Torch in Inventory !",
             });
             disableLightsHUDButton(tbuttonTorch);
@@ -862,13 +857,9 @@ class LightsHUD {
     function canCastLight() {
       let actor = game.actors.get(data.actorId);
       if (actor === undefined) return false;
-      let hasLight = false;
-      actor.data.items.forEach((item) => {
-        if (item.type === "spell") {
-          if (item.name === "Light") hasLight = true;
-        }
-      });
-      return hasLight;
+      let item = findItemOnActor('Light')
+      if (item === undefined) return false;
+      return item.type == "spell";
     }
 
     // Returns true if the character has a specific item in his inventory
@@ -876,44 +867,46 @@ class LightsHUD {
     function hasItemInInventory(itemToCheck) {
       let actor = game.actors.get(data.actorId);
       if (actor === undefined) return false;
-      let hasItem = false;
-      actor.data.items.forEach((item) => {
-        if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
-          if (item.data.quantity > 0) hasItem = true;
-        }
-      });
-      return hasItem;
+      let item = findItemOnActor(itemToCheck)
+      if (item) {
+        let quantity = item.data.quantity
+        if (quantity === undefined) quantity = item.data.data.quantity;
+        return quantity > 0
+      }
+      return false;
+    }
+
+    function findItemOnActor(itemName) {
+      itemName = itemName.toLowerCase()
+      let actor = game.actors.get(data.actorId);
+      if (actor === undefined) return undefined;
+      return actor.data.items.find((item) => item.name.toLowerCase() === itemName)
     }
 
     // Returns true if either the character does not need to consume an item
     // or if he can indeed consume it (and it is actually consumed)
     function consumeItem(itemToCheck) {
-      let consume = game.system.id !== "dnd5e";
-      if (!consume)
-        consume =
-          (data.isGM && !game.settings.get("LightsHUD", "dmAsPlayer")) ||
-          !game.settings.get("LightsHUD", "checkAvailability") ||
-          !game.settings.get("LightsHUD", "consumeItem");
-      if (!consume) {
-        let actor = game.actors.get(data.actorId);
-        if (actor === undefined) return false;
-        let hasItem = false;
-        actor.data.items.forEach((item, offset) => {
-          if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
-            if (item.data.quantity > 0) {
-              hasItem = true;
-              actor.updateOwnedItem({
-                _id: actor.data.items[offset]._id,
-                "data.quantity": actor.data.items[offset].data.quantity - 1,
-              });
-            }
-          }
-        });
-        consume = hasItem;
+      if (game.system.id !== "dnd5e") {
+        return true;
       }
-      return consume;
-    }
+      if ((data.isGM && !game.settings.get("LightsHUD", "dmAsPlayer")) ||
+          !game.settings.get("LightsHUD", "checkAvailability") ||
+          !game.settings.get("LightsHUD", "consumeItem")) {
+            return true;
+      }
 
+      let actor = game.actors.get(data.actorId);
+      if (actor === undefined) return false;
+      let item = findItemOnActor(itemToCheck)
+      if (!item) return false;
+      let quantity = item.data.quantity;
+      if (quantity == undefined) quantity = item.data.data.quantity;
+      if (quantity <= 0) {
+        return false;
+      }
+      item.update({"data.quantity": quantity - 1})
+      return true;
+    }
     /*
      * Returns the first GM id.
      */
