@@ -76,12 +76,8 @@ class LightsHUD {
         disableLightsHUDButton(tbuttonLight);
       }
 
-      if (
-        noCheck ||
-        (hasItemInInventory(lanternConsumable) &&
-          (hasItemInInventory("Lantern, Hooded") ||
-            hasItemInInventory("Lantern, Bullseye")))
-      ) {
+      if (noCheck || hasItemInInventory(game.settings.get('LightsHUD', 'lanternType.nameConsumableLantern')))
+      {
         enableLightsHUDButton(tbuttonLantern);
         LightsHUD.log("Lantern HUD Button Enabled");
       } else {
@@ -89,7 +85,7 @@ class LightsHUD {
         disableLightsHUDButton(tbuttonLantern);
       }
 
-      if (noCheck || hasItemInInventory(torchConsumable)) {
+      if (noCheck || hasItemInInventory(game.settings.get('LightsHUD', 'torchType.nameConsumableTorch'))){
         LightsHUD.log("Torch HUD Button Enabled");
         enableLightsHUDButton(tbuttonTorch);
       } else {
@@ -134,7 +130,7 @@ class LightsHUD {
           disableLightsHUDButton(tbuttonLantern);
           disableLightsHUDButton(tbuttonTorch);
           // Store the lighting for later restoration
-          await storeTokenLighting();
+          //await storeTokenLighting();
           // Enable the Light Source according to the type
           // "torch" / "pulse" / "chroma" / "wave" / "fog" / "sunburst" / "dome"
           // "emanation" / "hexa" / "ghost" / "energy" / "roiling" / "hole"
@@ -375,7 +371,7 @@ class LightsHUD {
           // The token does not have the lantern on
 
           // Checks whether the character can consume an oil flask
-          if (consumeItem("Oil (flask)")) {
+          if (consumeItem(game.settings.get('LightsHUD', 'lanternType.nameConsumableLantern'))) {
             statusLantern = true;
             await tokenD.setFlag("LightsHUD", "statusLantern", true);
             tbuttonLantern.addClass("active");
@@ -383,7 +379,7 @@ class LightsHUD {
             disableLightsHUDButton(tbuttonLight);
             disableLightsHUDButton(tbuttonTorch);
             // Store the lighting for later restoration
-            await storeTokenLighting();
+            //await storeTokenLighting();
             // Enable the Lantern Source according to the type
             let nBright = game.settings.get("LightsHUD", "lanternBrightRadius");
             let nDim = game.settings.get("LightsHUD", "lanternDimRadius");
@@ -514,7 +510,6 @@ class LightsHUD {
         // Check if the token has the torch on
         if (statusTorch) {
           // The token has the torch on
-
           statusTorch = false;
           await tokenD.setFlag("LightsHUD", "statusTorch", false);
           tbuttonTorch.removeClass("active");
@@ -535,7 +530,7 @@ class LightsHUD {
         } else {
           // The token does not have the torch on
           // Checks whether the character can consume a torch
-          if (consumeItem("Torch")) {
+          if (consumeItem(game.settings.get('LightsHUD', 'torchType.nameConsumableTorch'))) {
             statusTorch = true;
             await tokenD.setFlag("LightsHUD", "statusTorch", true);
             tbuttonTorch.addClass("active");
@@ -543,7 +538,7 @@ class LightsHUD {
             disableLightsHUDButton(tbuttonLight);
             disableLightsHUDButton(tbuttonLantern);
             // Store the lighting for later restoration
-            await storeTokenLighting();
+            //await storeTokenLighting();
             // Enable the Torch Source according to the type
             let nBright = game.settings.get("LightsHUD", "torchBrightRadius");
             let nDim = game.settings.get("LightsHUD", "torchDimRadius");
@@ -686,12 +681,8 @@ class LightsHUD {
                 break;
             }
           } else {
-            // // There is no torch to consume, signal and disable the button
-            // ChatMessage.create({
-            //   user: game.user._id,
-            //   speaker: game.actors.get(data.actorId),
-            //   content: "No Torch in Inventory !",
-            // });
+            statusTorch = true;
+            await tokenD.setFlag("LightsHUD", "statusTorch", true);
             LightsHUD.log("Disable Torch Button");
             disableLightsHUDButton(tbuttonTorch);
             tbuttonTorch.removeClass("active");
@@ -727,68 +718,68 @@ class LightsHUD {
       });
     }
 
-    // Store the initial status of illumination for the token to restore if all light sources are extinguished
-    async function storeTokenLighting() {
-      let promises = [];
-      const tokenData = app.object.data;
-      const tokenFlags = app.object.document;
-      promises.push(
-        tokenFlags.setFlag(
-          "LightsHUD",
-          "InitialBrightRadius",
-          tokenData.light.bright
-        )
-      );
-      promises.push(
-        tokenFlags.setFlag("LightsHUD", "InitialDimRadius", tokenData.light.dim)
-      );
-      promises.push(
-        tokenFlags.setFlag(
-          "LightsHUD",
-          "InitialLightColor",
-          tokenData.lightColor
-            ? tokenData.lightColor.toString(16).padStart(6, 0)
-            : null
-        )
-      );
-      promises.push(
-        tokenFlags.setFlag(
-          "LightsHUD",
-          "InitialColorIntensity",
-          Math.sqrt(tokenData.lightAlpha)
-        )
-      );
-      promises.push(
-        tokenFlags.setFlag(
-          "LightsHUD",
-          "Initiallight.angle",
-          tokenData.light.angle
-        )
-      );
-      promises.push(
-        tokenFlags.setFlag(
-          "LightsHUD",
-          "InitialAnimationType",
-          tokenData.light.animation.type ?? null
-        )
-      );
-      promises.push(
-        tokenFlags.setFlag(
-          "LightsHUD",
-          "InitialAnimationSpeed",
-          tokenData.light.animation.speed
-        )
-      );
-      promises.push(
-        tokenFlags.setFlag(
-          "LightsHUD",
-          "InitialAnimationIntensity",
-          tokenData.light.animation.intensity
-        )
-      );
+    // // Store the initial status of illumination for the token to restore if all light sources are extinguished
+    // async function storeTokenLighting() {
+    //   let promises = [];
+    //   const tokenData = app.object.data;
+    //   const tokenFlags = app.object.document;
+    //   promises.push(
+    //     tokenFlags.setFlag(
+    //       "LightsHUD",
+    //       "InitialBrightRadius",
+    //       tokenData.light.bright
+    //     )
+    //   );
+    //   promises.push(
+    //     tokenFlags.setFlag("LightsHUD", "InitialDimRadius", tokenData.light.dim)
+    //   );
+    //   promises.push(
+    //     tokenFlags.setFlag(
+    //       "LightsHUD",
+    //       "InitialLightColor",
+    //       tokenData.lightColor
+    //         ? tokenData.lightColor.toString(16).padStart(6, 0)
+    //         : null
+    //     )
+    //   );
+    //   promises.push(
+    //     tokenFlags.setFlag(
+    //       "LightsHUD",
+    //       "InitialColorIntensity",
+    //       Math.sqrt(tokenData.lightAlpha)
+    //     )
+    //   );
+    //   promises.push(
+    //     tokenFlags.setFlag(
+    //       "LightsHUD",
+    //       "Initiallight.angle",
+    //       tokenData.light.angle
+    //     )
+    //   );
+    //   promises.push(
+    //     tokenFlags.setFlag(
+    //       "LightsHUD",
+    //       "InitialAnimationType",
+    //       tokenData.light.animation.type ?? null
+    //     )
+    //   );
+    //   promises.push(
+    //     tokenFlags.setFlag(
+    //       "LightsHUD",
+    //       "InitialAnimationSpeed",
+    //       tokenData.light.animation.speed
+    //     )
+    //   );
+    //   promises.push(
+    //     tokenFlags.setFlag(
+    //       "LightsHUD",
+    //       "InitialAnimationIntensity",
+    //       tokenData.light.animation.intensity
+    //     )
+    //   );
 
-      return Promise.all(promises);
-    }
+    //   return Promise.all(promises);
+    // }
 
     // Define all three buttons
     let tbuttonLight = $(
