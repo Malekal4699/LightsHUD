@@ -19,7 +19,7 @@
  */
 import { LightDataExt } from "./LightDataExt.js";
 class LightsHUD {
-
+ 
   static clBanner() {
     const title =
       " _     _       _     _       _   _ _   _ ____   \n" +
@@ -34,21 +34,21 @@ class LightsHUD {
   static async addLightsHUDButtons(app, html, data) {
   
     // Define all three buttons
-    let tbuttonLight = $(
+    const tbuttonLight = $(
       `<div class="control-icon LightsHUD" title="Toggle Light Spell"><i class="fas fa-sun"></i></div>`
     );
-    let tbuttonLantern = $(
+    const tbuttonLantern = $(
       `<div class="control-icon LightsHUD" title="Toggle Lantern"><i class="fas fa-lightbulb"></i></div>`
     );
-    let tbuttonTorch = $(
+    const tbuttonTorch = $(
       `<div class="control-icon LightsHUD" title="Toggle Torch"><i class="fas fa-fire"></i></div>`
     );
 
     // Get the position of the column
-    let position = game.settings.get("LightsHUD", "position");
+    const position = game.settings.get("LightsHUD", "position");
 
     // Create the column
-    let buttonsdiv = $(`<div class="col LightsHUD-column-${position}"></div>`);
+    const buttonsdiv = $(`<div class="col LightsHUD-column-${position}"></div>`);
 
     // Wrap the previous icons
     let newdiv = '<div class="LightsHUD-container"></div>';
@@ -58,21 +58,25 @@ class LightsHUD {
     html.find(".LightsHUD-container").prepend(buttonsdiv);
 
     // Get the status of the three types of lights
-    LightsHUD.log("-------TokenDOC")
+    
 
-    let spellLight = new LightDataExt("Light", "spell", false, app);
-    let lanternLight = new LightDataExt("Lantern", "consumable", false, app);
-    let torchLight = new LightDataExt("Torch", "consumable", false, app);
+    let spellLight = new LightDataExt("light", "spell", false, app);
+    let lanternLight = new LightDataExt("lantern", "consumable", false, app);
+    let torchLight = new LightDataExt("torch", "consumable", false, app);
       
     // Initial button state when the HUD comes up
     if (spellLight.state)   tbuttonLight.addClass("active");
     if (lanternLight.state) tbuttonLantern.addClass("active");
     if (torchLight.state)   tbuttonTorch.addClass("active");
     // Check the permissions to manage the lights
-    if (
-      data.isGM === true ||
-      game.settings.get("LightsHUD", "playerActivation") === true
-    ) {
+    
+    if (!data.isGM && !game.settings.get("LightsHUD", "playerActivation")) {
+      disableLightsHUDButton(tbuttonLight);
+      disableLightsHUDButton(tbuttonLantern);
+      disableLightsHUDButton(tbuttonTorch);
+      return;
+    }
+
       // If the a specific light is on, enable only that light otherwise enable all three of them
       if (spellLight.state) {
         enableLightsHUDButton(tbuttonLight);
@@ -90,17 +94,11 @@ class LightsHUD {
         enableLightsHUDButton(tbuttonTorch);
         tbuttonTorch.addClass("active");
       } else enableRelevantButtons();
-    } else {
-      // If no permission exists, disable all the buttons
-      disableLightsHUDButton(tbuttonLight);
-      disableLightsHUDButton(tbuttonLantern);
-      disableLightsHUDButton(tbuttonTorch);
-    }
+    
 
     // Returns true if the character can use the Light spell
     // This also returns true if the game system is not D&D 5e...
     function canCastLight() {
-      LightsHUD.log("Can Cast Light Check");
       let actor = game.actors.get(data.actorId);
       if (actor === undefined) return false;
       let hasLight = false;
@@ -111,20 +109,39 @@ class LightsHUD {
       });
       return hasLight;
     }
-    
-    // Returns true if either the character does not need to consume an item
-    // or if he can indeed consume it (and it is actually consumed)
-    async function consumeItem(itemToCheck) {
-      LightsHUD.log("Consume Item");
 
+    // Returns true if the character has a specific item in his inventory
+    // This also returns true if the game system is not D&D 5e...
+    function hasItemInInventory(itemToCheck) {
+      let actor = game.actors.get(data.actorId);
+      if (actor === undefined) return false;
+      let consumables =
+        actor.data.items.contents.filter(
+          (item) =>
+            item.type === "consumable" &&
+            item.name.toLowerCase() === itemToCheck.toLowerCase() &&
+            item.data.data.quantity > 0
+        ) ?? false;
+      return consumables.length > 0 ? consumables : false;
+    }
+
+    
+    async function consumeItem(itemToCheck) {
+      //TODO Analyse and check if this can be changed to simplify code.
+      // Mana+2[they/them/it]: I guess it depends on what the data variable is that your code is referring to and where this would even be called.
+      // [6:10 PM] Mana+2[they/them/it]: If you already have the item you want consumed, you can just go item.parent or something for the actor, but you don't need the actor to update the item, so, ehh...
+      // If you only have the item and actor id, I'd refactor it to be the item's uuid instead. (edited)
+      
       let actor = game.actors.tokens[data._id] ?? game.actors.get(data.actorId);
-      let consume = game.settings.get("LightsHUD", "consumeItem");
-      let isAvailable = game.settings.get("LightsHUD", "checkAvailability");
+      let consumeChecked = game.settings.get("LightsHUD", "consumeItem");
+      let availabilityCheck = game.settings.get("LightsHUD", "checkAvailability");
       let hasItem = false;
 
-      if (isAvailable) hasItem = hasItemInInventory(itemToCheck) ?? false;
-      if (hasItem && consume) {
-       
+      if (!availabilityCheck) return true;
+
+      hasItem = hasItemInInventory(itemToCheck) ?? false;
+
+      if (hasItem && consumeChecked) {
         let newQte = actor.items.get(hasItem[0].id).data.data.quantity - 1;
         await actor.updateEmbeddedDocuments("Item", [
             {
@@ -132,7 +149,7 @@ class LightsHUD {
               "data.quantity": newQte,
             },
           ]);
-        return hasItem;
+        return true;
       }
       return hasItem;
     }
@@ -157,21 +174,9 @@ class LightsHUD {
 
     // Enable or disable buttons according to parameters
     function enableRelevantButtons() {
-      // let torchConsumable = game.settings.get(
-      //   "LightsHUD",
-      //   "torchType.nameConsumableTorch"
-      // );
-      // let lanternConsumable = game.settings.get(
-      //   "LightsHUD",
-      //   "lanternType.nameConsumableLantern"
-      // );
-
-      // Stores if checks need to be made to enable buttons
       let noCheck = game.system.id !== "dnd5e";
       if (!noCheck)
-        noCheck =
-          (data.isGM && !game.settings.get("LightsHUD", "dmAsPlayer")) ||
-          !game.settings.get("LightsHUD", "checkAvailability");
+        noCheck = !game.settings.get("LightsHUD", "checkAvailability");
 
       if (noCheck || canCastLight()) {
         LightsHUD.log("Light Spell HUD Button Enabled");
@@ -203,7 +208,6 @@ class LightsHUD {
       ev.preventDefault();
       ev.stopPropagation();
       LightsHUD.log("On Button Click");
-      LightsHUD.log(tbutton);
       let tokenD = app.object.document;
       // Are we dealing with the Light Button
       if (tbutton === tbuttonLight) {
@@ -211,7 +215,7 @@ class LightsHUD {
         if (spellLight.state) {
           // The token has the light spell on
           spellLight.state = false;
-          await tokenD.setFlag("LightsHUD", "spellLight.state", false);
+          await tokenD.setFlag("LightsHUD", "spellLightState", false);
           tbuttonLight.removeClass("active");
           // Light is inactive, enable the relevant light sources according to parameters
           enableRelevantButtons();
@@ -229,7 +233,7 @@ class LightsHUD {
         } else {
           // The token does not have the light spell on
           spellLight.state = true;
-          await tokenD.setFlag("LightsHUD", "spellLight.state", true);
+          await tokenD.setFlag("LightsHUD", "spellLightState", true);
           tbuttonLight.addClass("active");
           // Light is active, disable the other light sources
           disableLightsHUDButton(tbuttonLantern);
@@ -449,13 +453,13 @@ class LightsHUD {
               break;
           }
         }
-        // Or are we dealing with the Lantern Button
+        
       }
       if (tbutton === tbuttonLantern) {
         // Check if the token has the lantern on
         if (lanternLight.state) {
           // The token has the light spell on
-        await lanternLight.turnOff();
+          await lanternLight.turnOff();
         } else {
           // The token does not have the lantern on
 
@@ -596,16 +600,19 @@ class LightsHUD {
         // Or are we dealing with the Torch Button
       }
       if (tbutton === tbuttonTorch) {
-        // Check if the token has the torch on
-        if (torchLight.state) {
-          // The token has the torch on
-          torchLight.state = false;
-          await tokenD.setFlag("LightsHUD", "torchLightState", false);
-          tbuttonTorch.removeClass("active");
-          // Torch is inactive, enable the relevant light sources according to parameters
-          enableRelevantButtons();
+          LightsHUD.log("Clicked Torch Icon")
+          // Check if the token has the torch on
+          if (torchLight.state) {
+            LightsHUD.log("Torch is on, extinguishing it!")
+            LightsHUD.log(torchLight.state)
+          // Check if the token has the torch on
+            torchLight.state = false;
+            await tokenD.setFlag("LightsHUD", "torchLightState", false);
+            tbuttonTorch.removeClass("active");
+          // Light is inactive, enable the relevant light sources according to parameters
+            enableRelevantButtons();
           // Restore the initial light source
-          updateTokenLighting(
+            updateTokenLighting(
             tokenD.getFlag("LightsHUD", "InitialBrightRadius"),
             tokenD.getFlag("LightsHUD", "InitialDimRadius"),
             tokenD.getFlag("LightsHUD", "InitialLightColor"),
@@ -615,11 +622,9 @@ class LightsHUD {
             tokenD.getFlag("LightsHUD", "InitialAnimationSpeed"),
             tokenD.getFlag("LightsHUD", "InitialAnimationIntensity")
           );
-        } else {
-          // The token does not have the torch on
-          // Checks whether the character can consume a torch
-          if (consumeItem(game.settings.get('LightsHUD', 'torchType.nameConsumableTorch'))) {
-            torchLight = true;
+        } else if (!torchLight.state && consumeItem(game.settings.get('LightsHUD', 'torchType.nameConsumableTorch')) ) {
+            LightsHUD.log("Torch is Off and Consume.")
+            torchLight.state = true;
             await tokenD.setFlag("LightsHUD", "torchLightState", true);
             tbuttonTorch.addClass("active");
             // Torch is active, disable the other light sources
@@ -769,16 +774,13 @@ class LightsHUD {
                 break;
             }
           } 
-          // else {
-          //   torchLight = true;
-          //   await tokenD.setFlag("LightsHUD", "torchLight", true);
-          //   LightsHUD.log("Disable Torch Button");
-          //   disableLightsHUDButton(tbuttonTorch);
-          //   tbuttonTorch.removeClass("active");
-          // }
+          else {
+            LightsHUD.log("Torch is Off and can't consume a torch. None remains or not found.")
+            disableLightsHUDButton(tbuttonTorch);
+          }
         }
       }
-    }
+    
     // Update the relevant light parameters of a token
     function updateTokenLighting(
       bright,
@@ -869,23 +871,6 @@ class LightsHUD {
       return Promise.all(promises);
     }
 
-    // Returns true if the character has a specific item in his inventory
-    // This also returns true if the game system is not D&D 5e...
-    function hasItemInInventory(itemToCheck) {
-      LightsHUD.log("Has Item Check");
-      let actor = game.actors.get(data.actorId);
-      if (actor === undefined) return false;
-      LightsHUD.log(actor.data.items.contents);
-      let consumables =
-        actor.data.items.contents.filter(
-          (item) =>
-            item.type === "consumable" &&
-            item.name.toLowerCase() === itemToCheck.toLowerCase() &&
-            item.data.data.quantity > 0
-        ) ?? false;
-      LightsHUD.log(consumables);
-      return consumables.length > 0 ? consumables : false;
-    }
 
     /*
      * Returns the first GM id.
@@ -1020,14 +1005,14 @@ Hooks.once("init", () => {
       default: true,
       type: Boolean,
     });
-    game.settings.register("LightsHUD", "dmAsPlayer", {
-      name: game.i18n.localize("LightsHUD.dmAsPlayer.name"),
-      hint: game.i18n.localize("LightsHUD.dmAsPlayer.hint"),
-      scope: "world",
-      config: true,
-      default: false,
-      type: Boolean,
-    });
+  //   game.settings.register("LightsHUD", "dmAsPlayer", {
+  //     name: game.i18n.localize("LightsHUD.dmAsPlayer.name"),
+  //     hint: game.i18n.localize("LightsHUD.dmAsPlayer.hint"),
+  //     scope: "world",
+  //     config: true,
+  //     default: false,
+  //     type: Boolean,
+  //   });
   }
   // Light Parameters
   game.settings.register("LightsHUD", "lightBrightRadius", {
