@@ -215,7 +215,7 @@ class LightsHUD {
         if (spellLight.state) {
           // The token has the light spell on
           spellLight.state = false;
-          await tokenD.setFlag("LightsHUD", "spellLightState", false);
+          await tokenD.setFlag("LightsHUD", spellLight._getFlagName(), false);
           tbuttonLight.removeClass("active");
           // Light is inactive, enable the relevant light sources according to parameters
           enableRelevantButtons();
@@ -233,7 +233,7 @@ class LightsHUD {
         } else {
           // The token does not have the light spell on
           spellLight.state = true;
-          await tokenD.setFlag("LightsHUD", "spellLightState", true);
+          await tokenD.setFlag("LightsHUD", spellLight._getFlagName(), true);
           tbuttonLight.addClass("active");
           // Light is active, disable the other light sources
           disableLightsHUDButton(tbuttonLantern);
@@ -600,14 +600,11 @@ class LightsHUD {
         // Or are we dealing with the Torch Button
       }
       if (tbutton === tbuttonTorch) {
-          LightsHUD.log("Clicked Torch Icon")
           // Check if the token has the torch on
           if (torchLight.state) {
-            LightsHUD.log("Torch is on, extinguishing it!")
-            LightsHUD.log(torchLight.state)
           // Check if the token has the torch on
             torchLight.state = false;
-            await tokenD.setFlag("LightsHUD", "torchLightState", false);
+            await tokenD.setFlag("LightsHUD", torchLight._getFlagName(), false);
             tbuttonTorch.removeClass("active");
           // Light is inactive, enable the relevant light sources according to parameters
             enableRelevantButtons();
@@ -623,9 +620,8 @@ class LightsHUD {
             tokenD.getFlag("LightsHUD", "InitialAnimationIntensity")
           );
         } else if (!torchLight.state && consumeItem(game.settings.get('LightsHUD', 'torchType.nameConsumableTorch')) ) {
-            LightsHUD.log("Torch is Off and Consume.")
             torchLight.state = true;
-            await tokenD.setFlag("LightsHUD", "torchLightState", true);
+            await tokenD.setFlag("LightsHUD", torchLight._getFlagName(), true);
             tbuttonTorch.addClass("active");
             // Torch is active, disable the other light sources
             disableLightsHUDButton(tbuttonLight);
@@ -775,12 +771,10 @@ class LightsHUD {
             }
           } 
           else {
-            LightsHUD.log("Torch is Off and can't consume a torch. None remains or not found.")
             disableLightsHUDButton(tbuttonTorch);
           }
-        }
       }
-    
+    }
     // Update the relevant light parameters of a token
     function updateTokenLighting(
       bright,
@@ -807,7 +801,6 @@ class LightsHUD {
         },
       });
     }
-
     // Store the initial status of illumination for the token to restore if all light sources are extinguished
     async function storeTokenLighting() {
       let promises = [];
@@ -870,8 +863,6 @@ class LightsHUD {
 
       return Promise.all(promises);
     }
-
-
     /*
      * Returns the first GM id.
      */
@@ -946,8 +937,6 @@ class LightsHUD {
 Hooks.on("ready", () => {
   Hooks.on("renderTokenHUD", (app, html, data) => {
     LightsHUD.addLightsHUDButtons(app, html, data);
-    LightsHUD.log("renderHUD")
-    LightsHUD.log(app)
   });
   Hooks.on("renderControlsReference", (app, html, data) => {
     html
