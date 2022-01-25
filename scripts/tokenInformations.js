@@ -30,7 +30,8 @@ setTokenInfo(tokenObject){
         this.tokenId  = tokenObject._id;
         this.actorId  = tokenObject.actorId;
         this.isLinked = tokenObject.actorLink;
-        this.itemList = tokenObject.actorData.items ?? game.actors.get(tokenObject.actorId).data.items.contents;
+        this.itemList = tokenObject.actorData.items ?? game.actors.get(tokenObject.actorId).data._source.items;
+        console.info("actor", game.actors.get(tokenObject.actorId))
     } catch (error) {
         console.error("Error in setting TokenObject: ", error);
         return error;
