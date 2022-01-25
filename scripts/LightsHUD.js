@@ -1,23 +1,6 @@
-/*
- * ----------------------------------------------------------------------------
- * "THE BEER-WARE LICENSE" (Revision 42):
- * <shurd@FreeBSD.ORG> wrote this file.  As long as you retain this notice you
- * can do whatever you want with this stuff. If we meet some day, and you think
- * this stuff is worth it, you can buy me a beer in return.        Stephen Hurd
- * ----------------------------------------------------------------------------
- * <philippe@krait.net> updated this file.  As long as you retain this notice
- * you can do whatever you want with this stuff. If we meet some day, and you
- * think this stuff is worth it, you can buy me a beer in return, but only if
- * you promise to buy one for Stephen as well.                   Philippe Krait
- * ----------------------------------------------------------------------------
- * <alan.n.davies@gmail.com> updated this file.  As long as you retain this
- * notice you can do whatever you want with this stuff.  If we meet some day,
- * and you think this stuff is worth it, you can buy me a beer in return, but
- * only if you promise to buy one for Stephen and Philippe as well.
- * Alan Davies
- * ----------------------------------------------------------------------------
- */
 import { LightDataExt } from "./LightDataExt.js";
+import { tokenInformations } from "./tokenInformations.js";
+
 class LightsHUD {
  
   static clBanner() {
@@ -31,8 +14,21 @@ class LightsHUD {
     console.log("%c" + title, "color:orange");
   }
 
+
+
   static async addLightsHUDButtons(app, html, data) {
-  
+
+    let tokenInfoObject = app.object.data;
+
+    let tokenInfo = new tokenInformations(tokenInfoObject);
+
+  LightsHUD.log(tokenInfo);
+  LightsHUD.log(tokenInfo.getItemsList())
+
+
+    
+
+
     // Define all three buttons
     const tbuttonLight = $(
       `<div class="control-icon LightsHUD lightSpell" title="Toggle Light Spell"><i class="fas fa-sun"></i></div>`
@@ -43,6 +39,22 @@ class LightsHUD {
     const tbuttonTorch = $(
       `<div class="control-icon LightsHUD torch" title="Toggle Torch"><i class="fas fa-fire"></i></div>`
     );
+
+
+    // if (!app.object.data.actorLink){
+    //   tItemsObject.tID = app.object.data._id;
+    //   tItemsObject.items = app.object.data.actorData;
+    //   tItemsObject.linked = app.object.data.actorLink;
+    // }
+    // else {
+    //   tItemsObject.tID = app.object.data.actorId;
+    //   tItemsObject.items = game.actors.get(tItemsObject.tID).data.items;
+    //   tItemsObject.linked = app.object.data.actorLink;
+    // }
+
+    // LightsHUD.log(tItemsObject.tID)
+    // LightsHUD.log(tItemsObject.items)
+    // LightsHUD.log(tItemsObject.linked)
 
     // Get the position of the column
     const position = game.settings.get("LightsHUD", "position");
@@ -63,6 +75,14 @@ class LightsHUD {
     let spellLight = new LightDataExt("light", "spell", false, app);
     let lanternLight = new LightDataExt("lantern", "consumable", false, app);
     let torchLight = new LightDataExt("torch", "consumable", false, app);
+
+    let tokenD = app.object.document;
+    let tokenUuid = tokenD.uuid;
+   
+    let hasInventoryCheck = game.settings.get("LightsHUD","checkAvailability");
+    let consumptionCheck = game.settings.get("LightsHUD","consumeItem");
+
+
       
     // Initial button state when the HUD comes up
     if (spellLight.state)   tbuttonLight.addClass("active");
@@ -110,16 +130,15 @@ class LightsHUD {
 
     // Returns true if the character has a specific item in his inventory
     // This also returns true if the game system is not D&D 5e...
-    function hasItem(itemToCheck) {
-      let actor = game.actors.tokens[data._id] ?? game.actors.get(data.actorId);
-      let consumables =
-        actor.data.items.contents.filter(
-          (item) =>
-            item.type === "consumable" &&
-            item.name.toLowerCase() === itemToCheck.toLowerCase() &&
-            item.data.data.quantity > 0
-        ) ?? false;
-      return consumables.length > 0 ? consumables : false;
+    async function hasItem(itemToCheck) {
+      // let consumables =
+      //   actor.data.items.contents.filter(
+      //     (item) =>
+      //       item.type === "consumable" &&
+      //       item.name.toLowerCase() === itemToCheck.toLowerCase() &&
+      //       item.data.data.quantity > 0
+      //   ) ?? false;
+      // return consumables.length > 0 ? consumables : false;
     }
     
     async function consumeItem(item) {
@@ -194,11 +213,7 @@ class LightsHUD {
       ev.preventDefault();
       ev.stopPropagation();
       LightsHUD.log("On Button Click");
-      let tokenD = app.object.document;
-
-      let hasInventoryCheck = game.settings.get("LightsHUD","checkAvailability");
-      let consumptionCheck = game.settings.get("LightsHUD","consumeItem");
-
+    
       // Are we dealing with the Light Button
       if (tbutton.hasClass("lightSpell")) {
         // Check if the token has the light spell on
@@ -447,7 +462,7 @@ class LightsHUD {
       }
       if (tbutton.hasClass("lantern")) { 
         let consumable = game.settings.get("LightsHUD","lanternType.nameConsumableLantern").toLowerCase() ?? false;
-        let hasItemNow = hasItem(consumable);
+        let hasItemNow = hasItem(tokenUuid,consumable);
         
           // Check if the token has the light spell on
           if (lanternLight.state) {
@@ -695,7 +710,7 @@ class LightsHUD {
       }
       if (tbutton.hasClass("torch")) {
         let consumable = game.settings.get("LightsHUD","torchType.nameConsumableTorch").toLowerCase() ?? false;
-        let hasItemNow = hasItem(consumable);
+        let hasItemNow = hasItem(tokenUuid,consumable);
         
           // Check if the token has the light spell on
           if (torchLight.state) {
@@ -1564,3 +1579,4 @@ Hooks.once("init", () => {
   LightsHUD.debug();
   LightsHUD.clBanner();
 });
+
