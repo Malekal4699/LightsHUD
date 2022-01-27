@@ -33,7 +33,9 @@
         }
     ],
     "esmodules": [
-        "/scripts/LightsHUD.js"
+        "/scripts/LightsHUD.js",
+        "/scripts/LightDataExt.js",
+        "/scripts/tokenInformations.js"
     ],
     "socket": true,
     "styles": [

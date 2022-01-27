@@ -14,6 +14,12 @@ export class tokenInformations {
   }
 
   getItemsList(){
+        if (this.isLinked){
+            this.itemList = game.actors.get(this.actorId).data._source.items;
+        }
+        else{
+           this.itemList = game.actors.tokens[this.tokenId].data._source.items;
+        }
       return this.itemList;
   }
 
@@ -23,19 +29,18 @@ export class tokenInformations {
 
   getActorID(){
       return this.actorId;
-}
+  }
 
-setTokenInfo(tokenObject){
-    try{
-        this.tokenId  = tokenObject._id;
-        this.actorId  = tokenObject.actorId;
-        this.isLinked = tokenObject.actorLink;
-        this.itemList = tokenObject.actorData.items ?? game.actors.get(tokenObject.actorId).data._source.items;
-        console.info("actor", game.actors.get(tokenObject.actorId))
-    } catch (error) {
-        console.error("Error in setting TokenObject: ", error);
-        return error;
+  setTokenInfo(tokenObject){
+        try{
+            this.tokenId  = tokenObject._id;
+            this.actorId  = tokenObject.actorId;
+            this.isLinked = tokenObject.actorLink;
+            this.getItemsList();
+        } catch (error) {
+            console.error("Error in setting TokenObject: ", error);
+            return error;
+        }
     }
-}
 
-}
+}      

@@ -2,7 +2,8 @@ CHANGELOG
 ===================================
 
 ## 0.10.5
-* Fixed issue #1 & #8
+* Fixed #16 #8 #1 partially. 
+* Known issue: Flags on linked tokens are set on the actor rather than the token.
 * Special thanks to Martín Chaves (https://github.com/kiov) for the hardcoded name fixes.
 
 ## 0.10.4
