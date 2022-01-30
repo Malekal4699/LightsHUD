@@ -4,6 +4,8 @@
 
 Derived and updated version of Torchlight, which in turn was derived from Torch.
 
+Dnd5e AND PF2e are now both supported for availability check and consumption.
+
 ## Known Issues
 * The position of the icons needs to be adjusted according to the size of the token.
 * When using french locale, there seems to be a conflict when using LightsHUD & Minimal UI with pf2 system.

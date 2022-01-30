@@ -100,9 +100,7 @@ class LightsHUD {
     // Returns true if the character has a specific item in his inventory
     // This also returns true if the game system is not D&D 5e...
     function hasItem(itemToCheck) {
-      let itemQte = (game.system.id === "dnd5e")? "item.data.quantity" : "item.data.quantity.value";
       let consumables; 
-      
 
       if (game.system.id === "dnd5e"){
         consumables = tokenInfo.itemList.filter( (item) => ((item.type === "consumable") && (item.name.toLowerCase() === itemToCheck.toLowerCase()) && (item.data.quantity > 0))  ?? false);
@@ -116,12 +114,8 @@ class LightsHUD {
     }
     
     async function consumeItem(item) {
-      //TODO Analyse and check if this can be changed to simplify code.
-      // Mana+2[they/them/it]: I guess it depends on what the data variable is that your code is referring to and where this would even be called.
-      // [6:10 PM] Mana+2[they/them/it]: If you already have the item you want consumed, you can just go item.parent or something for the actor, but you don't need the actor to update the item, so, ehh...
-      // If you only have the item and actor id, I'd refactor it to be the item's uuid instead. (edited)
+      
       if (!item) return;
-     
       try{
         let itemID = item[0]._id;
         let newQte;
