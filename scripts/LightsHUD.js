@@ -100,12 +100,18 @@ class LightsHUD {
     // Returns true if the character has a specific item in his inventory
     // This also returns true if the game system is not D&D 5e...
     function hasItem(itemToCheck) {
-      let consumables = tokenInfo.itemList.filter(
-          (item) =>
-            item.type === "consumable" &&
-            item.name.toLowerCase() === itemToCheck.toLowerCase() &&
-            item.data.quantity > 0
-        ) ?? false;
+      let itemQte = (game.system.id === "dnd5e")? "item.data.quantity" : "item.data.quantity.value";
+      let consumables; 
+      
+
+      if (game.system.id === "dnd5e"){
+        consumables = tokenInfo.itemList.filter( (item) => ((item.type === "consumable") && (item.name.toLowerCase() === itemToCheck.toLowerCase()) && (item.data.quantity > 0))  ?? false);
+      }
+      if (game.system.id === "pf2e"){
+        consumables = tokenInfo.itemList.filter( (item) => (item.type === "consumable" && item.name.toLowerCase() === itemToCheck.toLowerCase() && item.data.quantity.value > 0)  ?? false);
+      }
+      if (!consumables) return false;
+        
       return consumables.length > 0 ? consumables : false;
     }
     
@@ -118,15 +124,25 @@ class LightsHUD {
      
       try{
         let itemID = item[0]._id;
-        let newQte = item[0].data.quantity - 1;
-        if (tokenInfo.getLinked()){
-            await game.actors.get(tokenInfo.getActorID()).updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity": newQte,},]);  
-        }else {
-            await game.actors.tokens[tokenInfo.getTokenID()].updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity": newQte,},]);  
+        let newQte;
+        if (game.system.id === "dnd5e"){
+          newQte = item[0].data.quantity - 1;
+          if (tokenInfo.getLinked()){
+              await game.actors.get(tokenInfo.getActorID()).updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity": newQte,},]);  
+          }else {
+              await game.actors.tokens[tokenInfo.getTokenID()].updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity": newQte,},]);  
+          }}
+        if (game.system.id === "pf2e"){
+          newQte = item[0].data.quantity.value - 1;
+          if (tokenInfo.getLinked()){
+              await game.actors.get(tokenInfo.getActorID()).updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity.value": newQte,},]);  
+          }else {
+              await game.actors.tokens[tokenInfo.getTokenID()].updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity.value": newQte,},]);  
+          }
         }
-        
         return true;
-      } catch (err) { 
+      }
+        catch (err) { 
         LightsHUD.log("Error during consumption:");
         LightsHUD.log(err);
         return false;
@@ -158,7 +174,7 @@ class LightsHUD {
       let lantern = game.settings.get('LightsHUD', "lanternType.nameConsumableLantern").toLowerCase();
       let torch = game.settings.get('LightsHUD', "torchType.nameConsumableTorch").toLowerCase();
 
-      let noCheck = game.system.id !== "dnd5e";
+      let noCheck;// = game.system.id !== "dnd5e";
       if (!noCheck) noCheck = !checkAvailability;
 
       if (noCheck || canCastLight()) {
@@ -1135,13 +1151,13 @@ Hooks.once("init", () => {
     default: true,
     type: Boolean,
   });
-  let showInConfig = (game.system.id === "dnd5e")? true: false;
+
   
     game.settings.register("LightsHUD", "checkAvailability", {
       name: game.i18n.localize("LightsHUD.checkAvailability.name"),
       hint: game.i18n.localize("LightsHUD.checkAvailability.hint"),
       scope: "world",
-      config: showInConfig,
+      config: true,
       default: false,
       type: Boolean,
     });
@@ -1149,7 +1165,7 @@ Hooks.once("init", () => {
       name: game.i18n.localize("LightsHUD.consumeItem.name"),
       hint: game.i18n.localize("LightsHUD.consumeItem.hint"),
       scope: "world",
-      config: showInConfig,
+      config: true,
       default: false,
       type: Boolean,
     });
@@ -1157,7 +1173,7 @@ Hooks.once("init", () => {
         name: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.name"),
         hint: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.hint"),
         scope: "world",
-        config: showInConfig,
+        config: true,
         default: "Torch",
         type: String,
     });
@@ -1169,7 +1185,7 @@ Hooks.once("init", () => {
         "LightsHUD.lanternType.nameConsumableLantern.hint"
       ),
       scope: "world",
-      config: showInConfig,
+      config: true,
       default: "Oil (flask)",
       type: String,
     });
