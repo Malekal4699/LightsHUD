@@ -1135,28 +1135,29 @@ Hooks.once("init", () => {
     default: true,
     type: Boolean,
   });
-  if (game.system.id === "dnd5e") {
+  let showInConfig = (game.system.id === "dnd5e")? true: false;
+  
     game.settings.register("LightsHUD", "checkAvailability", {
       name: game.i18n.localize("LightsHUD.checkAvailability.name"),
       hint: game.i18n.localize("LightsHUD.checkAvailability.hint"),
       scope: "world",
-      config: true,
-      default: true,
+      config: showInConfig,
+      default: false,
       type: Boolean,
     });
     game.settings.register("LightsHUD", "consumeItem", {
       name: game.i18n.localize("LightsHUD.consumeItem.name"),
       hint: game.i18n.localize("LightsHUD.consumeItem.hint"),
       scope: "world",
-      config: true,
-      default: true,
+      config: showInConfig,
+      default: false,
       type: Boolean,
     });
     game.settings.register("LightsHUD", "torchType.nameConsumableTorch", {
         name: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.name"),
         hint: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.hint"),
         scope: "world",
-        config: true,
+        config: showInConfig,
         default: "Torch",
         type: String,
     });
@@ -1168,19 +1169,12 @@ Hooks.once("init", () => {
         "LightsHUD.lanternType.nameConsumableLantern.hint"
       ),
       scope: "world",
-      config: true,
+      config: showInConfig,
       default: "Oil (flask)",
       type: String,
     });
-  //   game.settings.register("LightsHUD", "dmAsPlayer", {
-  //     name: game.i18n.localize("LightsHUD.dmAsPlayer.name"),
-  //     hint: game.i18n.localize("LightsHUD.dmAsPlayer.hint"),
-  //     scope: "world",
-  //     config: true,
-  //     default: false,
-  //     type: Boolean,
-  //   });
-  }
+
+  
   // Light Parameters
   game.settings.register("LightsHUD", "lightBrightRadius", {
     name: game.i18n.localize("LightsHUD.lightBrightRadius.name"),
@@ -1548,7 +1542,7 @@ Hooks.once("init", () => {
     type: Boolean,
     default: false,
   });
-
+  
   LightsHUD.debug();
   LightsHUD.clBanner();
 });
