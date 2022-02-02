@@ -1,54 +1,158 @@
-/*
- * ----------------------------------------------------------------------------
- * "THE BEER-WARE LICENSE" (Revision 42):
- * <shurd@FreeBSD.ORG> wrote this file.  As long as you retain this notice you
- * can do whatever you want with this stuff. If we meet some day, and you think
- * this stuff is worth it, you can buy me a beer in return.        Stephen Hurd
- * ----------------------------------------------------------------------------
- * <philippe@krait.net> updated this file.  As long as you retain this notice
- * you can do whatever you want with this stuff. If we meet some day, and you
- * think this stuff is worth it, you can buy me a beer in return, but only if
- * you promise to buy one for Stephen as well.                   Philippe Krait
- * ----------------------------------------------------------------------------
- * <alan.n.davies@gmail.com> updated this file.  As long as you retain this
- * notice you can do whatever you want with this stuff.  If we meet some day,
- * and you think this stuff is worth it, you can buy me a beer in return, but
- * only if you promise to buy one for Stephen and Philippe as well.
- * Alan Davies
- * ----------------------------------------------------------------------------
- */
+import { LightDataExt } from "./LightDataExt.js";
+import { tokenInformations } from "./tokenInformations.js";
 
 class LightsHUD {
-
-  constructor(){}
-
-	static clBanner(){
-	  const title =
-    " _     _       _     _       _   _ _   _ ____   \n"+
-    "| |   (_) __ _| |__ | |_ ___| | | | | | |  _ \\  \n"+
-    "| |   | |/ _` | \'_ \\| __/ __| |_| | | | | | | | \n"+
-    "| |___| | (_| | | | | |_\\__ \\  _  | |_| | |_| | \n"+
-    "|_____|_|\\__, |_| |_|\\__|___/_| |_|\\___/|____/  \n"+
-    "         |___/                                 \n";
-	  console.log( "%c" + title, "color:orange" )
-	}
-
+ 
+  static clBanner() {
+    const title =
+      " _     _       _     _       _   _ _   _ ____   \n" +
+      "| |   (_) __ _| |__ | |_ ___| | | | | | |  _ \\  \n" +
+      "| |   | |/ _` | '_ \\| __/ __| |_| | | | | | | | \n" +
+      "| |___| | (_| | | | | |_\\__ \\  _  | |_| | |_| | \n" +
+      "|_____|_|\\__, |_| |_|\\__|___/_| |_|\\___/|____/  \n" +
+      "         |___/                                 \n";
+    console.log("%c" + title, "color:orange");
+  }
 
   static async addLightsHUDButtons(app, html, data) {
 
+    let tokenInfoObject = app.object.data;
+    let tokenInfo = new tokenInformations(tokenInfoObject);
 
+    // Define all three buttons
+    const tbuttonLight = $(
+      `<div class="control-icon LightsHUD lightSpell" title="Toggle Light Spell"><i class="fas fa-sun"></i></div>`
+    );
+    const tbuttonLantern = $(
+      `<div class="control-icon LightsHUD lantern" title="Toggle Lantern"><i class="fas fa-lightbulb"></i></div>`
+    );
+    const tbuttonTorch = $(
+      `<div class="control-icon LightsHUD torch" title="Toggle Torch"><i class="fas fa-fire"></i></div>`
+    );
 
-    // Visually and functionally enable a LightsHUD button
+    // Get the position of the column
+    const position = game.settings.get("LightsHUD", "position");
+
+    // Create the column
+    const buttonsdiv = $(`<div class="col LightsHUD-column-${position}"></div>`);
+
+    // Wrap the previous icons
+    let newdiv = '<div class="LightsHUD-container"></div>';
+    html.find(".col.left").before(newdiv);
+
+    // Add the column
+    html.find(".LightsHUD-container").prepend(buttonsdiv);
+
+    // Get the status of the three types of lights
+
+    let spellLight = new LightDataExt("light", "spell", false, app);
+    let lanternLight = new LightDataExt("lantern", "consumable", false, app);
+    let torchLight = new LightDataExt("torch", "consumable", false, app);
+
+    let tokenD = app.object.document;
+   
+    let hasInventoryCheck = game.settings.get("LightsHUD","checkAvailability");
+    let consumptionCheck = game.settings.get("LightsHUD","consumeItem");
+      
+    // Initial button state when the HUD comes up
+    if (spellLight.state)   tbuttonLight.addClass("active");
+    if (lanternLight.state) tbuttonLantern.addClass("active");
+    if (torchLight.state)   tbuttonTorch.addClass("active");
+    // Check the permissions to manage the lights
+    
+    if (!data.isGM && !game.settings.get("LightsHUD", "playerActivation")) {
+      disableLightsHUDButton(tbuttonLight);
+      disableLightsHUDButton(tbuttonLantern);
+      disableLightsHUDButton(tbuttonTorch);
+      return;
+    }
+      // If the a specific light is on, enable only that light otherwise enable all three of them
+      if (spellLight.state) {
+        enableLightsHUDButton(tbuttonLight);
+        disableLightsHUDButton(tbuttonLantern);
+        disableLightsHUDButton(tbuttonTorch);
+      } else if (lanternLight.state) {
+        disableLightsHUDButton(tbuttonLight);
+        enableLightsHUDButton(tbuttonLantern);
+        disableLightsHUDButton(tbuttonTorch);
+      } else if (torchLight.state) {
+        disableLightsHUDButton(tbuttonLight);
+        disableLightsHUDButton(tbuttonLantern);
+        enableLightsHUDButton(tbuttonTorch);
+      } else enableButtonsPerSettings();
+
+    
+
+    // Returns true if the character can use the Light spell
+    // This also returns true if the game system is not D&D 5e...
+    function canCastLight() {
+      let actor = game.actors.get(data.actorId);
+      if (actor === undefined) return false;
+      let hasLight = false;
+      actor.data.items.forEach((item) => {
+        if (item.type === "spell") {
+          if (item.name === "Light") hasLight = true;
+        }
+      });
+      return hasLight;
+    }
+
+    // Returns true if the character has a specific item in his inventory
+    // This also returns true if the game system is not D&D 5e...
+    function hasItem(itemToCheck) {
+      let consumables; 
+
+      if (game.system.id === "dnd5e"){
+        consumables = tokenInfo.itemList.filter( (item) => ((item.type === "consumable") && (item.name.toLowerCase() === itemToCheck.toLowerCase()) && (item.data.quantity > 0))  ?? false);
+      }
+      if (game.system.id === "pf2e"){
+        consumables = tokenInfo.itemList.filter( (item) => (item.type === "consumable" && item.name.toLowerCase() === itemToCheck.toLowerCase() && item.data.quantity.value > 0)  ?? false);
+      }
+      if (!consumables) return false;
+        
+      return consumables.length > 0 ? consumables : false;
+    }
+    
+    async function consumeItem(item) {
+      
+      if (!item) return;
+      try{
+        let itemID = item[0]._id;
+        let newQte;
+        if (game.system.id === "dnd5e"){
+          newQte = item[0].data.quantity - 1;
+          if (tokenInfo.getLinked()){
+              await game.actors.get(tokenInfo.getActorID()).updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity": newQte,},]);  
+          }else {
+              await game.actors.tokens[tokenInfo.getTokenID()].updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity": newQte,},]);  
+          }}
+        if (game.system.id === "pf2e"){
+          newQte = item[0].data.quantity.value - 1;
+          if (tokenInfo.getLinked()){
+              await game.actors.get(tokenInfo.getActorID()).updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity.value": newQte,},]);  
+          }else {
+              await game.actors.tokens[tokenInfo.getTokenID()].updateEmbeddedDocuments("Item", [{"_id": itemID,"data.quantity.value": newQte,},]);  
+          }
+        }
+        return true;
+      }
+        catch (err) { 
+        LightsHUD.log("Error during consumption:");
+        LightsHUD.log(err);
+        return false;
+      }
+    }
+    
     function enableLightsHUDButton(tbutton) {
       // Remove the disabled status, if any
       tbutton.find("i").removeClass("fa-disabled");
+      tbutton.addClass("active");
       // Install a click handler if one is not already bound
       if (!tbutton.hasClass("clickBound")) {
         tbutton.click(async (ev) => onButtonClick(ev, tbutton));
         tbutton.addClass("clickBound");
       }
     }
-
     // Visually and functionally disable a LightsHUD button
     function disableLightsHUDButton(tbutton) {
       tbutton.find("i").addClass("fa-disabled");
@@ -58,46 +162,52 @@ class LightsHUD {
     }
 
     // Enable or disable buttons according to parameters
-    function enableRelevantButtons() {
-      // Stores if checks need to be made to enable buttons
-      let noCheck = game.system.id !== "dnd5e";
-      if (!noCheck)
-        noCheck =
-          (data.isGM && !game.settings.get("LightsHUD", "dmAsPlayer")) ||
-          !game.settings.get("LightsHUD", "checkAvailability");
+    function enableButtonsPerSettings() {
 
-      if (noCheck || canCastLight()) enableLightsHUDButton(tbuttonLight);
-      else disableLightsHUDButton(tbuttonLight);
+      let checkAvailability = game.settings.get("LightsHUD", "checkAvailability");
+      let lantern = game.settings.get('LightsHUD', "lanternType.nameConsumableLantern").toLowerCase();
+      let torch = game.settings.get('LightsHUD', "torchType.nameConsumableTorch").toLowerCase();
 
-      if (
-        noCheck ||
-        (hasItemInInventory("Oil (flask)") &&
-          (hasItemInInventory("Lantern, Hooded") ||
-            hasItemInInventory("Lantern, Bullseye")))
-      )
+      let noCheck;// = game.system.id !== "dnd5e";
+      if (!noCheck) noCheck = !checkAvailability;
+
+      if (noCheck || canCastLight()) {
+        enableLightsHUDButton(tbuttonLight);
+      } else {
+        disableLightsHUDButton(tbuttonLight);
+      }
+
+      if (noCheck || hasItem(lantern))
+      {
         enableLightsHUDButton(tbuttonLantern);
-      else disableLightsHUDButton(tbuttonLantern);
+      } else {
+        disableLightsHUDButton(tbuttonLantern);
+      }
 
-      if (noCheck || hasItemInInventory("Torch"))
+      if (noCheck || hasItem(torch))
+      {
         enableLightsHUDButton(tbuttonTorch);
-      else disableLightsHUDButton(tbuttonTorch);
+      } else {
+        disableLightsHUDButton(tbuttonTorch);
+      }
     }
 
     async function onButtonClick(ev, tbutton) {
       ev.preventDefault();
       ev.stopPropagation();
-
-      let tokenD = app.object.document;
+      LightsHUD.log("On Button Click");
+    
       // Are we dealing with the Light Button
-      if (tbutton === tbuttonLight) {
+      if (tbutton.hasClass("lightSpell")) {
         // Check if the token has the light spell on
-        if (statusLight) {
+        if (spellLight.state) {
           // The token has the light spell on
-          statusLight = false;
-          await tokenD.setFlag("LightsHUD", "statusLight", false);
+          spellLight.state = false;
+          await tokenD.setFlag("LightsHUD", spellLight._getFlagName(), false);
           tbuttonLight.removeClass("active");
           // Light is inactive, enable the relevant light sources according to parameters
-          enableRelevantButtons();
+          enableButtonsPerSettings();
+
           // Restore the initial light source
           updateTokenLighting(
             tokenD.getFlag("LightsHUD", "InitialBrightRadius"),
@@ -111,8 +221,8 @@ class LightsHUD {
           );
         } else {
           // The token does not have the light spell on
-          statusLight = true;
-          await tokenD.setFlag("LightsHUD", "statusLight", true);
+          spellLight.state = true;
+          await tokenD.setFlag("LightsHUD", spellLight._getFlagName(), true);
           tbuttonLight.addClass("active");
           // Light is active, disable the other light sources
           disableLightsHUDButton(tbuttonLantern);
@@ -327,391 +437,538 @@ class LightsHUD {
                 360,
                 game.settings.get("LightsHUD", "customlight.animationType"),
                 game.settings.get("LightsHUD", "customlight.animationSpeed"),
-                game.settings.get(
-                  "LightsHUD",
-                  "customlight.animationIntensity"
-                )
+                game.settings.get("LightsHUD", "customlight.animationIntensity")
               );
               break;
           }
         }
-        // Or are we dealing with the Lantern Button
       }
-      if (tbutton === tbuttonLantern) {
-        // Check if the token has the lantern on
-        if (statusLantern) {
-          // The token has the light spell on
-
-          statusLantern = false;
-          await tokenD.setFlag("LightsHUD", "statusLantern", false);
-          tbuttonLantern.removeClass("active");
-          // Lantern is inactive, enable the relevant light sources according to parameters
-          enableRelevantButtons();
-          // Restore the initial light source
-          updateTokenLighting(
-            tokenD.getFlag("LightsHUD", "InitialBrightRadius"),
-            tokenD.getFlag("LightsHUD", "InitialDimRadius"),
-            tokenD.getFlag("LightsHUD", "InitialLightColor"),
-            tokenD.getFlag("LightsHUD", "InitialColorIntensity"),
-            tokenD.getFlag("LightsHUD", "Initiallight.angle"),
-            tokenD.getFlag("LightsHUD", "InitialAnimationType"),
-            tokenD.getFlag("LightsHUD", "InitialAnimationSpeed"),
-            tokenD.getFlag("LightsHUD", "InitialAnimationIntensity")
-          );
-        } else {
-          // The token does not have the lantern on
-
-          // Checks whether the character can consume an oil flask
-          if (consumeItem("Oil (flask)")) {
-            statusLantern = true;
-            await tokenD.setFlag("LightsHUD", "statusLantern", true);
-            tbuttonLantern.addClass("active");
-            // Lantern is active, disable the other light sources
-            disableLightsHUDButton(tbuttonLight);
+      if (tbutton.hasClass("lantern")) { 
+        let consumable = game.settings.get("LightsHUD","lanternType.nameConsumableLantern").toLowerCase() ?? false;
+        let hasItemNow = hasItem(consumable);
+        
+          // Check if the token has the light spell on
+          if (lanternLight.state) {
+            // The token has the light spell on
+            lanternLight.state = false;
+            await tokenD.setFlag("LightsHUD", lanternLight._getFlagName(), false);
+            // Light is inactive, enable the relevant light sources according to parameters
+            enableButtonsPerSettings();
+            // Restore the initial light source
+            updateTokenLighting(
+              tokenD.getFlag("LightsHUD", "InitialBrightRadius"),
+              tokenD.getFlag("LightsHUD", "InitialDimRadius"),
+              tokenD.getFlag("LightsHUD", "InitialLightColor"),
+              tokenD.getFlag("LightsHUD", "InitialColorIntensity"),
+              tokenD.getFlag("LightsHUD", "Initiallight.angle"),
+              tokenD.getFlag("LightsHUD", "InitialAnimationType"),
+              tokenD.getFlag("LightsHUD", "InitialAnimationSpeed"),
+              tokenD.getFlag("LightsHUD", "InitialAnimationIntensity")
+            );
+            return;
+          } 
+          if ( !lanternLight.state && ((hasInventoryCheck && !hasItemNow))) return;
+          if ( !lanternLight.state && ((consumptionCheck && !consumeItem(hasItemNow)))) return;
+          if ( !lanternLight.state){
             disableLightsHUDButton(tbuttonTorch);
+            disableLightsHUDButton(tbuttonLight);
+            lanternLight.state = true;
+            await tokenD.setFlag("LightsHUD", lanternLight._getFlagName(), true);
+
             // Store the lighting for later restoration
             await storeTokenLighting();
-            // Enable the Lantern Source according to the type
-            let nBright = game.settings.get(
-              "LightsHUD",
-              "lanternBrightRadius"
-            );
+            // Enable the Light Source according to the type
+            // "torch" / "pulse" / "chroma" / "wave" / "fog" / "sunburst" / "dome"
+            // "emanation" / "hexa" / "ghost" / "energy" / "roiling" / "hole"
+            let nBright = game.settings.get("LightsHUD", "lanternBrightRadius");
             let nDim = game.settings.get("LightsHUD", "lanternDimRadius");
             let nType = game.settings.get("LightsHUD", "lanternType");
             switch (nType) {
-              case "Type0":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a2642a",
-                  0.7,
-                  360,
-                  "none",
-                  10,
-                  7
-                );
-                break;
-              case "Type1":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a2642a",
-                  0.7,
-                  360,
-                  "torch",
-                  10,
-                  7
-                );
-                break;
-              case "Type2":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a2642a",
-                  0.5,
-                  360,
-                  "torch",
-                  10,
-                  5
-                );
-                break;
-              case "Type3":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a2642a",
-                  0.3,
-                  360,
-                  "torch",
-                  10,
-                  3
-                );
-                break;
-              case "Type4":
-                updateTokenLighting(5, 5, "#a2642a", 0.7, 360, "torch", 10, 7);
-                break;
-              case "Type5":
-                updateTokenLighting(5, 5, "#a2642a", 0.5, 360, "torch", 10, 5);
-                break;
-              case "Type6":
-                updateTokenLighting(5, 5, "#a2642a", 0.3, 360, "torch", 10, 3);
-                break;
-              case "Type7":
-                updateTokenLighting(
-                  nBright * 2,
-                  nDim * 2,
-                  "#a2642a",
-                  0.7,
-                  60,
-                  "torch",
-                  10,
-                  7
-                );
-                break;
-              case "Type8":
-                updateTokenLighting(
-                  nBright * 2,
-                  nDim * 2,
-                  "#a2642a",
-                  0.5,
-                  60,
-                  "torch",
-                  10,
-                  5
-                );
-                break;
-              case "Type9":
-                updateTokenLighting(
-                  nBright * 2,
-                  nDim * 2,
-                  "#a2642a",
-                  0.3,
-                  60,
-                  "torch",
-                  10,
-                  3
-                );
-                break;
-              case "TypeC":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  game.settings.get("LightsHUD", "customLanternColor"),
-                  game.settings.get(
-                    "LightsHUD",
-                    "customLanternColorIntensity"
-                  ),
-                  360,
-                  game.settings.get("LightsHUD", "customLanternAnimationType"),
-                  game.settings.get(
-                    "LightsHUD",
-                    "customLanternAnimationSpeed"
-                  ),
-                  game.settings.get(
-                    "LightsHUD",
-                    "customLanternAnimationIntensity"
-                  )
-                );
-                break;
-            }
-          } else {
-            // There is no oil to consume, signal and disable the button
-            ChatMessage.create({
-              user: game.user._id,
-              speaker: game.actors.get(data.actorId),
-              content: "No Oil (flask) in Inventory !",
-            });
-            disableLightsHUDButton(tbuttonLantern);
-          }
-        }
-        // Or are we dealing with the Torch Button
+                case "Type0":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "none",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type1":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "torch",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type2":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "chroma",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type3":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "pulse",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type4":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "ghost",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type5":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "emanation",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type6":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "torch",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type7":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "chroma",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type8":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "pulse",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type9":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "ghost",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type10":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "emanation",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type11":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "torch",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type12":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "chroma",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type13":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "pulse",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type14":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "ghost",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type15":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "emanation",
+                    5,
+                    5
+                  );
+                  break;
+                case "TypeC":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    game.settings.get("LightsHUD", "customLightColor"),
+                    game.settings.get("LightsHUD", "customLightColorIntensity"),
+                    360,
+                    game.settings.get("LightsHUD", "customlight.animationType"),
+                    game.settings.get("LightsHUD", "customlight.animationSpeed"),
+                    game.settings.get("LightsHUD", "customlight.animationIntensity")
+                  );
+                  break;
+                }
+              }
       }
-      if (tbutton === tbuttonTorch) {
-        // Check if the token has the torch on
-        if (statusTorch) {
-          // The token has the torch on
-
-          statusTorch = false;
-          await tokenD.setFlag("LightsHUD", "statusTorch", false);
-          tbuttonTorch.removeClass("active");
-          // Torch is inactive, enable the relevant light sources according to parameters
-          enableRelevantButtons();
-          // Restore the initial light source
-
-          updateTokenLighting(
-            tokenD.getFlag("LightsHUD", "InitialBrightRadius"),
-            tokenD.getFlag("LightsHUD", "InitialDimRadius"),
-            tokenD.getFlag("LightsHUD", "InitialLightColor"),
-            tokenD.getFlag("LightsHUD", "InitialColorIntensity"),
-            tokenD.getFlag("LightsHUD", "Initiallight.angle"),
-            tokenD.getFlag("LightsHUD", "InitialAnimationType"),
-            tokenD.getFlag("LightsHUD", "InitialAnimationSpeed"),
-            tokenD.getFlag("LightsHUD", "InitialAnimationIntensity")
-          );
-        } else {
-          // The token does not have the torch on
-
-          // Checks whether the character can consume a torch
-          if (consumeItem("Torch")) {
-            statusTorch = true;
-            await tokenD.setFlag("LightsHUD", "statusTorch", true);
-            tbuttonTorch.addClass("active");
-            // Torch is active, disable the other light sources
-            disableLightsHUDButton(tbuttonLight);
+      if (tbutton.hasClass("torch")) {
+        let consumable = game.settings.get("LightsHUD","torchType.nameConsumableTorch").toLowerCase() ?? false;
+        let hasItemNow = hasItem(consumable);
+        
+          // Check if the token has the light spell on
+          if (torchLight.state) {
+            // The token has the light spell on
+            torchLight.state = false;
+            await tokenD.setFlag("LightsHUD", torchLight._getFlagName(), false);
+            // Light is inactive, enable the relevant light sources according to parameters
+            enableButtonsPerSettings();
+            // Restore the initial light source
+            updateTokenLighting(
+              tokenD.getFlag("LightsHUD", "InitialBrightRadius"),
+              tokenD.getFlag("LightsHUD", "InitialDimRadius"),
+              tokenD.getFlag("LightsHUD", "InitialLightColor"),
+              tokenD.getFlag("LightsHUD", "InitialColorIntensity"),
+              tokenD.getFlag("LightsHUD", "Initiallight.angle"),
+              tokenD.getFlag("LightsHUD", "InitialAnimationType"),
+              tokenD.getFlag("LightsHUD", "InitialAnimationSpeed"),
+              tokenD.getFlag("LightsHUD", "InitialAnimationIntensity")
+            );
+            return;
+          } 
+          if ( !torchLight.state && ((hasInventoryCheck && !hasItemNow))) return;
+          if ( !torchLight.state && ((consumptionCheck && !consumeItem(hasItemNow)))) return;
+          if ( !torchLight.state){
             disableLightsHUDButton(tbuttonLantern);
+            disableLightsHUDButton(tbuttonLight);
+            torchLight.state = true;
+            await tokenD.setFlag("LightsHUD", torchLight._getFlagName(), true);
+
             // Store the lighting for later restoration
             await storeTokenLighting();
-            // Enable the Torch Source according to the type
+            // Enable the Light Source according to the type
+            // "torch" / "pulse" / "chroma" / "wave" / "fog" / "sunburst" / "dome"
+            // "emanation" / "hexa" / "ghost" / "energy" / "roiling" / "hole"
             let nBright = game.settings.get("LightsHUD", "torchBrightRadius");
             let nDim = game.settings.get("LightsHUD", "torchDimRadius");
             let nType = game.settings.get("LightsHUD", "torchType");
             switch (nType) {
-              case "Type0":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a2642a",
-                  0.7,
-                  360,
-                  "none",
-                  5,
-                  7
-                );
-                break;
-              case "Type1":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a2642a",
-                  0.7,
-                  360,
-                  "torch",
-                  5,
-                  7
-                );
-                break;
-              case "Type2":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a2642a",
-                  0.5,
-                  360,
-                  "torch",
-                  5,
-                  5
-                );
-                break;
-              case "Type3":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a2642a",
-                  0.3,
-                  360,
-                  "torch",
-                  5,
-                  3
-                );
-                break;
-              case "Type4":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a22a2a",
-                  0.7,
-                  360,
-                  "torch",
-                  5,
-                  7
-                );
-                break;
-              case "Type5":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a22a2a",
-                  0.5,
-                  360,
-                  "torch",
-                  5,
-                  5
-                );
-                break;
-              case "Type6":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#a22a2a",
-                  0.3,
-                  360,
-                  "torch",
-                  5,
-                  3
-                );
-                break;
-              case "Type7":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#822aa2",
-                  0.7,
-                  360,
-                  "torch",
-                  5,
-                  7
-                );
-                break;
-              case "Type8":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#822aa2",
-                  0.5,
-                  360,
-                  "torch",
-                  5,
-                  5
-                );
-                break;
-              case "Type9":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  "#822aa2",
-                  0.3,
-                  360,
-                  "torch",
-                  5,
-                  3
-                );
-                break;
-              case "TypeC":
-                updateTokenLighting(
-                  nBright,
-                  nDim,
-                  game.settings.get("LightsHUD", "customTorchColor"),
-                  game.settings.get("LightsHUD", "customTorchColorIntensity"),
-                  360,
-                  game.settings.get("LightsHUD", "customTorchAnimationType"),
-                  game.settings.get("LightsHUD", "customTorchAnimationSpeed"),
-                  game.settings.get(
-                    "LightsHUD",
-                    "customTorchAnimationIntensity"
-                  )
-                );
-                break;
+                case "Type0":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "none",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type1":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "torch",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type2":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "chroma",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type3":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "pulse",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type4":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "ghost",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type5":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ffffff",
+                    0.5,
+                    360,
+                    "emanation",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type6":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "torch",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type7":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "chroma",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type8":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "pulse",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type9":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "ghost",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type10":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#ff0000",
+                    0.5,
+                    360,
+                    "emanation",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type11":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "torch",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type12":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "chroma",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type13":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "pulse",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type14":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "ghost",
+                    5,
+                    5
+                  );
+                  break;
+                case "Type15":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    "#00ff00",
+                    0.5,
+                    360,
+                    "emanation",
+                    5,
+                    5
+                  );
+                  break;
+                case "TypeC":
+                  updateTokenLighting(
+                    nBright,
+                    nDim,
+                    game.settings.get("LightsHUD", "customLightColor"),
+                    game.settings.get("LightsHUD", "customLightColorIntensity"),
+                    360,
+                    game.settings.get("LightsHUD", "customlight.animationType"),
+                    game.settings.get("LightsHUD", "customlight.animationSpeed"),
+                    game.settings.get("LightsHUD", "customlight.animationIntensity")
+                  );
+                  break;
+                }
+              }
             }
-          } else {
-            // There is no torch to consume, signal and disable the button
-            ChatMessage.create({
-              user: game.user._id,
-              speaker: game.actors.get(data.actorId),
-              content: "No Torch in Inventory !",
-            });
-            disableLightsHUDButton(tbuttonTorch);
-          }
-        }
-      }
     }
-
+      
+    
+    
     // Update the relevant light parameters of a token
-    function updateTokenLighting(bright, dim, lightColor, colorIntensity, angle, animationType, animationSpeed, animationIntensity)
-		{
-			app.object.document.update({light:{
-				bright: bright,
-				dim: dim,
-				alpha: colorIntensity ** 2,
-				color: lightColor,
-				angle: angle,
-				animation: {
-				type: animationType,
-				speed: animationSpeed,
-				intensity: animationIntensity,
-				}},
-			});
-	}
-
+    function updateTokenLighting(
+      bright,
+      dim,
+      lightColor,
+      colorIntensity,
+      angle,
+      animationType,
+      animationSpeed,
+      animationIntensity
+    ) {
+      app.object.document.update({
+        light: {
+          bright: bright,
+          dim: dim,
+          alpha: colorIntensity ** 2,
+          color: lightColor,
+          angle: angle,
+          animation: {
+            type: animationType,
+            speed: animationSpeed,
+            intensity: animationIntensity,
+          },
+        },
+      });
+    }
     // Store the initial status of illumination for the token to restore if all light sources are extinguished
     async function storeTokenLighting() {
       let promises = [];
@@ -725,11 +982,7 @@ class LightsHUD {
         )
       );
       promises.push(
-        tokenFlags.setFlag(
-          "LightsHUD",
-          "InitialDimRadius",
-          tokenData.light.dim
-        )
+        tokenFlags.setFlag("LightsHUD", "InitialDimRadius", tokenData.light.dim)
       );
       promises.push(
         tokenFlags.setFlag(
@@ -775,145 +1028,9 @@ class LightsHUD {
           tokenData.light.animation.intensity
         )
       );
- 
+
       return Promise.all(promises);
     }
-
-    // Define all three buttons
-    let tbuttonLight = $(
-      `<div class="control-icon LightsHUD" title="Toggle Light Spell"><i class="fas fa-sun"></i></div>`
-    );
-    let tbuttonLantern = $(
-      `<div class="control-icon LightsHUD" title="Toggle Lantern"><i class="fas fa-lightbulb"></i></div>`
-    );
-    let tbuttonTorch = $(
-      `<div class="control-icon LightsHUD" title="Toggle Torch"><i class="fas fa-fire"></i></div>`
-    );
-
-    // Get the position of the column
-    let position = game.settings.get("LightsHUD", "position");
-
-    // Create the column
-    let buttonsdiv = $(`<div class="col LightsHUD-column-${position}"></div>`);
- 
-    // Wrap the previous icons
-    let newdiv = '<div class="LightsHUD-container"></div>';
-    html.find(".col.left").before(newdiv);
-
-    // Add the column
-    html.find(".LightsHUD-container").prepend(buttonsdiv);
-
-    // Get the status of the three types of lights
-    LightsHUD.log(app.object.document)
-    let statusLight = app.object.document.getFlag("LightsHUD", "statusLight");
-    if (statusLight == undefined || statusLight == null) {
-      statusLight = false;
-      await app.object.document.setFlag("LightsHUD", "statusLight", false);
-    }
-    let statusLantern = app.object.document.getFlag(
-      "LightsHUD",
-      "statusLantern"
-    );
-    if (statusLantern == undefined || statusLantern == null) {
-      statusLantern = false;
-      await app.object.document.setFlag("LightsHUD", "statusLantern", false);
-    }
-    let statusTorch = app.object.document.getFlag("LightsHUD", "statusTorch");
-    if (statusTorch == undefined || statusTorch == null) {
-      statusTorch = false;
-      await app.object.document.setFlag("LightsHUD", "statusTorch", false);
-    }
-
-    // Initial button state when the HUD comes up
-    if (statusLight) tbuttonLight.addClass("active");
-    if (statusLantern) tbuttonLantern.addClass("active");
-
-    // Check the permissions to manage the lights
-    if (
-      data.isGM === true ||
-      game.settings.get("LightsHUD", "playerActivation") === true
-    ) {
-      // If the a specific light is on, enable only that light otherwise enable all three of them
-      if (statusLight) {
-        enableLightsHUDButton(tbuttonLight);
-        disableLightsHUDButton(tbuttonLantern);
-        disableLightsHUDButton(tbuttonTorch);
-        tbuttonLight.addClass("active");
-      } else if (statusLantern) {
-        disableLightsHUDButton(tbuttonLight);
-        enableLightsHUDButton(tbuttonLantern);
-        disableLightsHUDButton(tbuttonTorch);
-        tbuttonLantern.addClass("active");
-      } else if (statusTorch) {
-        disableLightsHUDButton(tbuttonLight);
-        disableLightsHUDButton(tbuttonLantern);
-        enableLightsHUDButton(tbuttonTorch);
-        tbuttonTorch.addClass("active");
-      } else enableRelevantButtons();
-    } else {
-      // If no permission exists, disable all the buttons
-      disableLightsHUDButton(tbuttonLight);
-      disableLightsHUDButton(tbuttonLantern);
-      disableLightsHUDButton(tbuttonTorch);
-    }
-
-    // Returns true if the character can use the Light spell
-    // This also returns true if the game system is not D&D 5e...
-    function canCastLight() {
-      let actor = game.actors.get(data.actorId);
-      if (actor === undefined) return false;
-      let hasLight = false;
-      actor.data.items.forEach((item) => {
-        if (item.type === "spell") {
-          if (item.name === "Light") hasLight = true;
-        }
-      });
-      return hasLight;
-    }
-
-    // Returns true if the character has a specific item in his inventory
-    // This also returns true if the game system is not D&D 5e...
-    function hasItemInInventory(itemToCheck) {
-      let actor = game.actors.get(data.actorId);
-      if (actor === undefined) return false;
-      let hasItem = false;
-      actor.data.items.forEach((item) => {
-        if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
-          if (item.data.quantity > 0) hasItem = true;
-        }
-      });
-      return hasItem;
-    }
-
-    // Returns true if either the character does not need to consume an item
-    // or if he can indeed consume it (and it is actually consumed)
-    function consumeItem(itemToCheck) {
-      let consume = game.system.id !== "dnd5e";
-      if (!consume)
-        consume =
-          (data.isGM && !game.settings.get("LightsHUD", "dmAsPlayer")) ||
-          !game.settings.get("LightsHUD", "checkAvailability") ||
-          !game.settings.get("LightsHUD", "consumeItem");
-      if (!consume) {
-        let actor = game.actors.get(data.actorId);
-        if (actor === undefined) return false;
-        let hasItem = false;
-        actor.data.items.forEach((item, offset) => {
-          if (item.name.toLowerCase() === itemToCheck.toLowerCase()) {
-            if (item.data.quantity > 0) {
-              hasItem = true;
-              actor.updateOwnedItem({
-                _id: actor.data.items[offset]._id,
-                "data.quantity": actor.data.items[offset].data.quantity - 1,
-              });
-            }
-          }
-        });
-        consume = hasItem;
-      }
-      return consume;
-    }
-
     /*
      * Returns the first GM id.
      */
@@ -949,8 +1066,7 @@ class LightsHUD {
   }
 
   static log(data) {
-    if (this.debug())
-      console.log("LightsHUD | ", data);
+    if (this.debug()) console.log("LightsHUD | ", data);
   }
 
   static async handleSocketRequest(req) {
@@ -977,18 +1093,14 @@ class LightsHUD {
     }
   }
 
-  static debug(){
+  static debug() {
     let isDebug = game.settings.get("LightsHUD", "debug");
-      if (isDebug)
-        CONFIG.debug.hooks = true;
-      if (!isDebug)
-        CONFIG.debug.hooks = false;
+    if (isDebug) CONFIG.debug.hooks = false;
+    if (!isDebug) CONFIG.debug.hooks = false;
 
-      return isDebug;
+    return isDebug;
   }
-
 }
-
 
 Hooks.on("ready", () => {
   Hooks.on("renderTokenHUD", (app, html, data) => {
@@ -1033,13 +1145,14 @@ Hooks.once("init", () => {
     default: true,
     type: Boolean,
   });
-  if (game.system.id === "dnd5e") {
+
+  
     game.settings.register("LightsHUD", "checkAvailability", {
       name: game.i18n.localize("LightsHUD.checkAvailability.name"),
       hint: game.i18n.localize("LightsHUD.checkAvailability.hint"),
       scope: "world",
       config: true,
-      default: true,
+      default: false,
       type: Boolean,
     });
     game.settings.register("LightsHUD", "consumeItem", {
@@ -1047,18 +1160,31 @@ Hooks.once("init", () => {
       hint: game.i18n.localize("LightsHUD.consumeItem.hint"),
       scope: "world",
       config: true,
-      default: true,
-      type: Boolean,
-    });
-    game.settings.register("LightsHUD", "dmAsPlayer", {
-      name: game.i18n.localize("LightsHUD.dmAsPlayer.name"),
-      hint: game.i18n.localize("LightsHUD.dmAsPlayer.hint"),
-      scope: "world",
-      config: true,
       default: false,
       type: Boolean,
     });
-  }
+    game.settings.register("LightsHUD", "torchType.nameConsumableTorch", {
+        name: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.name"),
+        hint: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.hint"),
+        scope: "world",
+        config: true,
+        default: "Torch",
+        type: String,
+    });
+    game.settings.register("LightsHUD", "lanternType.nameConsumableLantern", {
+      name: game.i18n.localize(
+        "LightsHUD.lanternType.nameConsumableLantern.name"
+      ),
+      hint: game.i18n.localize(
+        "LightsHUD.lanternType.nameConsumableLantern.hint"
+      ),
+      scope: "world",
+      config: true,
+      default: "Oil (flask)",
+      type: String,
+    });
+
+  
   // Light Parameters
   game.settings.register("LightsHUD", "lightBrightRadius", {
     name: game.i18n.localize("LightsHUD.lightBrightRadius.name"),
@@ -1268,12 +1394,8 @@ Hooks.once("init", () => {
     },
   });
   game.settings.register("LightsHUD", "customLanternAnimationSpeed", {
-    name: game.i18n.localize(
-      "LightsHUD.lanternType.customAnimationSpeed.name"
-    ),
-    hint: game.i18n.localize(
-      "LightsHUD.lanternType.customAnimationSpeed.hint"
-    ),
+    name: game.i18n.localize("LightsHUD.lanternType.customAnimationSpeed.name"),
+    hint: game.i18n.localize("LightsHUD.lanternType.customAnimationSpeed.hint"),
     scope: "world",
     config: true,
     restricted: true,
@@ -1303,16 +1425,6 @@ Hooks.once("init", () => {
       max: 10,
     },
   });
-  if (game.system.id === "dnd5e") {
-    game.settings.register("LightsHUD", "lanternType.nameConsumableLantern", {
-      name: game.i18n.localize("LightsHUD.lanternType.nameConsumableLantern.name"),
-      hint: game.i18n.localize("LightsHUD.lanternType.nameConsumableLantern.hint"),
-      scope: "world",
-      config: true,
-      default: "Oil (flask)",
-      type: String,
-    });
-  }
   // Torch Parameters
   game.settings.register("LightsHUD", "torchBrightRadius", {
     name: game.i18n.localize("LightsHUD.torchBrightRadius.name"),
@@ -1430,16 +1542,7 @@ Hooks.once("init", () => {
       max: 10,
     },
   });
-  if (game.system.id === "dnd5e") {
-    game.settings.register("LightsHUD", "torchType.nameConsumableTorch", {
-      name: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.name"),
-      hint: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.hint"),
-      scope: "world",
-      config: true,
-      default: "Torch",
-      type: String,
-    });
-  }
+
   game.settings.register("LightsHUD", "debug", {
     name: "Debug",
     hint: "Enable Debug.",
@@ -1447,11 +1550,10 @@ Hooks.once("init", () => {
     config: true,
     restricted: true,
     type: Boolean,
-    default: false
-    });
-
+    default: false,
+  });
+  
   LightsHUD.debug();
   LightsHUD.clBanner();
-  });
+});
 
-  

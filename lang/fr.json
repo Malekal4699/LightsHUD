@@ -95,7 +95,7 @@
 	"LightsHUD.lanternType.customAnimationIntensity.name": "Lanterne - Custom: Intensité Animation",
 	"LightsHUD.lanternType.customAnimationIntensity.hint": "Choisir l'intensité d'animation de la lanterne custom.",
 	"LightsHUD.lanternType.nameConsumableLantern.name": "Object Consommable pour Lanterne",
-	"LightsHUD.lanternType.nameConsumableLantern.hint": "Nom de l'objet à vérifier puis éventuellement consommer lors qu'une lanterne est allumée.",
+	"LightsHUD.lanternType.nameConsumableLantern.hint": "Nom de l'objet à vérifier puis éventuellement consommer lors qu'une lanterne est allumée.(DND5e)",
 
 	"LightsHUD.torchBrightRadius.name": "Torche: Portée Lumière Vive",
 	"LightsHUD.torchBrightRadius.hint": "Torche: Détermine l'étendue (en unité de grille) de la lumière vive émise.",
@@ -125,5 +125,5 @@
 	"LightsHUD.torchType.customAnimationIntensity.name": "Torch - Custom: Intensité Animation",
 	"LightsHUD.torchType.customAnimationIntensity.hint": "Choisir l'intensité d'animation de la torche custom.",
 	"LightsHUD.torchType.nameConsumableTorch.name": "Object Consommable pour Torche",
-	"LightsHUD.torchType.nameConsumableTorch.hint": "Nom de l'objet à vérifier puis éventuellement consommer lors qu'une torche est allumée."
+	"LightsHUD.torchType.nameConsumableTorch.hint": "Nom de l'objet à vérifier puis éventuellement consommer lors qu'une torche est allumée.(DND5e)"
 }

@@ -2,7 +2,7 @@
     "name": "LightsHUD",
     "title": "LightsHUD",
     "description": "Lights HUD Control",
-    "version": "0.10.x",
+    "version": "0.10.5",
     "authors": [
         {
           "name": "Malekal",
@@ -33,7 +33,9 @@
         }
     ],
     "esmodules": [
-        "/scripts/LightsHUD.js"
+        "/scripts/LightsHUD.js",
+        "/scripts/LightDataExt.js",
+        "/scripts/tokenInformations.js"
     ],
     "socket": true,
     "styles": [
