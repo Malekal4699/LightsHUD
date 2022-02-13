@@ -1,5 +1,5 @@
 ![](https://img.shields.io/badge/Maintainer-Malekal-green)
-
+My discord server: https://discord.gg/Ee2cmeRsN3
 # LightsHUD - A FoundryVTT Module
 
 Derived and updated version of Torchlight, which in turn was derived from Torch.
