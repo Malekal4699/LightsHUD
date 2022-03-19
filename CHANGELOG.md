@@ -1,6 +1,9 @@
 CHANGELOG
 ===================================
 
+## 0.10.6
+* Enable and disable custom inputs based on type. (#30) Co-authored-by: Paul Potsides <paul@koble.ai>
+
 ## 0.10.5
 * Fixed #16 #8 #1 partially. 
 * Known issue: Flags on linked tokens are set on the actor rather than the token.
