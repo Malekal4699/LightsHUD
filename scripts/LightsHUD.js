@@ -1557,3 +1557,75 @@ Hooks.once("init", () => {
   LightsHUD.clBanner();
 });
 
+function renderConfig(_, html){
+    let prefix = "LightsHUD";
+
+    const lightTypeSelect = html.find(`select[name="${prefix}.lightType"]`);
+
+    const dependentLightSettings = [
+      {node: 'input', name: 'customLightColor'},
+      {node: 'input', name: 'customLightColorIntensity'},
+      {node: 'select', name: 'customlight.animationType'},
+      {node: 'input', name: 'customlight.animationSpeed'},
+      {node: 'input', name: 'customlight.animationIntensity'}
+    ]
+
+    function updateLightSettings() {
+      const mode = lightTypeSelect.val();
+      const isCustom = mode === 'TypeC';
+      dependentLightSettings.forEach(setting => {
+        const name = `${prefix}.${setting.name}`
+        html.find(`${setting.node}[name="${name}"]`).prop("disabled", !isCustom);
+      })
+    }
+
+    lightTypeSelect.change(updateLightSettings);
+
+    const lanternTypeSelect = html.find(`select[name="${prefix}.lanternType"]`);
+
+    const dependentLanternSettings = [
+      {node: 'input', name: 'customLanternColor'},
+      {node: 'input', name: 'customLanternColorIntensity'},
+      {node: 'select', name: 'customLanternAnimationType'},
+      {node: 'input', name: 'customLanternAnimationSpeed'},
+      {node: 'input', name: 'customLanternAnimationIntensity'}
+    ]
+
+    function updateLanternSettings() {
+      const mode = lanternTypeSelect.val();
+      const isCustom = mode === 'TypeC';
+      dependentLanternSettings.forEach(setting => {
+        const name = `${prefix}.${setting.name}`
+        html.find(`${setting.node}[name="${name}"]`).prop("disabled", !isCustom);
+      })
+    }
+
+    lanternTypeSelect.change(updateLanternSettings);
+
+    const torchTypeSelect = html.find(`select[name="${prefix}.torchType"]`);
+
+    const dependentTorchSettings = [
+      {node: 'input', name: 'customTorchColor'},
+      {node: 'input', name: 'customTorchColorIntensity'},
+      {node: 'select', name: 'customTorchAnimationType'},
+      {node: 'input', name: 'customTorchAnimationSpeed'},
+      {node: 'input', name: 'customTorchAnimationIntensity'}
+    ]
+
+    function updateTorchSettings() {
+      const mode = torchTypeSelect.val();
+      const isCustom = mode === 'TypeC';
+      dependentTorchSettings.forEach(setting => {
+        const name = `${prefix}.${setting.name}`
+        html.find(`${setting.node}[name="${name}"]`).prop("disabled", !isCustom);
+      })
+    }
+
+    torchTypeSelect.change(updateTorchSettings);
+
+    updateLightSettings();
+    updateLanternSettings();
+    updateTorchSettings();
+}
+
+Hooks.on("renderSettingsConfig", renderConfig);

@@ -59,3 +59,12 @@
 	color: #555;
 	pointer-events: none;
 }
+
+input[type=range]:disabled {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+input[type=range]:disabled + .range-value {
+	opacity: 0.5;
+}
