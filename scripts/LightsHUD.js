@@ -33,8 +33,10 @@ class LightsHUD {
     // Get the position of the column
     const position = game.settings.get("LightsHUD", "position");
 
+    let tokenD = app.object.document;
+
     // Create the column
-    const buttonsdiv = $(`<div class="col LightsHUD-column-${position}"></div>`);
+    const buttonsdiv = $(`<div class="col LightsHUD-column-${position} LightsHUD-height-${tokenD.data.height?.toString().replaceAll(".", "_")}"></div>`);
 
     // Wrap the previous icons
     let newdiv = '<div class="LightsHUD-container"></div>';
@@ -49,7 +51,7 @@ class LightsHUD {
     let lanternLight = new LightDataExt("lantern", "consumable", false, app);
     let torchLight = new LightDataExt("torch", "consumable", false, app);
 
-    let tokenD = app.object.document;
+    
    
     let hasInventoryCheck = game.settings.get("LightsHUD","checkAvailability");
     let consumptionCheck = game.settings.get("LightsHUD","consumeItem");

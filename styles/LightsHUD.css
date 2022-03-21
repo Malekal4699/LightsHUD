@@ -6,10 +6,6 @@
 	flex: 0 !important;
 }
 
-#token-hud .col.LightsHUD-column-top {
-  height: calc(100% + 100px);
-  top: -170px;
-}
 
 #token-hud .col.LightsHUD-column-top .control-icon:first-child {
     margin-top: 8px;
@@ -23,36 +19,51 @@
     margin-right: 8px;
 }
 
-#token-hud .col.LightsHUD-column-bottom {
-  height: calc(100% + 100px);
-  top: 75px;
-}
-
 .col.LightsHUD-column-left {
+	justify-content: center;
 	flex-direction: column; 
 	left: -130px;
 	width: 70px;
-	padding-top: 20px;
+	padding-top: 10px;
 }
 .col.LightsHUD-column-right {
+	justify-content: center;
 	flex-direction: column; 
 	right: -130px;
 	width: 70px;
-	padding-top: 17px;
 }
 .col.LightsHUD-column-top {
+	align-items: flex-start;
+	justify-content: center;
 	flex-direction: row; 
 	top: -50px;
-	left: -27px;
-	width: 210px;
-	padding-top: 17px;
+	left: 0px;
+	right: 0px;
 }
+
+#token-hud .col.LightsHUD-column-top {
+	top: -60px;
+}
+
+#token-hud .col.LightsHUD-column-top.LightsHUD-height-1 {
+	top: -90px;
+}
+
+#token-hud .col.LightsHUD-column-top.LightsHUD-height-0_5 {
+	top: -120px;
+}
+
 .col.LightsHUD-column-bottom {
+	align-items: flex-end;
+	justify-content: center;
 	flex-direction: row; 
 	top: 200px;
-	left: -25px;
-	width: 210px;
-	padding-top: 5px;
+	left: 0px;
+	right: 0px;
+}
+
+#token-hud .col.LightsHUD-column-bottom {
+	top: 10px;
 }
 
 .fas.fa-disabled {
