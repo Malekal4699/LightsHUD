@@ -35,8 +35,11 @@ class LightsHUD {
 
     let tokenD = app.object.document;
 
+    const hasTopBar =  !!tokenD.getBarAttribute('bar2');
+    const hasBottomBar = !!tokenD.getBarAttribute('bar1');
+
     // Create the column
-    const buttonsdiv = $(`<div class="col LightsHUD-column-${position} LightsHUD-height-${tokenD.data.height?.toString().replaceAll(".", "_")}"></div>`);
+    const buttonsdiv = $(`<div class="col LightsHUD-column-${position} LightsHUD-height-${tokenD.data.height?.toString().replaceAll(".", "_")}${hasTopBar ? ' LightsHUD-top-attr' : ''}${hasBottomBar ? ' LightsHUD-bottom-attr' : ''}"></div>`);
 
     // Wrap the previous icons
     let newdiv = '<div class="LightsHUD-container"></div>';
