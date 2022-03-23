@@ -151,7 +151,6 @@ class LightsHUD {
     function enableLightsHUDButton(tbutton) {
       // Remove the disabled status, if any
       tbutton.find("i").removeClass("fa-disabled");
-      tbutton.addClass("active");
       // Install a click handler if one is not already bound
       if (!tbutton.hasClass("clickBound")) {
         tbutton.click(async (ev) => onButtonClick(ev, tbutton));
@@ -163,7 +162,6 @@ class LightsHUD {
       tbutton.find("i").addClass("fa-disabled");
       tbutton.off("click");
       tbutton.removeClass("clickBound");
-      tbutton.removeClass("active");
     }
 
     // Enable or disable buttons according to parameters
@@ -456,6 +454,7 @@ class LightsHUD {
           if (lanternLight.state) {
             // The token has the light spell on
             lanternLight.state = false;
+            tbuttonLantern.removeClass("active");
             await tokenD.setFlag("LightsHUD", lanternLight._getFlagName(), false);
             // Light is inactive, enable the relevant light sources according to parameters
             enableButtonsPerSettings();
@@ -479,7 +478,7 @@ class LightsHUD {
             disableLightsHUDButton(tbuttonLight);
             lanternLight.state = true;
             await tokenD.setFlag("LightsHUD", lanternLight._getFlagName(), true);
-
+            tbuttonLantern.addClass("active");
             // Store the lighting for later restoration
             await storeTokenLighting();
             // Enable the Light Source according to the type
@@ -705,6 +704,7 @@ class LightsHUD {
             // The token has the light spell on
             torchLight.state = false;
             await tokenD.setFlag("LightsHUD", torchLight._getFlagName(), false);
+            tbuttonTorch.removeClass("active");
             // Light is inactive, enable the relevant light sources according to parameters
             enableButtonsPerSettings();
             // Restore the initial light source
@@ -727,7 +727,8 @@ class LightsHUD {
             disableLightsHUDButton(tbuttonLight);
             torchLight.state = true;
             await tokenD.setFlag("LightsHUD", torchLight._getFlagName(), true);
-
+            tbuttonTorch.addClass("active");
+            
             // Store the lighting for later restoration
             await storeTokenLighting();
             // Enable the Light Source according to the type
