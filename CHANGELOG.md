@@ -6,7 +6,7 @@ CHANGELOG
 * Adjust top and bottom button positions based on presence of attribute bars by @strongpauly in #32
 * Only add active class when light source is active. by @strongpauly in #33
 
-* Full Changelog: 0.10.6...0.10.7 
+* Full Changelog: <a href="https://github.com/Malekal4699/LightsHUD/compare/0.10.6...0.10.7">0.10.6...0.10.7</a>
 
 ## 0.10.6
 * Enable and disable custom inputs based on type. (#30) Co-authored-by: Paul Potsides <paul@koble.ai>
