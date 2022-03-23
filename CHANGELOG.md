@@ -1,6 +1,13 @@
 CHANGELOG
 ===================================
 
+## 0.10.7
+* Adjust button positions based on token size. by @strongpauly in #31
+* Adjust top and bottom button positions based on presence of attribute bars by @strongpauly in #32
+* Only add active class when light source is active. by @strongpauly in #33
+
+* Full Changelog: 0.10.6...0.10.7 
+
 ## 0.10.6
 * Enable and disable custom inputs based on type. (#30) Co-authored-by: Paul Potsides <paul@koble.ai>
 
