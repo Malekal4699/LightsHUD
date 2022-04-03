@@ -90,13 +90,14 @@ class LightsHUD {
 
     // Returns true if the character can use the Light spell
     // This also returns true if the game system is not D&D 5e...
-    function canCastLight() {
+    function canCastLight(name) {
       let actor = game.actors.get(data.actorId);
       if (actor === undefined) return false;
       let hasLight = false;
+      
       actor.data.items.forEach((item) => {
         if (item.type === "spell") {
-          if (item.name === "Light") hasLight = true;
+          if (item.name.toLowerCase() === name) hasLight = true;
         }
       });
       return hasLight;
@@ -168,13 +169,14 @@ class LightsHUD {
     function enableButtonsPerSettings() {
 
       let checkAvailability = game.settings.get("LightsHUD", "checkAvailability");
+      let spellName = game.settings.get('LightsHUD', "spell.nameLightSpell").toLowerCase();
       let lantern = game.settings.get('LightsHUD', "lanternType.nameConsumableLantern").toLowerCase();
       let torch = game.settings.get('LightsHUD', "torchType.nameConsumableTorch").toLowerCase();
 
       let noCheck;// = game.system.id !== "dnd5e";
       if (!noCheck) noCheck = !checkAvailability;
 
-      if (noCheck || canCastLight()) {
+      if (noCheck || canCastLight(spellName)) {
         enableLightsHUDButton(tbuttonLight);
       } else {
         disableLightsHUDButton(tbuttonLight);
@@ -1169,6 +1171,16 @@ Hooks.once("init", () => {
       default: false,
       type: Boolean,
     });
+
+    game.settings.register("LightsHUD", "spell.nameLightSpell", {
+      name: game.i18n.localize("LightsHUD.spell.nameLightSpell.name"),
+      hint: game.i18n.localize("LightsHUD.spell.nameLightSpell.hint"),
+      scope: "world",
+      config: true,
+      default: "Light",
+      type: String,
+    });
+
     game.settings.register("LightsHUD", "torchType.nameConsumableTorch", {
         name: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.name"),
         hint: game.i18n.localize("LightsHUD.torchType.nameConsumableTorch.hint"),
@@ -1178,12 +1190,8 @@ Hooks.once("init", () => {
         type: String,
     });
     game.settings.register("LightsHUD", "lanternType.nameConsumableLantern", {
-      name: game.i18n.localize(
-        "LightsHUD.lanternType.nameConsumableLantern.name"
-      ),
-      hint: game.i18n.localize(
-        "LightsHUD.lanternType.nameConsumableLantern.hint"
-      ),
+      name: game.i18n.localize("LightsHUD.lanternType.nameConsumableLantern.name"),
+      hint: game.i18n.localize("LightsHUD.lanternType.nameConsumableLantern.hint"),
       scope: "world",
       config: true,
       default: "Oil (flask)",

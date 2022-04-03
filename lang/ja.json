@@ -8,6 +8,7 @@
 	"LightsHUD.position.top": "上",
 	"LightsHUD.position.bottom": "下",
 
+
 	"LightsHUD.playerActivation.name": "プレイヤーに使用を許可する",
 	"LightsHUD.playerActivation.hint": "松明や照明の切替をPLにも許可します。",
 	"LightsHUD.checkAvailability.name": "光源所持チェック",
@@ -32,6 +33,8 @@
 	"LightsHUD.animationType.roiling": "回転する靄",
 	"LightsHUD.animationType.hole": "ブラックホール",
 
+	"LightsHUD.spell.nameLightSpell.name": "Name of the Spell.",
+	"LightsHUD.spell.nameLightSpell.hint": "Name of the spell to be cast if it's not 'Light' by default.",
 	"LightsHUD.lightBrightRadius.name": "ライト呪文：明るい照明の半径",
 	"LightsHUD.lightBrightRadius.hint": "ライト呪文：明るい照明の届くマス単位の入力。",
 	"LightsHUD.lightDimRadius.name": "ライト呪文：薄暗い照明の半径",
