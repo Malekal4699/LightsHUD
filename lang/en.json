@@ -32,6 +32,8 @@
 	"LightsHUD.animationType.roiling": "Roiling Mass",
 	"LightsHUD.animationType.hole": "Black Hole",
 
+	"LightsHUD.spell.nameLightSpell.name": "Name of the Spell.",
+	"LightsHUD.spell.nameLightSpell.hint": "Name of the spell to be cast if it's not 'Light' by default.",
 	"LightsHUD.lightBrightRadius.name": "Light Spell: Bright Light Radius",
 	"LightsHUD.lightBrightRadius.hint": "Light Spell: How many grid units of bright light to emit.",
 	"LightsHUD.lightDimRadius.name": "Light Spell: Dim Light Radius",
