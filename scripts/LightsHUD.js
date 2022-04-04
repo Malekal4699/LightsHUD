@@ -507,7 +507,7 @@ class LightsHUD {
                     nBright,
                     nDim,
                     "#ffffff",
-                    0.5,
+                   0.8,
                     360,
                     "torch",
                     5,
@@ -521,7 +521,7 @@ class LightsHUD {
                     "#ffffff",
                     0.5,
                     360,
-                    "chroma",
+                    "torch",
                     5,
                     5
                   );
@@ -531,9 +531,9 @@ class LightsHUD {
                     nBright,
                     nDim,
                     "#ffffff",
-                    0.5,
+                    0.2,
                     360,
-                    "pulse",
+                    "torch",
                     5,
                     5
                   );
@@ -543,9 +543,9 @@ class LightsHUD {
                     nBright,
                     nDim,
                     "#ffffff",
-                    0.5,
+                   0.8,
                     360,
-                    "ghost",
+                    "torch",
                     5,
                     5
                   );
@@ -553,21 +553,22 @@ class LightsHUD {
                 case "Type5":
                   updateTokenLighting(
                     nBright,
-                    nDim,
-                    "#ffffff",
-                    0.5,
-                    360,
-                    "emanation",
-                    5,
-                    5
-                  );
+                      nDim,
+
+                      "#ffffff",
+                      0.5,
+                      360,
+                      "torch",
+                      5,
+                      5
+                    );
                   break;
                 case "Type6":
                   updateTokenLighting(
                     nBright,
                     nDim,
-                    "#ff0000",
-                    0.5,
+                    "#ffffff",
+                    0.2,
                     360,
                     "torch",
                     5,
@@ -578,10 +579,10 @@ class LightsHUD {
                   updateTokenLighting(
                     nBright,
                     nDim,
-                    "#ff0000",
-                    0.5,
-                    360,
-                    "chroma",
+                    "#ffffff",
+                   0.8,
+                    60,
+                    "torch",
                     5,
                     5
                   );
@@ -590,10 +591,10 @@ class LightsHUD {
                   updateTokenLighting(
                     nBright,
                     nDim,
-                    "#ff0000",
+                    "#ffffff",
                     0.5,
-                    360,
-                    "pulse",
+                    60,
+                    "torch",
                     5,
                     5
                   );
@@ -602,87 +603,15 @@ class LightsHUD {
                   updateTokenLighting(
                     nBright,
                     nDim,
-                    "#ff0000",
-                    0.5,
-                    360,
-                    "ghost",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type10":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#ff0000",
-                    0.5,
-                    360,
-                    "emanation",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type11":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
+                    "#ffffff",
+                    0.2,
+                    60,
                     "torch",
                     5,
                     5
                   );
                   break;
-                case "Type12":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
-                    "chroma",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type13":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
-                    "pulse",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type14":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
-                    "ghost",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type15":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
-                    "emanation",
-                    5,
-                    5
-                  );
-                  break;
-                case "TypeC":
+              case "TypeC":
                   updateTokenLighting(
                     nBright,
                     nDim,
@@ -744,7 +673,7 @@ class LightsHUD {
                   updateTokenLighting(
                     nBright,
                     nDim,
-                    "#ffffff",
+                    "#fee071",
                     0.5,
                     360,
                     "none",
@@ -756,8 +685,8 @@ class LightsHUD {
                   updateTokenLighting(
                     nBright,
                     nDim,
-                    "#ffffff",
-                    0.5,
+                    "#fee071",
+                    0.8,
                     360,
                     "torch",
                     5,
@@ -768,10 +697,10 @@ class LightsHUD {
                   updateTokenLighting(
                     nBright,
                     nDim,
-                    "#ffffff",
+                    "#fee071",
                     0.5,
                     360,
-                    "chroma",
+                    "torch",
                     5,
                     5
                   );
@@ -780,159 +709,15 @@ class LightsHUD {
                   updateTokenLighting(
                     nBright,
                     nDim,
-                    "#ffffff",
-                    0.5,
-                    360,
-                    "pulse",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type4":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#ffffff",
-                    0.5,
-                    360,
-                    "ghost",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type5":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#ffffff",
-                    0.5,
-                    360,
-                    "emanation",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type6":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#ff0000",
-                    0.5,
+                    "#fee071",
+                    0.2,
                     360,
                     "torch",
                     5,
                     5
                   );
                   break;
-                case "Type7":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#ff0000",
-                    0.5,
-                    360,
-                    "chroma",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type8":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#ff0000",
-                    0.5,
-                    360,
-                    "pulse",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type9":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#ff0000",
-                    0.5,
-                    360,
-                    "ghost",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type10":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#ff0000",
-                    0.5,
-                    360,
-                    "emanation",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type11":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
-                    "torch",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type12":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
-                    "chroma",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type13":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
-                    "pulse",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type14":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
-                    "ghost",
-                    5,
-                    5
-                  );
-                  break;
-                case "Type15":
-                  updateTokenLighting(
-                    nBright,
-                    nDim,
-                    "#00ff00",
-                    0.5,
-                    360,
-                    "emanation",
-                    5,
-                    5
-                  );
-                  break;
-                case "TypeC":
+               case "TypeC":
                   updateTokenLighting(
                     nBright,
                     nDim,
@@ -1073,8 +858,8 @@ class LightsHUD {
     html.find(".col.LightsHUD-column-" + position).prepend(tbuttonLight);
   }
 
-  static log(data) {
-    if (this.debug()) console.log("LightsHUD | ", data);
+  static log(data,...arg) {
+    if (this.debug()) console.log("LightsHUD | ", data, arg);
   }
 
   static async handleSocketRequest(req) {
@@ -1468,13 +1253,7 @@ Hooks.once("init", () => {
       Type1: game.i18n.localize("LightsHUD.torchType.type1"),
       Type2: game.i18n.localize("LightsHUD.torchType.type2"),
       Type3: game.i18n.localize("LightsHUD.torchType.type3"),
-      Type4: game.i18n.localize("LightsHUD.torchType.type4"),
-      Type5: game.i18n.localize("LightsHUD.torchType.type5"),
-      Type6: game.i18n.localize("LightsHUD.torchType.type6"),
-      Type7: game.i18n.localize("LightsHUD.torchType.type7"),
-      Type8: game.i18n.localize("LightsHUD.torchType.type8"),
-      Type9: game.i18n.localize("LightsHUD.torchType.type9"),
-      TypeC: game.i18n.localize("LightsHUD.torchType.typeC"),
+      TypeC: game.i18n.localize("LightsHUD.lanternType.typeC")
     },
   });
   game.settings.register("LightsHUD", "customTorchColor", {
