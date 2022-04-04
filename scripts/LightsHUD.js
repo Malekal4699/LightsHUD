@@ -721,12 +721,12 @@ class LightsHUD {
                   updateTokenLighting(
                     nBright,
                     nDim,
-                    game.settings.get("LightsHUD", "customLightColor"),
-                    game.settings.get("LightsHUD", "customLightColorIntensity"),
+                    game.settings.get("LightsHUD", "customTorchColor"),
+                    game.settings.get("LightsHUD", "customTorchColorIntensity"),
                     360,
-                    game.settings.get("LightsHUD", "customlight.animationType"),
-                    game.settings.get("LightsHUD", "customlight.animationSpeed"),
-                    game.settings.get("LightsHUD", "customlight.animationIntensity")
+                    game.settings.get("LightsHUD", "customTorchAnimationType"),
+                    game.settings.get("LightsHUD", "customTorchAnimationType"),
+                    game.settings.get("LightsHUD", "customTorchAnimationIntensity")
                   );
                   break;
                 }
