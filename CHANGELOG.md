@@ -1,6 +1,10 @@
 CHANGELOG
 ===================================
 
+## 0.10.8
+* 25 LightsHUD - Bug - No Setting for custom "Light spell" - Added setting.
+* 34 LightsHUD - Bug - Presets incorrect - Corrected and somewhat streamlined presets.
+
 ## 0.10.7
 * Adjust button positions based on token size. by @strongpauly in #31
 * Adjust top and bottom button positions based on presence of attribute bars by @strongpauly in #32
