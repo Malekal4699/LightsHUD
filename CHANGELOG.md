@@ -1,6 +1,16 @@
 CHANGELOG
 ===================================
 
+## 0.10.8f
+* #24 Tentative fix, unable to reproduce after code change and tests. Let me know if and how to reproduce.
+* Added a new Setting: 
+* Preserve light data : This setting turns on/off storing light data before activating a light with the HUD. This means that :
+
+1. On: if you add a light effect from another module or modified manually, clicking on the HUD will store current light data, then activate light as configured in the settings. On deactivating the light via the HUD, stored data will be restored.
+2. Off: Whatever the token's light was before, deactivation of the HUD Light will turn light off.
+
+**Full Changelog**: https://github.com/Malekal4699/LightsHUD/compare/0.10.8a...0.10.8f
+
 ## 0.10.8
 * 25 LightsHUD - Bug - No Setting for custom "Light spell" - Added setting.
 * 34 LightsHUD - Bug - Presets incorrect - Corrected and somewhat streamlined presets.
