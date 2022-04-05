@@ -8,7 +8,7 @@ Dnd5e AND PF2e are now both supported for availability check and consumption.
 
 ## Known Issues
 * When using french locale, there seems to be a conflict when using LightsHUD & Minimal UI with pf2 system.
-* Flags on linked tokens are set on the actor rather than the token. (can cause weird behavior when running out of torches and changing scenes. Still working on it.)
+
 ## Installation
 ### Method 1
 - Start up Foundry and click "Install Module" in the "Add-On Modules" tab.
@@ -37,22 +37,19 @@ Dnd5e AND PF2e are now both supported for availability check and consumption.
 All the lights are animated and look much better "live".
 
 ## Implemented Features
-* removed current list. Will update soon.
+* 3 Dedicated buttons on the token's HUD, Spell-like Light ability, Lantern and Torch.
+* Module settings with presets and custom types.
+* Optional Availability check for resource.
+* Optional Torch and Lantern resource consomption for DnD5e and PF2e.
+* Toggle Player access to HUD icons.
+* Toggle Storing existing token light data.
 
-## Tips and Tricks
-
-Note that although it's not obvious from the description, the module really allows you to add different types of lights to different players. For example, you can easily set-up a hooded lantern on a token and a bullseye one on another token.
-
-It just depends on the type selected for a given source of light, as set-up in the Module Settings. The type of light can be changed there, of course, but it's also very easy to set using a macro:
-* game.settings.set('torchlight', 'lightType','Type1') for a white light spell
-* game.settings.set('torchlight', 'lightType','Type5') for ared light spell
-* game.settings.set('torchlight', 'lanternType','Type1') for an intense hooded lantern
-* game.settings.set('torchlight', 'lanternType','Type7') for an intense bullseye lantern
-* game.settings.set('torchlight', 'torchType','Type8') for an medium purplish torch
-* etc.
 
 ## Planned Features
-- TBD
+- Better settings, I feel the current presentation and layout are not easy to read or work with.
+- Presets in JSON file, to be imported/exported.
+- Rework of the code behind the scene to make it more polymorphic.
+- More options in the HUD's display (Kill existing light on token?)
 
 ## License
 The source code is licensed under "THE BEER-WARE LICENSE" (Revision 42).
