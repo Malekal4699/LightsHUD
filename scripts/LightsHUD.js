@@ -1,6 +1,5 @@
 import { LightDataExt } from "./LightDataExt.js";
 import { tokenInformations } from "./tokenInformations.js";
-
 class LightsHUD {
 
   static clBanner() {
@@ -1203,7 +1202,7 @@ Hooks.once("init", () => {
     scope: "world",
     config: true,
     restricted: false,
-    type: String,
+    type: ColorSetting,
     default: "#a2642a",
   });
   game.settings.register("LightsHUD", "customTorchColorIntensity", {

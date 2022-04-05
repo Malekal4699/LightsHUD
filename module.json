@@ -2,7 +2,7 @@
     "name": "LightsHUD",
     "title": "LightsHUD",
     "description": "Lights HUD Control",
-    "version": "0.10.8f",
+    "version": "0.10.9",
     "authors": [
         {
           "name": "Malekal",
@@ -35,11 +35,14 @@
     "esmodules": [
         "/scripts/LightsHUD.js",
         "/scripts/LightDataExt.js",
-        "/scripts/tokenInformations.js"
+        "/scripts/tokenInformations.js",
+        "../colorsettings/colorSetting.js"
     ],
+    "dependencies": ["colorsettings"],
     "socket": true,
     "styles": [
-        "/styles/LightsHUD.css"
+        "/styles/LightsHUD.css",
+        "../colorsettings/css/colorpicker.css"
     ],
     "packs": [],
     "url": "https://github.com/Malekal4699/LightsHUD",
