@@ -35,9 +35,10 @@
     "esmodules": [
         "/scripts/LightsHUD.js",
         "/scripts/LightDataExt.js",
-        "/scripts/tokenInformations.js"
+        "/scripts/tokenInformations.js",
+        "/scripts/renderConfig.js",
+        "/scripts/const.js"
     ],
-    "scripts" : ["./lib/colorSettingStub"],
     "dependencies": [{
         "name": "colorsettings",
         "manifest": "https://github.com/ardittristan/VTTColorSettings/releases/tag/latest/module.json"}],

@@ -1,6 +1,6 @@
 import { LightDataExt } from "./LightDataExt.js";
 import { tokenInformations } from "./tokenInformations.js";
-import * as lhConst from "./const.js";
+import { lhConst } from "./const.js";
 
 class LightsHUD {
 
@@ -859,7 +859,7 @@ Hooks.once("init", () => {
   game.settings.register("colorsettings", "showWarning", {
     config: true,
     type: Boolean,
-    default: true,
+    default: false,
     name: "Show Error",
     hint: "Enable or disable error if main module missing."
   });
@@ -959,6 +959,7 @@ Hooks.once("init", () => {
     default: "Torch",
     type: String,
   });
+
   game.settings.register("LightsHUD", "lanternType.nameConsumableLantern", {
     name: game.i18n.localize("LightsHUD.lanternType.nameConsumableLantern.name"),
     hint: game.i18n.localize("LightsHUD.lanternType.nameConsumableLantern.hint"),
@@ -970,14 +971,9 @@ Hooks.once("init", () => {
 
 
   // Light Parameters
-  game.settings.register("LightsHUD", "lightBrightRadius", {
-    name: game.i18n.localize("LightsHUD.lightBrightRadius.name"),
-    hint: game.i18n.localize("LightsHUD.lightBrightRadius.hint"),
-    scope: "world",
-    config: true,
-    default: 20,
-    type: Number,
-  });
+  
+  registerSetting("LightsHUD","lightBrightRadius","world",true,20,Number);
+
   game.settings.register("LightsHUD", "lightDimRadius", {
     name: game.i18n.localize("LightsHUD.lightDimRadius.name"),
     hint: game.i18n.localize("LightsHUD.lightDimRadius.hint"),
@@ -986,6 +982,7 @@ Hooks.once("init", () => {
     default: 40,
     type: Number,
   });
+
   game.settings.register("LightsHUD", "lightType", {
     name: game.i18n.localize("LightsHUD.lightType.name"),
     hint: game.i18n.localize("LightsHUD.lightType.hint"),
@@ -1013,15 +1010,7 @@ Hooks.once("init", () => {
       TypeC: game.i18n.localize("LightsHUD.lightType.typeC"),
     },
   });
-  game.settings.register("LightsHUD", "customLightColor", {
-    name: game.i18n.localize("LightsHUD.lightType.customColor.name"),
-    hint: game.i18n.localize("LightsHUD.lightType.customColor.hint"),
-    scope: "world",
-    config: true,
-    restricted: false,
-    type: String,
-    default: "#a2642a",
-  });
+
   game.settings.register("LightsHUD", "customLightColorIntensity", {
     name: game.i18n.localize("LightsHUD.lightType.customIntensity.name"),
     hint: game.i18n.localize("LightsHUD.lightType.customIntensity.hint"),
@@ -1130,15 +1119,7 @@ Hooks.once("init", () => {
       TypeC: game.i18n.localize("LightsHUD.lanternType.typeC"),
     },
   });
-  game.settings.register("LightsHUD", "customLanternColor", {
-    name: game.i18n.localize("LightsHUD.lanternType.customColor.name"),
-    hint: game.i18n.localize("LightsHUD.lanternType.customColor.hint"),
-    scope: "world",
-    config: true,
-    restricted: false,
-    type: String,
-    default: "#a2642a",
-  });
+
   game.settings.register("LightsHUD", "customLanternColorIntensity", {
     name: game.i18n.localize("LightsHUD.lanternType.customIntensity.name"),
     hint: game.i18n.localize("LightsHUD.lanternType.customIntensity.hint"),
@@ -1242,26 +1223,39 @@ Hooks.once("init", () => {
     },
   });
 
-  new window.Ardittristan.ColorSetting("LightsHUD", "customTorchColor", {
-    name:game.i18n.localize("LightsHUD.torchType.customColor.name"),           // The name of the setting in the settings menu
-    hint: game.i18n.localize("LightsHUD.torchType.customColor.hint"),        // A description of the registered setting and its behavior
-    label: "Color Picker",              // The text label used in the button
+new window.Ardittristan.ColorSetting("LightsHUD", "customLightColor", {
+    name:game.i18n.localize("LightsHUD.lightType.customColor.name"),           // The name of the setting in the settings menu
+    hint: game.i18n.localize("LightsHUD.lightType.customColor.hint"),        // A description of the registered setting and its behavior
+    label: "Custom Light Spell Color",              // The text label used in the button
     restricted: true,                  // Restrict this setting to gamemaster only?
-    defaultColor: "#ffffff",          // The default color of the setting
+    defaultColor: lhConst.predefinedColors["Daylight (warm)"],          // The default color of the setting
     scope: "world",                    // The scope of the setting
     onChange: (value) => {},            // A callback function which triggers when the setting is changed
-    insertAfter: "LightsHUD.torchType"   // If supplied it will place the setting after the supplied setting
-})
+    insertAfter: "LightsHUD.lightType"   // If supplied it will place the setting after the supplied setting
+});
 
-  // game.settings.register("LightsHUD", "customTorchColor", {
-  //   name: game.i18n.localize("LightsHUD.torchType.customColor.name"),
-  //   hint: game.i18n.localize("LightsHUD.torchType.customColor.hint"),
-  //   scope: "world",
-  //   config: true,
-  //   restricted: false,
-  //   type: ColorSetting ,
-  //   default: "#a2642a",
-  // });
+new window.Ardittristan.ColorSetting("LightsHUD", "customLanternColor", {
+  name:game.i18n.localize("LightsHUD.lanternType.customColor.name"),           // The name of the setting in the settings menu
+  hint: game.i18n.localize("LightsHUD.lanternType.customColor.hint"),        // A description of the registered setting and its behavior
+  label: "Custom Lantern Light Color",              // The text label used in the button
+  restricted: true,                  // Restrict this setting to gamemaster only?
+  defaultColor: lhConst.predefinedColors["Candles, Torches"],          // The default color of the setting
+  scope: "world",                    // The scope of the setting
+  onChange: (value) => {},            // A callback function which triggers when the setting is changed
+  insertAfter: "LightsHUD.lanternType"   // If supplied it will place the setting after the supplied setting
+});
+
+new window.Ardittristan.ColorSetting("LightsHUD", "customTorchColor", {
+  name:game.i18n.localize("LightsHUD.torchType.customColor.name"),           // The name of the setting in the settings menu
+  hint: game.i18n.localize("LightsHUD.torchType.customColor.hint"),        // A description of the registered setting and its behavior
+  label: "Custom Torch Light Color",              // The text label used in the button
+  restricted: true,                  // Restrict this setting to gamemaster only?
+  defaultColor: lhConst.predefinedColors["Candles, Torches"],          // The default color of the setting
+  scope: "world",                    // The scope of the setting
+  onChange: (value) => {},            // A callback function which triggers when the setting is changed
+  insertAfter: "LightsHUD.torchType"   // If supplied it will place the setting after the supplied setting
+});
+
   game.settings.register("LightsHUD", "customTorchColorIntensity", {
     name: game.i18n.localize("LightsHUD.torchType.customIntensity.name"),
     hint: game.i18n.localize("LightsHUD.torchType.customIntensity.hint"),
@@ -1346,6 +1340,17 @@ Hooks.once("init", () => {
   LightsHUD.debug();
   LightsHUD.clBanner();
 });
+
+function registerSetting(moduleName, settingKey, scope = "world", config = "true", defaultValue, type = String) {
+  game.settings.register(moduleName, settingKey, {
+    name: game.i18n.localize(`${moduleName}.${settingKey}.name`),
+    hint: game.i18n.localize(`${moduleName}.${settingKey}.hint`),
+    scope: scope,
+    config: config,
+    default: defaultValue,
+    type: type,
+  });
+}
 
 function renderConfig(_, html) {
   let prefix = "LightsHUD";
