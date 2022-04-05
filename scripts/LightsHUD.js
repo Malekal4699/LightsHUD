@@ -200,12 +200,11 @@ class LightsHUD {
     async function onButtonClick(ev, tbutton) {
       ev.preventDefault();
       ev.stopPropagation();
-      LightsHUD.log("On Button Click");
     
       // Are we dealing with the Light Button
       if (tbutton.hasClass("lightSpell")) {
         // Check if the token has the light spell on
-        if (spellLight.state) {
+        if (spellLight.state && tokenD.object.emitsLight) {
           // The token has the light spell on
           spellLight.state = false;
           await tokenD.setFlag("LightsHUD", spellLight._getFlagName(), false);
@@ -453,7 +452,7 @@ class LightsHUD {
         let hasItemNow = hasItem(consumable);
         
           // Check if the token has the light spell on
-          if (lanternLight.state) {
+          if (lanternLight.state && tokenD.object.emitsLight) {
             // The token has the light spell on
             lanternLight.state = false;
             tbuttonLantern.removeClass("active");
@@ -631,7 +630,7 @@ class LightsHUD {
         let hasItemNow = hasItem(consumable);
         
           // Check if the token has the light spell on
-          if (torchLight.state) {
+          if (torchLight.state && tokenD.object.emitsLight) {
             // The token has the light spell on
             torchLight.state = false;
             await tokenD.setFlag("LightsHUD", torchLight._getFlagName(), false);
