@@ -35,14 +35,15 @@
     "esmodules": [
         "/scripts/LightsHUD.js",
         "/scripts/LightDataExt.js",
-        "/scripts/tokenInformations.js",
-        "../colorsettings/colorSetting.js"
+        "/scripts/tokenInformations.js"
     ],
-    "dependencies": ["colorsettings"],
+    "scripts" : ["./lib/colorSettingStub"],
+    "dependencies": [{
+        "name": "colorsettings",
+        "manifest": "https://github.com/ardittristan/VTTColorSettings/releases/tag/latest/module.json"}],
     "socket": true,
     "styles": [
-        "/styles/LightsHUD.css",
-        "../colorsettings/css/colorpicker.css"
+        "/styles/LightsHUD.css"
     ],
     "packs": [],
     "url": "https://github.com/Malekal4699/LightsHUD",

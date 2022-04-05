@@ -1,6 +1,10 @@
 import { LightDataExt } from "./LightDataExt.js";
 import { tokenInformations } from "./tokenInformations.js";
+import * as lhConst from "./const.js";
+
 class LightsHUD {
+
+
 
   static clBanner() {
     const title =
@@ -210,7 +214,7 @@ class LightsHUD {
           // Light is inactive, enable the relevant light sources according to parameters
           enableButtonsPerSettings();
           // Restore the initial light source
-          updateTokenLightingV2((tokenD.getFlag("LightsHUD","initialLightData")));
+          updateTokenLightingV2((tokenD.getFlag("LightsHUD", "initialLightData")));
         } else {
           // The token does not have the light spell on
           spellLight.state = true;
@@ -448,7 +452,7 @@ class LightsHUD {
           // Light is inactive, enable the relevant light sources according to parameters
           enableButtonsPerSettings();
           // Restore the initial light source
-          updateTokenLightingV2((tokenD.getFlag("LightsHUD","initialLightData")));
+          updateTokenLightingV2((tokenD.getFlag("LightsHUD", "initialLightData")));
           return;
         }
         if (!lanternLight.state && ((hasInventoryCheck && !hasItemNow))) return;
@@ -617,7 +621,7 @@ class LightsHUD {
           // Light is inactive, enable the relevant light sources according to parameters
           enableButtonsPerSettings();
           // Restore the initial light source
-          updateTokenLightingV2(tokenD.getFlag("LightsHUD","initialLightData"));
+          updateTokenLightingV2(tokenD.getFlag("LightsHUD", "initialLightData"));
           return;
         }
         if (!torchLight.state && ((hasInventoryCheck && !hasItemNow))) return;
@@ -703,12 +707,12 @@ class LightsHUD {
       }
     }
     // Update the relevant light parameters of a token
-    async function updateTokenLightingV2(lightData){
+    async function updateTokenLightingV2(lightData) {
       if (!lightData) {
-          await app.object.document.update({light: {bright:0,dim:0}});
+        await app.object.document.update({ light: { bright: 0, dim: 0 } });
       }
-          await app.object.document.update({light: lightData});
-      
+      await app.object.document.update({ light: lightData });
+
     }
 
     function updateTokenLighting(
@@ -741,20 +745,20 @@ class LightsHUD {
 
       const tokenData = app.object.data;
       const tokenFlags = app.object.document;
-     
+
 
       if (!(game.settings.get("LightsHUD", "preservePreviousLightData"))) {
         await tokenFlags.unsetFlag("LightsHUD", "initialLightData")
         return;
       };
-      
+
       try {
         await tokenFlags.setFlag("LightsHUD", "initialLightData", await duplicate(tokenData.light));
       } catch (error) {
-        LightsHUD.log("Error storing LightData: ",error);
+        LightsHUD.log("Error storing LightData: ", error);
         return;
       }
-      
+
     }
     /*
      * Returns the first GM id.
@@ -829,25 +833,66 @@ class LightsHUD {
 
 Hooks.on("ready", () => {
   Hooks.on("renderTokenHUD", (app, html, data) => {
-    LightsHUD.addLightsHUDButtons(app, html, data);
-  });
-  Hooks.on("renderControlsReference", (app, html, data) => {
-    html
-      .find("div")
-      .first()
-      .append(
-        '<h3>LightsHUD</h3><ol class="hotkey-list"><li><h4>' +
-        game.i18n.localize("LightsHUD.turnOffAllLights") +
-        '</h4><div class="keys">' +
-        game.i18n.localize("LightsHUD.holdCtrlOnClick") +
-        "</div></li></ol>"
-      );
-  });
-  game.socket.on("module.torch", (request) => {
-    LightsHUD.handleSocketRequest(request);
+    if (game.settings.get("colorsettings", "showWarning")) {
+      ui.notifications.notify("A module is missing the color picker library. For best results, please install and enable the Lib-Color Settings module.", "warning");
+    }
+  console.log("ColorSettings | initializing fallback mode");
+  LightsHUD.addLightsHUDButtons(app, html, data);
   });
 });
+Hooks.on("renderControlsReference", (app, html, data) => {
+  html
+    .find("div")
+    .first()
+    .append(
+      '<h3>LightsHUD</h3><ol class="hotkey-list"><li><h4>' +
+      game.i18n.localize("LightsHUD.turnOffAllLights") +
+      '</h4><div class="keys">' +
+      game.i18n.localize("LightsHUD.holdCtrlOnClick") +
+      "</div></li></ol>"
+    );
+});
+// game.socket.on("module.torch", (request) => {
+//   LightsHUD.handleSocketRequest(request);
+//});
 Hooks.once("init", () => {
+  game.settings.register("colorsettings", "showWarning", {
+    config: true,
+    type: Boolean,
+    default: true,
+    name: "Show Error",
+    hint: "Enable or disable error if main module missing."
+  });
+  if (window?.Ardittristan?.initialColorSettingRun === undefined) {
+    if (game.modules.has("colorsettings")) {
+      if (game.modules.get("colorsettings").active) {
+        return;
+      } else {
+        game.settings.register("colorsettings", "autoEnable", {
+          config: false,
+          type: Boolean,
+          default: true
+        });
+        Hooks.once("canvasReady", () => {
+          if (game.user.isGM && game.settings.get("colorsettings", "autoEnable")) {
+            Dialog.confirm({
+              title: "Enable Color Settings module?",
+              content: "<p>You seem to have Color Settings installed already, do you want to enable it?</p>",
+              yes: () => game.settings.set("core", ModuleManagement.CONFIG_SETTING, {
+                ...game.settings.get("core", ModuleManagement.CONFIG_SETTING),
+                ...{ colorsettings: true }
+              }),
+              no: () => game.settings.set("colorsettings", "autoEnable", false),
+              defaultYes: false
+            });
+          }
+        });
+      }
+    }
+
+
+  }
+
   game.settings.register("LightsHUD", "position", {
     name: game.i18n.localize("LightsHUD.position.name"),
     hint: game.i18n.localize("LightsHUD.position.hint"),
@@ -1196,15 +1241,27 @@ Hooks.once("init", () => {
       TypeC: game.i18n.localize("LightsHUD.lanternType.typeC")
     },
   });
-  game.settings.register("LightsHUD", "customTorchColor", {
-    name: game.i18n.localize("LightsHUD.torchType.customColor.name"),
-    hint: game.i18n.localize("LightsHUD.torchType.customColor.hint"),
-    scope: "world",
-    config: true,
-    restricted: false,
-    type: ColorSetting,
-    default: "#a2642a",
-  });
+
+  new window.Ardittristan.ColorSetting("LightsHUD", "customTorchColor", {
+    name:game.i18n.localize("LightsHUD.torchType.customColor.name"),           // The name of the setting in the settings menu
+    hint: game.i18n.localize("LightsHUD.torchType.customColor.hint"),        // A description of the registered setting and its behavior
+    label: "Color Picker",              // The text label used in the button
+    restricted: true,                  // Restrict this setting to gamemaster only?
+    defaultColor: "#ffffff",          // The default color of the setting
+    scope: "world",                    // The scope of the setting
+    onChange: (value) => {},            // A callback function which triggers when the setting is changed
+    insertAfter: "LightsHUD.torchType"   // If supplied it will place the setting after the supplied setting
+})
+
+  // game.settings.register("LightsHUD", "customTorchColor", {
+  //   name: game.i18n.localize("LightsHUD.torchType.customColor.name"),
+  //   hint: game.i18n.localize("LightsHUD.torchType.customColor.hint"),
+  //   scope: "world",
+  //   config: true,
+  //   restricted: false,
+  //   type: ColorSetting ,
+  //   default: "#a2642a",
+  // });
   game.settings.register("LightsHUD", "customTorchColorIntensity", {
     name: game.i18n.localize("LightsHUD.torchType.customIntensity.name"),
     hint: game.i18n.localize("LightsHUD.torchType.customIntensity.hint"),
@@ -1359,6 +1416,6 @@ function renderConfig(_, html) {
   updateLightSettings();
   updateLanternSettings();
   updateTorchSettings();
-}
+};
 
 Hooks.on("renderSettingsConfig", renderConfig);
