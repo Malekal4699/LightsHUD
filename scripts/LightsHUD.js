@@ -972,6 +972,13 @@ Hooks.once("init", () => {
 
   // Light Parameters
   
+  lhConst.lightDataflatSchema.forEach((key,value) => {
+    console.log(`${key} - ${value}`);
+  });
+
+  
+  
+
   registerSetting("LightsHUD","lightBrightRadius","world",true,20,Number);
 
   game.settings.register("LightsHUD", "lightDimRadius", {

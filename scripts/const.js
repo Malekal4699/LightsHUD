@@ -17,5 +17,7 @@ export class lhConst {
         "Magma" : "#c27a29"
     }
     
-    
+    static lightDataflatSchema = Object.entries((flattenObject(new foundry.data.LightData().schema)));
+
+
     }
