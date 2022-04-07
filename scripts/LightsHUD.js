@@ -428,9 +428,9 @@ class LightsHUD {
                 game.settings.get("LightsHUD", "customLightColor"),
                 game.settings.get("LightsHUD", "customLightColorIntensity"),
                 360,
-                game.settings.get("LightsHUD", "customlight.animationType"),
-                game.settings.get("LightsHUD", "customlight.animationSpeed"),
-                game.settings.get("LightsHUD", "customlight.animationIntensity")
+                game.settings.get("LightsHUD", "customlightanimationType"),
+                game.settings.get("LightsHUD", "customlightanimationSpeed"),
+                game.settings.get("LightsHUD", "customlightanimationIntensity")
               );
               break;
           }
@@ -594,12 +594,12 @@ class LightsHUD {
               updateTokenLighting(
                 nBright,
                 nDim,
-                game.settings.get("LightsHUD", "customLightColor"),
-                game.settings.get("LightsHUD", "customLightColorIntensity"),
+                game.settings.get("LightsHUD", "customLanternColor"),
+                game.settings.get("LightsHUD", "customLanternColorIntensity"),
                 360,
-                game.settings.get("LightsHUD", "customlight.animationType"),
-                game.settings.get("LightsHUD", "customlight.animationSpeed"),
-                game.settings.get("LightsHUD", "customlight.animationIntensity")
+                game.settings.get("LightsHUD", "customLanternAnimationType"),
+                game.settings.get("LightsHUD", "customLanternAnimationSpeed"),
+                game.settings.get("LightsHUD", "customLanternAnimationIntensity")
               );
               break;
           }
@@ -992,7 +992,7 @@ Hooks.once("init", () => {
       max: 1,
     },
   });
-  game.settings.register("LightsHUD", "customlight.animationType", {
+  game.settings.register("LightsHUD", "customlightanimationType", {
     name: game.i18n.localize("LightsHUD.lightType.customAnimationType.name"),
     hint: game.i18n.localize("LightsHUD.lightType.customAnimationType.hint"),
     scope: "world",
@@ -1016,7 +1016,7 @@ Hooks.once("init", () => {
       hole: game.i18n.localize("LightsHUD.animationType.hole"),
     },
   });
-  game.settings.register("LightsHUD", "customlight.animationSpeed", {
+  game.settings.register("LightsHUD", "customlightanimationSpeed", {
     name: game.i18n.localize("LightsHUD.lightType.customAnimationSpeed.name"),
     hint: game.i18n.localize("LightsHUD.lightType.customAnimationSpeed.hint"),
     scope: "world",
@@ -1030,7 +1030,7 @@ Hooks.once("init", () => {
       max: 10,
     },
   });
-  game.settings.register("LightsHUD", "customlight.animationIntensity", {
+  game.settings.register("LightsHUD", "customlightanimationIntensity", {
     name: game.i18n.localize(
       "LightsHUD.lightType.customAnimationIntensity.name"
     ),
@@ -1299,10 +1299,10 @@ function renderConfig(_, html) {
   const dependentLightSettings = [
     { node: 'input', name: 'customLightColor' },
     { node: 'input', name: 'customLightColorIntensity' },
-    { node: 'select', name: 'customlight.animationType' },
-    { node: 'input', name: 'customlight.animationSpeed' },
-    { node: 'input', name: 'customlight.animationIntensity' }
-  ]
+    { node: 'select', name: 'customlightanimationType' },
+    { node: 'input', name: 'customlightanimationSpeed' },
+    { node: 'input', name: 'customlightanimationIntensity' }
+]
 
   function updateLightSettings() {
     const mode = lightTypeSelect.val();
