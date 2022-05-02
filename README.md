@@ -1,5 +1,11 @@
 ![](https://img.shields.io/badge/Maintainer-Malekal-green)
 My discord server: https://discord.gg/Ee2cmeRsN3
+
+## IMPORTANT
+Hi, following a concussion this spring, I find myself having to shy await from screens as much as possible for a while. Good news is, user p4535992 has forked LightsHUD, adding many things I wanted to do, doing it better. Please have a look here: https://github.com/p4535992/foundryvtt-lights-hud-ate
+
+dev is halted for the moment on this module.
+
 # LightsHUD - A FoundryVTT Module
 
 Derived and updated version of Torchlight, which in turn was derived from Torch.
